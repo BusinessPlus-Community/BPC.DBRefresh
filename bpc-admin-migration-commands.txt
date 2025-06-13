@@ -1,0 +1,104 @@
+# BPC.Admin Migration Commands
+# Run these from the PSBusinessPlusERP repository root
+
+# 1. First, ensure you're on the v2 branch
+git checkout v2
+
+# 2. Rename main module directory
+git mv PSBusinessPlusERP BPC.Admin
+
+# 3. Rename module files
+git mv BPC.Admin/PSBusinessPlusERP.psd1 BPC.Admin/BPC.Admin.psd1
+git mv BPC.Admin/PSBusinessPlusERP.psm1 BPC.Admin/BPC.Admin.psm1
+
+# 4. Rename Output directories
+git mv Output/PSBusinessPlusERP/0.0.1 Output/BPC.Admin/0.0.1 2>/dev/null || true
+git mv Output/PSBusinessPlusERP/0.2.0 Output/BPC.Admin/0.2.0 2>/dev/null || true
+git mv Output/PSBusinessPlusERP Output/BPC.Admin 2>/dev/null || true
+
+# 5. Rename function files
+git mv BPC.Admin/Public/Get-HelloWorld.ps1 BPC.Admin/Public/Get-BPERPExample.ps1 2>/dev/null || true
+git mv BPC.Admin/Private/GetHelloWorld.ps1 BPC.Admin/Private/GetBPERPExample.ps1 2>/dev/null || true
+git mv BPC.Admin/Public/User/Invoke-BusinessPlusLogin.ps1 BPC.Admin/Public/User/Invoke-BPERPLogin.ps1 2>/dev/null || true
+
+# 6. Rename documentation files
+git mv docs/en-US/Get-HelloWorld.md docs/en-US/Get-BPERPExample.md 2>/dev/null || true
+git mv docs/en-US/Invoke-BusinessPlusLogin.md docs/en-US/Invoke-BPERPLogin.md 2>/dev/null || true
+
+# 7. Update all file contents (PowerShell command)
+pwsh -Command @'
+$replacements = @{
+    'PSBusinessPlusERP' = 'BPC.Admin'
+    'PowerSchool BusinessPlus ERP cmdlets' = 'BusinessPlus Community Admin cmdlets'
+    'Get-HelloWorld' = 'Get-BPERPExample'
+    'GetHelloWorld' = 'GetBPERPExample'
+    'Invoke-BusinessPlusLogin' = 'Invoke-BPERPLogin'
+    'New-JoinProp' = 'New-BPERPJoinProperty'
+}
+
+Get-ChildItem -Path . -Include @('*.ps1','*.psd1','*.psm1','*.md','*.yml','*.json') -Recurse | ForEach-Object {
+    if ($_.FullName -match '\.git') { return }
+    $content = Get-Content $_.FullName -Raw -ErrorAction SilentlyContinue
+    if ($content) {
+        $updated = $false
+        foreach ($old in $replacements.Keys) {
+            if ($content -match $old) {
+                $content = $content -replace $old, $replacements[$old]
+                $updated = $true
+            }
+        }
+        if ($updated) {
+            $content | Set-Content $_.FullName -NoNewline
+            Write-Host "Updated: $($_.Name)"
+        }
+    }
+}
+'@
+
+# 8. Update manifest specifically
+pwsh -Command @'
+$manifest = Get-Content "BPC.Admin/BPC.Admin.psd1" -Raw
+$manifest = $manifest -replace "CompanyName\s*=\s*'Unknown'", "CompanyName = 'BusinessPlus Community'"
+$manifest = $manifest -replace "Copyright\s*=\s*'\(c\) 2024 Zach Birge\. All rights reserved\.'", "Copyright = '(c) 2024 BusinessPlus Community. All rights reserved. Licensed under GPL-3.0'"
+$manifest | Set-Content "BPC.Admin/BPC.Admin.psd1" -NoNewline
+'@
+
+# 9. Create CLAUDE.md
+cat > CLAUDE.md << 'EOF'
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Project Overview
+
+This is the BPC.Admin module - a PowerShell module providing administrative cmdlets for BusinessPlus ERP/HR/PY systems. This module is part of the BPC (BusinessPlus Community) namespace.
+
+## Module Namespace
+
+The BusinessPlus Community uses the BPC namespace for all modules:
+- `BPC.Admin` - Administrative functions (this module)
+- `BPC.DBRefresh` - Database refresh operations
+- `BPC.Reports` - Report generation/fetching
+- `BPC.Security` - User/permission management
+- `BPC.Finance` - Financial operations
+- `BPC.HR` - Human resources functions
+
+## Development Standards
+
+All functions use the BPERP prefix:
+- `Invoke-BPERPLogin`
+- `Get-BPERPExample`
+- `New-BPERPJoinProperty`
+EOF
+
+# 10. Stage all changes
+git add -A
+
+# 11. Show status
+git status
+
+# 12. Commit (uncomment to run)
+# git commit -m "refactor: Rename to BPC.Admin namespace for consistency"
+
+# 13. Push (uncomment to run)
+# git push origin v2
