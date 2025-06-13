@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+title: BusinessPlus Test Environment Refresh
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - given-names: "Zach"
+    family-names: "Birge"
+    email: zbirge@bpluscommunity.org
+    orcid: "https://orcid.org/0000-0000-0000-0000"
+  - given-names: "Claude"
+    family-names: "AI Assistant"
+    affiliation: "Anthropic"
+    email: noreply@anthropic.com
+    website: "https://claude.ai"
+  - name: "BusinessPlus Community Contributors"
+    email: code@bpluscommunity.org
+    website: "https://bpluscommunity.org"
+repository-code: "https://github.com/businessplus-community/bp-test-env-refresh"
+url: "https://bpluscommunity.org"
+abstract: "A PowerShell automation script for refreshing BusinessPlus test environments with production database backups, designed for K-12 technology teams."
+keywords:
+  - PowerShell
+  - BusinessPlus
+  - ERP
+  - database-management
+  - automation
+  - K-12
+license: GPL-3.0

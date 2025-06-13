@@ -1,0 +1,5 @@
+# This file ensures consistent author attribution in git history
+# Format: Proper Name <proper@email.com> <commit@email.com>
+
+Zach Birge <zbirge@bpluscommunity.org> <zbirge@bpluscommunity.org>
+Zach Birge <zbirge@bpluscommunity.org> Zach Birge <zbirge@bpluscommunity.org>

@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: BusinessPlus Community Support
+    url: mailto:code@bpluscommunity.org
+    about: For general questions or new repository requests
+  - name: Security Vulnerability
+    url: mailto:code@bpluscommunity.org
+    about: Please report security vulnerabilities via email

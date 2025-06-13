@@ -1,0 +1,23 @@
+# Code Owners for BusinessPlus Test Environment Refresh
+# These users will be automatically requested for review on pull requests
+
+# Default owners for everything in the repo
+* @zbirge @businessplus-community/maintainers
+
+# PowerShell scripts
+*.ps1 @zbirge @businessplus-community/powershell-reviewers
+
+# Configuration files
+*.ini @businessplus-community/maintainers
+*-sample.ini @businessplus-community/maintainers
+
+# Documentation
+*.md @businessplus-community/documentation
+/docs/ @businessplus-community/documentation
+
+# GitHub specific files
+/.github/ @zbirge @businessplus-community/maintainers
+
+# Security-sensitive files
+SECURITY.md @businessplus-community/security
+**/security/ @businessplus-community/security

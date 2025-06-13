@@ -1,0 +1,25 @@
+# Dependabot configuration for keeping dependencies up to date
+version: 2
+updates:
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    
+  # Enable version updates for PowerShell modules (if using packages.config or similar)
+  - package-ecosystem: "nuget"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "dependencies"
+      - "powershell"
+    ignore:
+      # Add any modules you want to pin to specific versions
+      # - dependency-name: "module-name"
+      #   versions: ["x.x.x"]
