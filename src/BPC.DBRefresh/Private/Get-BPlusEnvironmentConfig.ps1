@@ -14,7 +14,7 @@ function Get-BPlusEnvironmentConfig {
       Path to the INI configuration file
   
   .EXAMPLE
-      $config = Get-BPlusEnvironmentConfig -Environment 'TEST' -ConfigPath 'C:\config\hpsBPlusDBRestore.ini'
+      $config = Get-BPlusEnvironmentConfig -Environment 'TEST' -ConfigPath 'C:\config\hpsBPC.DBRefresh.ini'
   #>
   [CmdletBinding()]
   param(

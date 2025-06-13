@@ -37,7 +37,7 @@ Install-Module -Name PSLogging, dbatools, PsIni -Force -Scope CurrentUser
 
 ### Where do I get the configuration file?
 
-Copy the sample configuration from `config/hpsBPlusDBRestore-sample.ini` and customize it for your environment.
+Copy the sample configuration from `config/hpsBPC.DBRefresh-sample.ini` and customize it for your environment.
 
 ## Usage Questions
 
@@ -171,7 +171,7 @@ Yes, you can:
 
 ### Where can I get help?
 
-- Open an issue on [GitHub](https://github.com/businessplus-community/bp-test-env-refresh/issues)
+- Open an issue on [GitHub](https://github.com/businessplus-community/BPC.DBRefresh/issues)
 - Email code@bpluscommunity.org
 - Check existing issues for solutions
 - Review the documentation
@@ -191,18 +191,18 @@ The module version:
 
 Yes! After importing the module, you can use any public function:
 ```powershell
-Import-Module BPlusDBRestore
-Stop-BPlusServices -Config $config
+Import-Module BPC.DBRefresh
+Stop-BPERPServices -Config $config
 # Use other functions as needed
 ```
 
 ### How do I update the module?
 
 ```powershell
-Update-Module -Name BPlusDBRestore
+Update-Module -Name BPC.DBRefresh
 ```
 
 Or for a specific version:
 ```powershell
-Update-Module -Name BPlusDBRestore -RequiredVersion 1.4.0
+Update-Module -Name BPC.DBRefresh -RequiredVersion 1.4.0
 ```

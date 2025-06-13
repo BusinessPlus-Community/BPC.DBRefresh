@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>BPlusDBRestore</id>
+    <id>BPC.DBRefresh</id>
     <version>1.3.0</version>
-    <title>BusinessPlus Database Restore Module</title>
+    <title>BPC Database Refresh Module</title>
     <authors>Zach Birge, BusinessPlus Community Contributors</authors>
     <owners>BusinessPlus Community</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">GPL-3.0-or-later</license>
-    <projectUrl>https://github.com/businessplus-community/bp-test-env-refresh</projectUrl>
-    <iconUrl>https://raw.githubusercontent.com/businessplus-community/bp-test-env-refresh/main/assets/icon.png</iconUrl>
+    <projectUrl>https://github.com/businessplus-community/BPC.DBRefresh</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/businessplus-community/BPC.DBRefresh/main/assets/icon.png</iconUrl>
     <description>PowerShell module for automating BusinessPlus test environment database refreshes. Provides tools to restore databases from production backups, configure security settings, and manage environment-specific configurations for K-12 school districts.</description>
     <summary>Automate BusinessPlus test environment refreshes with production database backups</summary>
-    <releaseNotes>See https://github.com/businessplus-community/bp-test-env-refresh/blob/main/CHANGELOG.md for details.</releaseNotes>
+    <releaseNotes>See https://github.com/businessplus-community/BPC.DBRefresh/blob/main/CHANGELOG.md for details.</releaseNotes>
     <copyright>Copyright (c) 2024 BusinessPlus Community</copyright>
-    <tags>BusinessPlus Database Restore K12 Education ERP Automation SQL PowerShell</tags>
-    <repository type="git" url="https://github.com/businessplus-community/bp-test-env-refresh.git" branch="main" />
+    <tags>BPC BusinessPlus Database Restore K12 Education ERP Automation SQL PowerShell DBRefresh</tags>
+    <repository type="git" url="https://github.com/businessplus-community/BPC.DBRefresh.git" branch="main" />
     <dependencies>
       <dependency id="PSLogging" version="2.2.0" />
       <dependency id="dbatools" version="1.0.0" />
@@ -23,8 +23,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="src\BPlusDBRestore\**\*" target="tools\BPlusDBRestore" />
-    <file src="config\hpsBPlusDBRestore-sample.ini" target="content\config\" />
+    <file src="src\BPC.DBRefresh\**\*" target="tools\BPC.DBRefresh" />
+    <file src="config\hpsBPC.DBRefresh-sample.ini" target="content\config\" />
     <file src="examples\**\*.ps1" target="content\examples\" />
     <file src="docs\**\*.md" target="content\docs\" />
     <file src="LICENSE" target="" />

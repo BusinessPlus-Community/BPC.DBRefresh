@@ -64,7 +64,7 @@ $sScriptVersion = '1.3'
 
 #Log File Info
 $sLogPath = $PSScriptRoot
-$sLogName = 'hpsBPlusDBRestore.log'
+$sLogName = 'hpsBPC.DBRefresh.log'
 $sLogFile = Join-Path -Path $sLogPath -ChildPath $sLogName
 
 #-----------------------------------------------------------[Functions]------------------------------------------------------------
@@ -163,7 +163,7 @@ Write-LogInfo -LogPath $sLogFile -Message "$(Get-Date -Format "G") - $([System.S
 ## TO-DO: Setup Error checking and fail out if a required setting is not found                                                   ##
 ## ----------------------------------------------------------------------------------------------------------------------------- ##
 Write-LogInfo -LogPath $sLogFile -Message "$(Get-Date -Format "G") - Parsing .ini file for $($BPEnvironment)"
-$bpEnvironmentInfo = Get-IniContent "$($sLogPath)\hpsBPlusDBRestore.ini"
+$bpEnvironmentInfo = Get-IniContent "$($sLogPath)\hpsBPC.DBRefresh.ini"
 
 $databaseServer = $bpEnvironmentInfo["sqlServer"][$BPEnvironment]
 $ifasDatabase = $bpEnvironmentInfo["database"][$BPEnvironment]
@@ -1113,7 +1113,7 @@ $messageFooterHTML = $messageFooterHTML + "</html>`r`n"
 
 $msgBuilder.HtmlBody = $messageHeaderHTML + $messageBodyHTML + $messageFooterHTML
 $msgBuilder.TextBody = "The Database Refresh of the $($BPEnvironment) Environment has been completed."
-$msgBuilder.Attachments.Add("$($sLogPath)\hpsBPlusDBRestore.log")
+$msgBuilder.Attachments.Add("$($sLogPath)\hpsBPC.DBRefresh.log")
 Write-LogInfo -LogPath $sLogFile -Message "     Email Notification Successfully Built"
 Write-LogInfo -LogPath $sLogFile -Message "     Sending Email to $($notificationEmail)"
 $msgObject.From.Add($replyToEmail)
@@ -1142,35 +1142,35 @@ Stop-Log -LogPath $sLogFile
  This script is designed to take the necessary steps to prep a BusinessPlus environment to recieve a database refresh.  Once complete it sends a notification out if specified.
 
 .INPUTS
- hpsBPlusDBRestore.ini file must be in the same directory as this script.
+ hpsBPC.DBRefresh.ini file must be in the same directory as this script.
 
 .OUTPUTS 
  Log File
- The script log file stored in $PSScriptRoot\hpsBPlusDBRestore.log
+ The script log file stored in $PSScriptRoot\hpsBPC.DBRefresh.log
 
 .EXAMPLE
- hpsBPlusDBRestore.ps1 -BPEnvironment TEST1 -aspnetFilePath "<backup path>\aspnet_db.bak" -ifasFilePath "<backup path>\ifas_db.bak" -syscatFilePath "<backup path>\syscat_db.bak"
+ hpsBPC.DBRefresh.ps1 -BPEnvironment TEST1 -aspnetFilePath "<backup path>\aspnet_db.bak" -ifasFilePath "<backup path>\ifas_db.bak" -syscatFilePath "<backup path>\syscat_db.bak"
  
  Description
  ---------------------------------------
  Restore TEST1 Environment with no extra accounts left active and no dashboards copied
  
 .EXAMPLE
- hpsBPlusDBRestore.ps1 -BPEnvironment TEST1 -aspnetFilePath "<backup path>\aspnet_db.bak" -ifasFilePath "<backup path>\ifas_db.bak" -syscatFilePath "<backup path>\syscat_db.bak" -restoreDashboards
+ hpsBPC.DBRefresh.ps1 -BPEnvironment TEST1 -aspnetFilePath "<backup path>\aspnet_db.bak" -ifasFilePath "<backup path>\ifas_db.bak" -syscatFilePath "<backup path>\syscat_db.bak" -restoreDashboards
  
  Description
  ---------------------------------------
  Restore TEST1 Environment with dashboard file copy
  
 .EXAMPLE
- hpsBPlusDBRestore.ps1 -BPEnvironment TEST1 -aspnetFilePath "<backup path>\aspnet_db.bak" -ifasFilePath "<backup path>\ifas_db.bak" -syscatFilePath "<backup path>\syscat_db.bak" -testingMode
+ hpsBPC.DBRefresh.ps1 -BPEnvironment TEST1 -aspnetFilePath "<backup path>\aspnet_db.bak" -ifasFilePath "<backup path>\ifas_db.bak" -syscatFilePath "<backup path>\syscat_db.bak" -testingMode
  
  Description
  ---------------------------------------
  Restore TEST1 Environment with extra accounts active for testing
  
 .EXAMPLE
-  hpsBPlusDBRestore.ps1 -BPEnvironment TEST1 -aspnetFilePath "<backup path>\aspnet_db.bak" -ifasFilePath "<backup path>\ifas_db.bak" -syscatFilePath "<backup path>\syscat_db.bak" -testingMode -restoreDashboards
+  hpsBPC.DBRefresh.ps1 -BPEnvironment TEST1 -aspnetFilePath "<backup path>\aspnet_db.bak" -ifasFilePath "<backup path>\ifas_db.bak" -syscatFilePath "<backup path>\syscat_db.bak" -testingMode -restoreDashboards
   
   Description
   ---------------------------------------

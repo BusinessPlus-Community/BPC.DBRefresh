@@ -14,10 +14,10 @@
 #>
 
 # Import the module (if not already imported)
-Import-Module BPlusDBRestore -ErrorAction Stop
+Import-Module BPC.DBRefresh -ErrorAction Stop
 
 # Basic restore with required parameters only
-Restore-BPlusDatabase -BPEnvironment "TEST" `
+Invoke-BPERPDatabaseRestore -BPEnvironment "TEST" `
                      -ifasFilePath "\\backup-server\backups\IFAS_PROD_20240115.bak" `
                      -syscatFilePath "\\backup-server\backups\SYSCAT_PROD_20240115.bak"
 

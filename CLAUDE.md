@@ -4,35 +4,56 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a PowerShell automation script for refreshing BusinessPlus test environments with production database backups. The script handles database restoration, security configuration, and environment-specific settings.
+This is the BPC.DBRefresh module - a PowerShell automation tool for refreshing BusinessPlus test environments with production database backups. The module handles database restoration, security configuration, and environment-specific settings.
+
+This module is part of the BPC namespace, which provides modular PowerShell tools for managing various aspects of BusinessPlus ERP/HR/PY systems.
+
+## Module Namespace Strategy
+
+The BusinessPlus Community uses a namespace approach for PowerShell modules:
+
+- `BPC.DBRefresh` - Database refresh operations (this module)
+- `BPC.Admin` - Administrative functions
+- `BPC.Reports` - Report generation/fetching
+- `BPC.Security` - User/permission management
+- `BPC.Finance` - Financial operations
+- `BPC.HR` - Human resources functions
 
 ## Project Structure
 
 ```
-src/BPlusDBRestore/    # PowerShell module
-config/                # Configuration files
-examples/              # Usage examples
-tests/                 # Pester tests
-hpsBPlusDBRestore.ps1  # Original script (compatibility)
+src/BPC.DBRefresh/         # PowerShell module (to be renamed BPC.DBRefresh)
+├── Public/                 # Public functions
+├── Private/                # Internal functions
+├── BPC.DBRefresh.psd1     # Module manifest
+└── BPC.DBRefresh.psm1     # Module file
+config/                     # Configuration files
+examples/                   # Usage examples
+tests/                      # Pester tests
+docs/                       # Documentation
+.github/                    # GitHub Actions and templates
+hpsBPC.DBRefresh.ps1       # Original script (backward compatibility)
 ```
 
 ## Commands
 
-### Running the Script
+### Running the Module
 
 ```powershell
-# Traditional method (backward compatible)
-.\hpsBPlusDBRestore.ps1 -BPEnvironment <ENV_NAME> -ifasFilePath <PATH> -syscatFilePath <PATH>
+# Import module (current structure)
+Import-Module .\src\BPC.DBRefresh
 
-# Module method (recommended)
-Import-Module .\src\BPlusDBRestore
-Restore-BPlusDatabase -BPEnvironment <ENV_NAME> -ifasFilePath <PATH> -syscatFilePath <PATH>
+# After namespace migration
+Import-Module BPC.DBRefresh
+
+# Primary command
+Invoke-BPERPDatabaseRestore -BPEnvironment <ENV_NAME> -ifasFilePath <PATH> -syscatFilePath <PATH>
 
 # Build and test
 .\build.ps1 -Task All
 ```
 
-Parameters:
+### Parameters
 
 - `BPEnvironment`: Target environment name (required)
 - `ifasFilePath`: Path to IFAS database backup file (required)
@@ -43,17 +64,46 @@ Parameters:
 
 ### PowerShell Module Requirements
 
-The script requires these PowerShell modules:
+The module requires these PowerShell modules:
 
-- PSLogging
-- dbatools
-- PsIni
+- PSLogging 2.2.0+
+- dbatools 1.0.0+
+- PsIni 3.1.2+
+
+## Development Standards
+
+### Function Naming Convention
+
+Use consistent BPERP prefix for all functions:
+- `Invoke-BPERPDatabaseRestore` (main function)
+- `Get-BPERPDatabaseSettings`
+- `Set-BPERPDatabasePermissions`
+- `Stop-BPERPServices`
+- `Restart-BPERPServers`
+
+### Testing
+
+```powershell
+# Run tests
+Invoke-Pester -Path .\tests
+
+# Run with code coverage
+.\build.ps1 -Task Test
+```
+
+### CI/CD
+
+The project uses GitHub Actions for:
+- Continuous Integration (CI) on all platforms
+- Security scanning with CodeQL
+- Automated releases to PowerShell Gallery
+- Pre-commit hooks for code quality
 
 ## Architecture
 
 ### Configuration Structure
 
-The script uses INI files for environment configuration (`config/hpsBPlusDBRestore-sample.ini`):
+The module uses INI files for environment configuration (`config/hpsBPC.DBRefresh-sample.ini`):
 
 - SQL Server instances and database mappings
 - Server lists per environment
@@ -79,7 +129,20 @@ The script uses INI files for environment configuration (`config/hpsBPlusDBResto
 
 ### Key Technical Details
 
-- **Logging**: All operations logged to `hpsBPlusDBRestore.log`
+- **Logging**: All operations logged to `hpsBPC.DBRefresh.log`
 - **Security**: Contains operations that modify database permissions and user access
 - **Dependencies**: Requires SQL Server access and appropriate permissions
 - **Email**: Uses MailKit assemblies for SMTP notifications
+
+## Contributing
+
+Follow the standards in CONTRIBUTING.md:
+1. Fork the repository
+2. Create feature branch from `main`
+3. Write tests for new functionality
+4. Ensure all tests pass
+5. Submit pull request
+
+## Future Development
+
+This module follows the BPC (BusinessPlus Community) namespace strategy. Additional modules in the BPC namespace will be developed to provide comprehensive PowerShell tooling for BusinessPlus ERP/HR/PY systems.

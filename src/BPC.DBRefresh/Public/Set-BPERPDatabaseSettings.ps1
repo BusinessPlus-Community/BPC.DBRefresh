@@ -1,4 +1,4 @@
-function Set-BPlusDatabaseSettings {
+function Set-BPERPDatabaseSettings {
   <#
   .SYNOPSIS
       Restores database connection settings after database restore
@@ -11,10 +11,10 @@ function Set-BPlusDatabaseSettings {
       Configuration hashtable containing database connection information
   
   .PARAMETER Settings
-      Array of settings retrieved from Get-BPlusDatabaseSettings
+      Array of settings retrieved from Get-BPERPDatabaseSettings
   
   .EXAMPLE
-      Set-BPlusDatabaseSettings -Config $config -Settings $savedSettings
+      Set-BPERPDatabaseSettings -Config $config -Settings $savedSettings
   #>
   [CmdletBinding()]
   param(

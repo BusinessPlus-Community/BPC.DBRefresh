@@ -1,4 +1,4 @@
-function Get-BPlusDatabaseSettings {
+function Get-BPERPDatabaseSettings {
   <#
   .SYNOPSIS
       Retrieves existing database connection settings
@@ -11,7 +11,7 @@ function Get-BPlusDatabaseSettings {
       Configuration hashtable containing database connection information
   
   .EXAMPLE
-      $settings = Get-BPlusDatabaseSettings -Config $config
+      $settings = Get-BPERPDatabaseSettings -Config $config
   #>
   [CmdletBinding()]
   param(

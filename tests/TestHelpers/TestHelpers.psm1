@@ -1,4 +1,4 @@
-# Test helper functions for BPlusDBRestore module tests
+# Test helper functions for BPC.DBRefresh module tests
 
 function New-TestConfiguration {
   <#

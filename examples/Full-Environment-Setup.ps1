@@ -14,7 +14,7 @@
 #>
 
 # Import required modules
-Import-Module BPlusDBRestore -ErrorAction Stop
+Import-Module BPC.DBRefresh -ErrorAction Stop
 
 # Set up logging for this session
 $logPath = "C:\Logs\BPlusRestore"
@@ -48,7 +48,7 @@ try {
     # Get confirmation in interactive mode
     if ($Host.UI.PromptForChoice("Confirm", "Proceed with full restore?", @("&Yes", "&No"), 1) -eq 0) {
         # Perform the restore
-        Restore-BPlusDatabase @restoreParams
+        Invoke-BPERPDatabaseRestore @restoreParams
         
         Write-Host "`nFull environment restore completed successfully!" -ForegroundColor Green
         

@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Build script for BPlusDBRestore PowerShell module
+    Build script for BPC.DBRefresh PowerShell module
 
 .DESCRIPTION
     This script performs build tasks including:
@@ -65,7 +65,7 @@ function Invoke-Analyze {
             "$PSScriptRoot\src"
             "$PSScriptRoot\examples"
             "$PSScriptRoot\tests"
-            "$PSScriptRoot\hpsBPlusDBRestore.ps1"
+            "$PSScriptRoot\hpsBPC.DBRefresh.ps1"
         )
         Settings = "$PSScriptRoot\PSScriptAnalyzerSettings.psd1"
         Recurse = $true
@@ -114,8 +114,8 @@ function Invoke-Test {
 function Invoke-Build {
     Write-BuildHeader "Building Module"
     
-    $modulePath = "$PSScriptRoot\src\BPlusDBRestore"
-    $moduleFile = Join-Path $modulePath "BPlusDBRestore.psm1"
+    $modulePath = "$PSScriptRoot\src\BPC.DBRefresh"
+    $moduleFile = Join-Path $modulePath "BPC.DBRefresh.psm1"
     
     # Create module file if it doesn't exist
     if (-not (Test-Path $moduleFile)) {
@@ -129,7 +129,7 @@ function Invoke-Build {
 
 # Module variables
 $script:ModuleRoot = $PSScriptRoot
-$script:ModuleVersion = (Import-PowerShellDataFile "$ModuleRoot\BPlusDBRestore.psd1").ModuleVersion
+$script:ModuleVersion = (Import-PowerShellDataFile "$ModuleRoot\BPC.DBRefresh.psd1").ModuleVersion
 
 # Import private functions
 $Private = Get-ChildItem -Path "$ModuleRoot\Private\*.ps1" -ErrorAction SilentlyContinue
@@ -176,7 +176,7 @@ Export-ModuleMember -Function $Public.BaseName
 function Invoke-Package {
     Write-BuildHeader "Creating Release Package"
     
-    $version = (Import-PowerShellDataFile "$PSScriptRoot\src\BPlusDBRestore\BPlusDBRestore.psd1").ModuleVersion
+    $version = (Import-PowerShellDataFile "$PSScriptRoot\src\BPC.DBRefresh\BPC.DBRefresh.psd1").ModuleVersion
     $packageDir = "$PSScriptRoot\releases\v$version"
     
     # Create release directory
@@ -187,7 +187,7 @@ function Invoke-Package {
     
     # Copy files
     Write-BuildInfo "Copying module files..."
-    Copy-Item -Path "$PSScriptRoot\src\BPlusDBRestore" -Destination "$packageDir\" -Recurse
+    Copy-Item -Path "$PSScriptRoot\src\BPC.DBRefresh" -Destination "$packageDir\" -Recurse
     
     Write-BuildInfo "Copying documentation..."
     Copy-Item -Path "$PSScriptRoot\README.md" -Destination "$packageDir\"
@@ -201,7 +201,7 @@ function Invoke-Package {
     Copy-Item -Path "$PSScriptRoot\config" -Destination "$packageDir\" -Recurse
     
     # Create zip
-    $zipPath = "$PSScriptRoot\releases\BPlusDBRestore-v$version.zip"
+    $zipPath = "$PSScriptRoot\releases\BPC.DBRefresh-v$version.zip"
     Compress-Archive -Path "$packageDir\*" -DestinationPath $zipPath -Force
     
     Write-BuildSuccess "Package created: $zipPath"
@@ -232,7 +232,7 @@ function Invoke-Clean {
 #region Main
 $ErrorActionPreference = 'Stop'
 
-Write-Host "BPlusDBRestore Build Script" -ForegroundColor Magenta
+Write-Host "BPC.DBRefresh Build Script" -ForegroundColor Magenta
 Write-Host "Task: $Task" -ForegroundColor Gray
 
 $success = $true

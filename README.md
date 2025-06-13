@@ -2,12 +2,12 @@
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![PowerShell](https://img.shields.io/badge/PowerShell-5.1%2B-blue.svg)](https://github.com/PowerShell/PowerShell)
-[![CI Pipeline](https://github.com/businessplus-community/bp-test-env-refresh/actions/workflows/ci.yml/badge.svg)](https://github.com/businessplus-community/bp-test-env-refresh/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/businessplus-community/bp-test-env-refresh/branch/main/graph/badge.svg)](https://codecov.io/gh/businessplus-community/bp-test-env-refresh)
-[![PowerShell Gallery](https://img.shields.io/powershellgallery/v/BPlusDBRestore.svg)](https://www.powershellgallery.com/packages/BPlusDBRestore)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/businessplus-community/bp-test-env-refresh/graphs/commit-activity)
+[![CI Pipeline](https://github.com/businessplus-community/BPC.DBRefresh/actions/workflows/ci.yml/badge.svg)](https://github.com/businessplus-community/BPC.DBRefresh/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/businessplus-community/BPC.DBRefresh/branch/main/graph/badge.svg)](https://codecov.io/gh/businessplus-community/BPC.DBRefresh)
+[![PowerShell Gallery](https://img.shields.io/powershellgallery/v/BPC.DBRefresh.svg)](https://www.powershellgallery.com/packages/BPC.DBRefresh)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/businessplus-community/BPC.DBRefresh/graphs/commit-activity)
 [![Community](https://img.shields.io/badge/Community-BusinessPlus-orange.svg)](https://github.com/businessplus-community)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/businessplus-community/bp-test-env-refresh/blob/main/CONTRIBUTING.md)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/businessplus-community/BPC.DBRefresh/blob/main/CONTRIBUTING.md)
 
 A PowerShell automation script for refreshing BusinessPlus test environments with production database backups.
 
@@ -33,8 +33,8 @@ This script automates the process of refreshing data in BusinessPlus test enviro
 
 1. Clone this repository:
    ```powershell
-   git clone https://github.com/businessplus-community/bp-test-env-refresh.git
-   cd bp-test-env-refresh
+   git clone https://github.com/businessplus-community/BPC.DBRefresh.git
+   cd BPC.DBRefresh
    ```
 
 2. Install required PowerShell modules:
@@ -44,8 +44,8 @@ This script automates the process of refreshing data in BusinessPlus test enviro
 
 3. Copy and configure the INI file:
    ```powershell
-   Copy-Item config\hpsBPlusDBRestore-sample.ini config\hpsBPlusDBRestore.ini
-   # Edit config\hpsBPlusDBRestore.ini with your environment settings
+   Copy-Item config\hpsBPC.DBRefresh-sample.ini config\hpsBPC.DBRefresh.ini
+   # Edit config\hpsBPC.DBRefresh.ini with your environment settings
    ```
 
 ## Project Structure
@@ -53,16 +53,16 @@ This script automates the process of refreshing data in BusinessPlus test enviro
 This project follows PowerShell module best practices:
 
 ```
-├── src/BPlusDBRestore/     # Module source code
-│   ├── BPlusDBRestore.psd1 # Module manifest
-│   ├── BPlusDBRestore.psm1 # Module file
+├── src/BPC.DBRefresh/     # Module source code
+│   ├── BPC.DBRefresh.psd1 # Module manifest
+│   ├── BPC.DBRefresh.psm1 # Module file
 │   ├── Public/             # Public functions
 │   └── Private/            # Private functions
 ├── config/                 # Configuration files
 ├── examples/               # Usage examples
 ├── tests/                  # Pester tests
 ├── docs/                   # Documentation
-└── hpsBPlusDBRestore.ps1   # Original script (for compatibility)
+└── hpsBPC.DBRefresh.ps1   # Original script (for compatibility)
 ```
 
 ## Usage
@@ -71,17 +71,17 @@ This project follows PowerShell module best practices:
 
 ```powershell
 # Traditional method (backward compatible)
-.\hpsBPlusDBRestore.ps1 -BPEnvironment <ENV_NAME> -ifasFilePath <PATH> -syscatFilePath <PATH>
+.\hpsBPC.DBRefresh.ps1 -BPEnvironment <ENV_NAME> -ifasFilePath <PATH> -syscatFilePath <PATH>
 
 # New module method (recommended)
-Import-Module .\src\BPlusDBRestore
-Restore-BPlusDatabase -BPEnvironment <ENV_NAME> -ifasFilePath <PATH> -syscatFilePath <PATH>
+Import-Module .\src\BPC.DBRefresh
+Invoke-BPERPDatabaseRestore -BPEnvironment <ENV_NAME> -ifasFilePath <PATH> -syscatFilePath <PATH>
 ```
 
 ### With All Options
 
 ```powershell
-.\hpsBPlusDBRestore.ps1 `
+.\hpsBPC.DBRefresh.ps1 `
     -BPEnvironment "TEST" `
     -ifasFilePath "\\backup\server\ifas_backup.bak" `
     -syscatFilePath "\\backup\server\syscat_backup.bak" `
@@ -101,7 +101,7 @@ Restore-BPlusDatabase -BPEnvironment <ENV_NAME> -ifasFilePath <PATH> -syscatFile
 
 ## Configuration
 
-The script uses an INI configuration file to define environment-specific settings. See `config\hpsBPlusDBRestore-sample.ini` for configuration options including:
+The script uses an INI configuration file to define environment-specific settings. See `config\hpsBPC.DBRefresh-sample.ini` for configuration options including:
 
 - SQL Server instances and database names
 - Server lists for each environment
@@ -127,7 +127,7 @@ The script uses an INI configuration file to define environment-specific setting
 
 ## Logging
 
-All operations are logged to `hpsBPlusDBRestore.log` in the script directory. The log includes:
+All operations are logged to `hpsBPC.DBRefresh.log` in the script directory. The log includes:
 - Timestamp for each operation
 - Success/failure status
 - Error messages and stack traces
@@ -158,7 +158,7 @@ Ensure you:
 
 ### Debug Mode
 
-For detailed troubleshooting, check the log file at `hpsBPlusDBRestore.log`.
+For detailed troubleshooting, check the log file at `hpsBPC.DBRefresh.log`.
 
 ## Contributing
 
@@ -171,8 +171,8 @@ This project is licensed under the GNU General Public License v3.0 - see the [LI
 ## Support
 
 For issues, questions, or contributions:
-- Open an [issue](https://github.com/businessplus-community/bp-test-env-refresh/issues)
-- Submit a [pull request](https://github.com/businessplus-community/bp-test-env-refresh/pulls)
+- Open an [issue](https://github.com/businessplus-community/BPC.DBRefresh/issues)
+- Submit a [pull request](https://github.com/businessplus-community/BPC.DBRefresh/pulls)
 - Email us at code@bpluscommunity.org
 
 ## Acknowledgments

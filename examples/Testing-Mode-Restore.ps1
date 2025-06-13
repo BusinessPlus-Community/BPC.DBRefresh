@@ -12,7 +12,7 @@
 #>
 
 # Import the module
-Import-Module BPlusDBRestore -ErrorAction Stop
+Import-Module BPC.DBRefresh -ErrorAction Stop
 
 # Restore with testing mode enabled
 $restoreParams = @{
@@ -23,7 +23,7 @@ $restoreParams = @{
     testingMode     = $true  # Enable testing mode to preserve test accounts
 }
 
-Restore-BPlusDatabase @restoreParams
+Invoke-BPERPDatabaseRestore @restoreParams
 
 Write-Host "Restore completed with testing mode enabled." -ForegroundColor Green
 Write-Host "Additional test accounts have been preserved for QA testing." -ForegroundColor Yellow

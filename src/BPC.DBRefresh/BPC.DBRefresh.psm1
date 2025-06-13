@@ -3,7 +3,7 @@
 
 # Module variables
 $script:ModuleRoot = $PSScriptRoot
-$script:ModuleVersion = (Import-PowerShellDataFile "$ModuleRoot\BPlusDBRestore.psd1").ModuleVersion
+$script:ModuleVersion = (Import-PowerShellDataFile "$ModuleRoot\BPC.DBRefresh.psd1").ModuleVersion
 $script:LogPath = $null
 
 # Import private functions
@@ -36,4 +36,4 @@ foreach ($import in $Public) {
 Export-ModuleMember -Function $Public.BaseName
 
 # Module initialization
-Write-Verbose "BPlusDBRestore module v$($script:ModuleVersion) loaded successfully"
+Write-Verbose "BPC.DBRefresh module v$($script:ModuleVersion) loaded successfully"

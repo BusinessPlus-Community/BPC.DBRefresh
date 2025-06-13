@@ -1,4 +1,4 @@
-function Restart-BPlusServers {
+function Restart-BPERPServers {
   <#
   .SYNOPSIS
       Restarts all BusinessPlus servers in the environment
@@ -11,7 +11,7 @@ function Restart-BPlusServers {
       Configuration hashtable containing server lists
   
   .EXAMPLE
-      Restart-BPlusServers -Config $config
+      Restart-BPERPServers -Config $config
   #>
   [CmdletBinding()]
   param(

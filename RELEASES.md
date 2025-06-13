@@ -15,7 +15,7 @@ We follow [Semantic Versioning](https://semver.org/):
 Before creating a new release:
 
 1. **Update Version Number**
-   - Update `$sScriptVersion` in `hpsBPlusDBRestore.ps1`
+   - Update `$sScriptVersion` in `hpsBPC.DBRefresh.ps1`
    - Update version in any documentation
 
 2. **Update Documentation**
@@ -38,7 +38,7 @@ Before creating a new release:
    ```
 
 5. **GitHub Release**
-   - Go to [Releases](https://github.com/businessplus-community/bp-test-env-refresh/releases)
+   - Go to [Releases](https://github.com/businessplus-community/BPC.DBRefresh/releases)
    - Click "Draft a new release"
    - Select the tag you just created
    - Title: "v1.4.0 - Brief Description"
@@ -60,7 +60,7 @@ Before creating a new release:
 ## Upgrade Instructions
 - Any special instructions for upgrading
 
-**Full Changelog**: https://github.com/businessplus-community/bp-test-env-refresh/compare/v1.3.0...v1.4.0
+**Full Changelog**: https://github.com/businessplus-community/BPC.DBRefresh/compare/v1.3.0...v1.4.0
 ```
 
 ## Post-Release

@@ -1,6 +1,6 @@
 @{
     # Script module or binary module file associated with this manifest.
-    RootModule = 'BPlusDBRestore.psm1'
+    RootModule = 'BPC.DBRefresh.psm1'
 
     # Version number of this module.
     ModuleVersion = '1.3.0'
@@ -21,7 +21,7 @@
     Copyright = '(c) BusinessPlus Community. All rights reserved. Licensed under GPL-3.0'
 
     # Description of the functionality provided by this module
-    Description = 'PowerShell module for automating BusinessPlus test environment database refreshes. Provides tools to restore databases from production backups, configure security settings, and manage environment-specific configurations for K-12 school districts.'
+    Description = 'Community PowerShell module for automating BusinessPlus test environment database refreshes. Provides tools to restore databases from production backups, configure security settings, and manage environment-specific configurations for K-12 school districts.'
 
     # Minimum version of the PowerShell engine required by this module
     PowerShellVersion = '5.1'
@@ -65,16 +65,16 @@
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport = @(
-        'Copy-BPlusDashboardFiles'
-        'Get-BPlusDatabaseSettings'
-        'Restart-BPlusServers'
-        'Restore-BPlusDatabase'
-        'Restore-BPlusDatabaseFiles'
-        'Send-BPlusNotification'
-        'Set-BPlusConfiguration'
-        'Set-BPlusDatabasePermissions'
-        'Set-BPlusDatabaseSettings'
-        'Stop-BPlusServices'
+        'Copy-BPERPDashboardFiles'
+        'Get-BPERPDatabaseSettings'
+        'Restart-BPERPServers'
+        'Invoke-BPERPDatabaseRestore'
+        'Invoke-BPERPDatabaseRestoreFiles'
+        'Send-BPERPNotification'
+        'Set-BPERPConfiguration'
+        'Set-BPERPDatabasePermissions'
+        'Set-BPERPDatabaseSettings'
+        'Stop-BPERPServices'
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
@@ -101,19 +101,19 @@
         PSData = @{
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags = @('BusinessPlus', 'Database', 'Restore', 'K12', 'Education', 'ERP', 'Automation', 'SQL')
+            Tags = @('BPC', 'BusinessPlus', 'Community', 'Database', 'Restore', 'K12', 'Education', 'ERP', 'Automation', 'SQL', 'DBRefresh')
 
             # A URL to the license for this module.
-            LicenseUri = 'https://github.com/businessplus-community/bp-test-env-refresh/blob/main/LICENSE'
+            LicenseUri = 'https://github.com/businessplus-community/BPC.DBRefresh/blob/main/LICENSE'
 
             # A URL to the main website for this project.
-            ProjectUri = 'https://github.com/businessplus-community/bp-test-env-refresh'
+            ProjectUri = 'https://github.com/businessplus-community/BPC.DBRefresh'
 
             # A URL to an icon representing this module.
             # IconUri = ''
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'See https://github.com/businessplus-community/bp-test-env-refresh/blob/main/CHANGELOG.md for details.'
+            ReleaseNotes = 'See https://github.com/businessplus-community/BPC.DBRefresh/blob/main/CHANGELOG.md for details.'
 
             # Prerelease string of this module
             # Prerelease = ''
@@ -129,7 +129,7 @@
     } # End of PrivateData hashtable
 
     # HelpInfo URI of this module
-    HelpInfoURI = 'https://github.com/businessplus-community/bp-test-env-refresh/wiki'
+    HelpInfoURI = 'https://github.com/businessplus-community/BPC.DBRefresh/wiki'
 
     # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
     # DefaultCommandPrefix = ''

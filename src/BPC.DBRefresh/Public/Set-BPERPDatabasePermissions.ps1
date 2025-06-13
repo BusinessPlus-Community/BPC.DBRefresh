@@ -1,4 +1,4 @@
-function Set-BPlusDatabasePermissions {
+function Set-BPERPDatabasePermissions {
   <#
   .SYNOPSIS
       Sets database permissions and security configurations
@@ -11,7 +11,7 @@ function Set-BPlusDatabasePermissions {
       Configuration hashtable containing database and user mapping information
   
   .EXAMPLE
-      Set-BPlusDatabasePermissions -Config $config
+      Set-BPERPDatabasePermissions -Config $config
   #>
   [CmdletBinding()]
   param(

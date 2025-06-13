@@ -1,4 +1,4 @@
-function Send-BPlusNotification {
+function Send-BPERPNotification {
   <#
   .SYNOPSIS
       Sends email notification upon completion of the restore operation
@@ -23,7 +23,7 @@ function Send-BPlusNotification {
       When the restore operation completed
   
   .EXAMPLE
-      Send-BPlusNotification -Config $config -BackupFiles $files -StartTime $start -EndTime $end
+      Send-BPERPNotification -Config $config -BackupFiles $files -StartTime $start -EndTime $end
   #>
   [CmdletBinding()]
   param(

@@ -1,6 +1,6 @@
 # Migration Guide: Script to Module
 
-This guide helps you migrate from the original `hpsBPlusDBRestore.ps1` script to the new modular structure.
+This guide helps you migrate from the original `hpsBPC.DBRefresh.ps1` script to the new modular structure.
 
 ## What Changed
 
@@ -15,53 +15,53 @@ The monolithic PowerShell script has been refactored into a proper PowerShell mo
 
 ### Old Structure
 ```
-/bp-test-env-refresh/
-├── hpsBPlusDBRestore.ps1
-└── hpsBPlusDBRestore-sample.ini
+/BPC.DBRefresh/
+├── hpsBPC.DBRefresh.ps1
+└── hpsBPC.DBRefresh-sample.ini
 ```
 
 ### New Structure
 ```
-/bp-test-env-refresh/
-├── src/BPlusDBRestore/       # Module source
-│   ├── BPlusDBRestore.psd1   # Module manifest
-│   ├── BPlusDBRestore.psm1   # Module loader
+/BPC.DBRefresh/
+├── src/BPC.DBRefresh/       # Module source
+│   ├── BPC.DBRefresh.psd1   # Module manifest
+│   ├── BPC.DBRefresh.psm1   # Module loader
 │   ├── Public/               # Public functions
 │   └── Private/              # Private functions
 ├── config/                   # Configuration files
-│   └── hpsBPlusDBRestore-sample.ini
+│   └── hpsBPC.DBRefresh-sample.ini
 ├── examples/                 # Usage examples
 ├── tests/                    # Pester tests
-└── hpsBPlusDBRestore.ps1     # Original script (kept for compatibility)
+└── hpsBPC.DBRefresh.ps1     # Original script (kept for compatibility)
 ```
 
 ## Usage Changes
 
 ### Old Method (Still Supported)
 ```powershell
-.\hpsBPlusDBRestore.ps1 -BPEnvironment "TEST" -ifasFilePath "\\backup\ifas.bak" -syscatFilePath "\\backup\syscat.bak"
+.\hpsBPC.DBRefresh.ps1 -BPEnvironment "TEST" -ifasFilePath "\\backup\ifas.bak" -syscatFilePath "\\backup\syscat.bak"
 ```
 
 ### New Method (Recommended)
 ```powershell
 # Import the module
-Import-Module .\src\BPlusDBRestore
+Import-Module .\src\BPC.DBRefresh
 
 # Use the main function
-Restore-BPlusDatabase -BPEnvironment "TEST" -IfasFilePath "\\backup\ifas.bak" -SyscatFilePath "\\backup\syscat.bak"
+Invoke-BPERPDatabaseRestore -BPEnvironment "TEST" -IfasFilePath "\\backup\ifas.bak" -SyscatFilePath "\\backup\syscat.bak"
 ```
 
 ### Using the Wrapper Script
-For backward compatibility, use `Invoke-BPlusDBRestore.ps1`:
+For backward compatibility, use `Invoke-BPC.DBRefresh.ps1`:
 ```powershell
-.\Invoke-BPlusDBRestore.ps1 -BPEnvironment "TEST" -ifasFilePath "\\backup\ifas.bak" -syscatFilePath "\\backup\syscat.bak"
+.\Invoke-BPC.DBRefresh.ps1 -BPEnvironment "TEST" -ifasFilePath "\\backup\ifas.bak" -syscatFilePath "\\backup\syscat.bak"
 ```
 
 ## Configuration File Location
 
 The configuration file has moved:
-- **Old**: `hpsBPlusDBRestore.ini` (root directory)
-- **New**: `config\hpsBPlusDBRestore.ini`
+- **Old**: `hpsBPC.DBRefresh.ini` (root directory)
+- **New**: `config\hpsBPC.DBRefresh.ini`
 
 Update any scripts or documentation that reference the configuration file path.
 
@@ -71,10 +71,10 @@ Update any scripts or documentation that reference the configuration file path.
 You can now use individual functions:
 ```powershell
 # Just stop services
-Stop-BPlusServices -Config $config
+Stop-BPERPServices -Config $config
 
 # Just send notification
-Send-BPlusNotification -Config $config -BackupFiles $files -StartTime $start -EndTime $end
+Send-BPERPNotification -Config $config -BackupFiles $files -StartTime $start -EndTime $end
 ```
 
 ### 2. Better Testing
@@ -96,7 +96,7 @@ Invoke-Pester .\tests\
 
 1. **Configuration file location**: Now in `config\` directory
 2. **Module import required**: Must import module before using functions
-3. **Function names**: Main script functionality now in `Restore-BPlusDatabase` function
+3. **Function names**: Main script functionality now in `Invoke-BPERPDatabaseRestore` function
 
 ## Deployment Considerations
 
@@ -114,16 +114,16 @@ Invoke-Pester .\tests\
 
 ### For PowerShell Gallery
 The module is ready for PowerShell Gallery publication:
-1. Update version in `BPlusDBRestore.psd1`
+1. Update version in `BPC.DBRefresh.psd1`
 2. Run tests: `.\build.ps1 -Task Test`
-3. Publish: `Publish-Module -Path .\src\BPlusDBRestore`
+3. Publish: `Publish-Module -Path .\src\BPC.DBRefresh`
 
 ## Troubleshooting
 
 ### Module Not Found
 If you get "module not found" errors:
 1. Check the module path: `$env:PSModulePath`
-2. Import with full path: `Import-Module C:\path\to\src\BPlusDBRestore`
+2. Import with full path: `Import-Module C:\path\to\src\BPC.DBRefresh`
 
 ### Configuration File Issues
 1. Ensure INI file is in `config\` directory

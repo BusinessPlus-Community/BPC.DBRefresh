@@ -1,4 +1,4 @@
-function Stop-BPlusServices {
+function Stop-BPERPServices {
   <#
   .SYNOPSIS
       Stops BusinessPlus services on specified servers
@@ -11,7 +11,7 @@ function Stop-BPlusServices {
       Configuration hashtable containing server lists and service names
   
   .EXAMPLE
-      Stop-BPlusServices -Config $config
+      Stop-BPERPServices -Config $config
   #>
   [CmdletBinding()]
   param(

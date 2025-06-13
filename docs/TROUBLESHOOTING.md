@@ -8,7 +8,7 @@ This guide helps diagnose and resolve common issues with the BusinessPlus Test E
 
 ```powershell
 $VerbosePreference = 'Continue'
-Restore-BPlusDatabase -BPEnvironment "TEST" -Verbose -IfasFilePath $ifas -SyscatFilePath $syscat
+Invoke-BPERPDatabaseRestore -BPEnvironment "TEST" -Verbose -IfasFilePath $ifas -SyscatFilePath $syscat
 ```
 
 ### 2. Check Prerequisites
@@ -29,7 +29,7 @@ $PSVersionTable.PSVersion
 }
 
 # Test SQL connectivity
-$config = Get-BPlusEnvironmentConfig -Environment "TEST" -ConfigPath ".\config\hpsBPlusDBRestore.ini"
+$config = Get-BPlusEnvironmentConfig -Environment "TEST" -ConfigPath ".\config\hpsBPC.DBRefresh.ini"
 Test-DbaConnection -SqlInstance $config.SQLInstance
 ```
 
@@ -39,7 +39,7 @@ Test-DbaConnection -SqlInstance $config.SQLInstance
 
 #### Symptom
 ```
-Import-Module : The specified module 'BPlusDBRestore' was not loaded because no valid module file was found
+Import-Module : The specified module 'BPC.DBRefresh' was not loaded because no valid module file was found
 ```
 
 #### Solution
@@ -48,10 +48,10 @@ Import-Module : The specified module 'BPlusDBRestore' was not loaded because no 
 $env:PSModulePath -split ';'
 
 # Import with full path
-Import-Module "C:\full\path\to\src\BPlusDBRestore" -Force
+Import-Module "C:\full\path\to\src\BPC.DBRefresh" -Force
 
 # Or add to PSModulePath
-$env:PSModulePath += ";C:\path\to\bp-test-env-refresh\src"
+$env:PSModulePath += ";C:\path\to\BPC.DBRefresh\src"
 ```
 
 ### Database Connection Issues
@@ -290,7 +290,7 @@ Enable full debugging:
 ```powershell
 $DebugPreference = 'Continue'
 Set-PSDebug -Trace 2
-Restore-BPlusDatabase -BPEnvironment "TEST" -Debug ...
+Invoke-BPERPDatabaseRestore -BPEnvironment "TEST" -Debug ...
 Set-PSDebug -Trace 0
 ```
 
@@ -304,13 +304,13 @@ If these solutions don't resolve your issue:
 Get-ComputerInfo | Out-File diagnostic.txt
 
 # Module info  
-Get-Module BPlusDBRestore -ListAvailable | Out-File -Append diagnostic.txt
+Get-Module BPC.DBRefresh -ListAvailable | Out-File -Append diagnostic.txt
 
 # Error details
 $Error[0] | Format-List * -Force | Out-File -Append diagnostic.txt
 ```
 
-2. **Open an issue** on [GitHub](https://github.com/businessplus-community/bp-test-env-refresh/issues) with:
+2. **Open an issue** on [GitHub](https://github.com/businessplus-community/BPC.DBRefresh/issues) with:
    - Diagnostic information
    - Full error messages
    - Steps to reproduce

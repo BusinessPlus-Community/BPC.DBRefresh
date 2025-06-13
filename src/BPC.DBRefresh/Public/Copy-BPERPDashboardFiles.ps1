@@ -1,4 +1,4 @@
-function Copy-BPlusDashboardFiles {
+function Copy-BPERPDashboardFiles {
   <#
   .SYNOPSIS
       Copies dashboard files to the BusinessPlus environment
@@ -11,7 +11,7 @@ function Copy-BPlusDashboardFiles {
       Configuration hashtable containing dashboard source and destination paths
   
   .EXAMPLE
-      Copy-BPlusDashboardFiles -Config $config
+      Copy-BPERPDashboardFiles -Config $config
   #>
   [CmdletBinding()]
   param(

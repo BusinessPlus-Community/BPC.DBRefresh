@@ -1,4 +1,4 @@
-function Restore-BPlusDatabaseFiles {
+function Invoke-BPERPDatabaseRestoreFiles {
   <#
   .SYNOPSIS
       Restores BusinessPlus database files from backups
@@ -14,7 +14,7 @@ function Restore-BPlusDatabaseFiles {
       Hashtable containing paths to backup files (ASPNET, SYSCAT, IFAS)
   
   .EXAMPLE
-      Restore-BPlusDatabaseFiles -Config $config -BackupFiles @{IFAS='C:\backup\ifas.bak'; SYSCAT='C:\backup\syscat.bak'}
+      Invoke-BPERPDatabaseRestoreFiles -Config $config -BackupFiles @{IFAS='C:\backup\ifas.bak'; SYSCAT='C:\backup\syscat.bak'}
   #>
   [CmdletBinding()]
   param(

@@ -1,6 +1,6 @@
 BeforeAll {
   # Import the module
-  $ModulePath = Join-Path $PSScriptRoot "..\..\src\BPlusDBRestore"
+  $ModulePath = Join-Path $PSScriptRoot "..\..\src\BPC.DBRefresh"
   Import-Module $ModulePath -Force
   
   # Mock external dependencies
@@ -47,32 +47,32 @@ BeforeAll {
   }
 }
 
-Describe "BPlusDBRestore Module Tests" {
+Describe "BPC.DBRefresh Module Tests" {
   
   Context "Module Structure" {
     It "Should have a module manifest" {
-      $manifestPath = Join-Path $PSScriptRoot "..\..\src\BPlusDBRestore\BPlusDBRestore.psd1"
+      $manifestPath = Join-Path $PSScriptRoot "..\..\src\BPC.DBRefresh\BPC.DBRefresh.psd1"
       Test-Path $manifestPath | Should -Be $true
     }
     
     It "Should have a module file" {
-      $modulePath = Join-Path $PSScriptRoot "..\..\src\BPlusDBRestore\BPlusDBRestore.psm1"
+      $modulePath = Join-Path $PSScriptRoot "..\..\src\BPC.DBRefresh\BPC.DBRefresh.psm1"
       Test-Path $modulePath | Should -Be $true
     }
     
     It "Should export expected functions" {
-      $exportedFunctions = Get-Command -Module BPlusDBRestore
+      $exportedFunctions = Get-Command -Module BPC.DBRefresh
       $expectedFunctions = @(
-        'Restore-BPlusDatabase'
-        'Stop-BPlusServices'
-        'Get-BPlusDatabaseSettings'
-        'Restore-BPlusDatabaseFiles'
-        'Set-BPlusDatabaseSettings'
-        'Set-BPlusDatabasePermissions'
-        'Set-BPlusConfiguration'
-        'Copy-BPlusDashboardFiles'
-        'Restart-BPlusServers'
-        'Send-BPlusNotification'
+        'Invoke-BPERPDatabaseRestore'
+        'Stop-BPERPServices'
+        'Get-BPERPDatabaseSettings'
+        'Invoke-BPERPDatabaseRestoreFiles'
+        'Set-BPERPDatabaseSettings'
+        'Set-BPERPDatabasePermissions'
+        'Set-BPERPConfiguration'
+        'Copy-BPERPDashboardFiles'
+        'Restart-BPERPServers'
+        'Send-BPERPNotification'
       )
       
       foreach ($func in $expectedFunctions) {
@@ -84,13 +84,13 @@ Describe "BPlusDBRestore Module Tests" {
   Context "Get-BPlusEnvironmentConfig" {
     BeforeAll {
       # Get access to private function
-      InModuleScope BPlusDBRestore {
+      InModuleScope BPC.DBRefresh {
         $script:GetConfig = Get-Command Get-BPlusEnvironmentConfig
       }
     }
     
     It "Should return configuration hashtable" {
-      InModuleScope BPlusDBRestore {
+      InModuleScope BPC.DBRefresh {
         $config = Get-BPlusEnvironmentConfig -Environment 'TEST' -ConfigPath 'TestDrive:\test.ini'
         
         $config | Should -BeOfType [hashtable]
@@ -101,7 +101,7 @@ Describe "BPlusDBRestore Module Tests" {
     }
     
     It "Should parse server lists correctly" {
-      InModuleScope BPlusDBRestore {
+      InModuleScope BPC.DBRefresh {
         $config = Get-BPlusEnvironmentConfig -Environment 'TEST' -ConfigPath 'TestDrive:\test.ini'
         
         $config.Servers | Should -Be @('SERVER1', 'SERVER2')
@@ -110,7 +110,7 @@ Describe "BPlusDBRestore Module Tests" {
     }
     
     It "Should parse manager codes correctly" {
-      InModuleScope BPlusDBRestore {
+      InModuleScope BPC.DBRefresh {
         $config = Get-BPlusEnvironmentConfig -Environment 'TEST' -ConfigPath 'TestDrive:\test.ini'
         
         $config.ManagerCodes | Should -Be @('MGR001', 'MGR002')
@@ -118,23 +118,23 @@ Describe "BPlusDBRestore Module Tests" {
     }
   }
   
-  Context "Restore-BPlusDatabase Parameters" {
+  Context "Invoke-BPERPDatabaseRestore Parameters" {
     It "Should have mandatory BPEnvironment parameter" {
-      $command = Get-Command Restore-BPlusDatabase
+      $command = Get-Command Invoke-BPERPDatabaseRestore
       $param = $command.Parameters['BPEnvironment']
       
       $param.Attributes.Mandatory | Should -Contain $true
     }
     
     It "Should have mandatory IfasFilePath parameter" {
-      $command = Get-Command Restore-BPlusDatabase
+      $command = Get-Command Invoke-BPERPDatabaseRestore
       $param = $command.Parameters['IfasFilePath']
       
       $param.Attributes.Mandatory | Should -Contain $true
     }
     
     It "Should have optional TestingMode switch" {
-      $command = Get-Command Restore-BPlusDatabase
+      $command = Get-Command Invoke-BPERPDatabaseRestore
       $param = $command.Parameters['TestingMode']
       
       $param.SwitchParameter | Should -Be $true

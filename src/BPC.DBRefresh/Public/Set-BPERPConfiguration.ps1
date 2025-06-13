@@ -1,4 +1,4 @@
-function Set-BPlusConfiguration {
+function Set-BPERPConfiguration {
   <#
   .SYNOPSIS
       Applies post-restore configuration settings to BusinessPlus
@@ -17,7 +17,7 @@ function Set-BPlusConfiguration {
       When enabled, preserves additional test accounts
   
   .EXAMPLE
-      Set-BPlusConfiguration -Config $config -TestingMode $false
+      Set-BPERPConfiguration -Config $config -TestingMode $false
   #>
   [CmdletBinding()]
   param(

@@ -1,4 +1,4 @@
-function Restore-BPlusDatabase {
+function Invoke-BPERPDatabaseRestore {
   <#
   .SYNOPSIS
       Restores BusinessPlus databases from backup files
@@ -26,16 +26,16 @@ function Restore-BPlusDatabase {
       Copy dashboard files to the environment
   
   .PARAMETER ConfigPath
-      Path to the INI configuration file. Defaults to config\hpsBPlusDBRestore.ini
+      Path to the INI configuration file. Defaults to config\hpsBPC.DBRefresh.ini
   
   .PARAMETER SkipConfirmation
       Skip the configuration review and confirmation prompt
   
   .EXAMPLE
-      Restore-BPlusDatabase -BPEnvironment "TEST" -IfasFilePath "\\backup\ifas.bak" -SyscatFilePath "\\backup\syscat.bak"
+      Invoke-BPERPDatabaseRestore -BPEnvironment "TEST" -IfasFilePath "\\backup\ifas.bak" -SyscatFilePath "\\backup\syscat.bak"
   
   .EXAMPLE
-      Restore-BPlusDatabase -BPEnvironment "QA" -IfasFilePath $ifas -SyscatFilePath $syscat -AspnetFilePath $aspnet -TestingMode -RestoreDashboards
+      Invoke-BPERPDatabaseRestore -BPEnvironment "QA" -IfasFilePath $ifas -SyscatFilePath $syscat -AspnetFilePath $aspnet -TestingMode -RestoreDashboards
   #>
   [CmdletBinding(SupportsShouldProcess)]
   param(
@@ -72,8 +72,8 @@ function Restore-BPlusDatabase {
     $startTime = Get-Date
     
     # Set up logging
-    $script:LogPath = Join-Path $PSScriptRoot "..\..\..\..\hpsBPlusDBRestore.log"
-    Start-Log -LogPath $script:LogPath -LogName "BPlusDBRestore" -ScriptVersion $script:ModuleVersion
+    $script:LogPath = Join-Path $PSScriptRoot "..\..\..\..\hpsBPC.DBRefresh.log"
+    Start-Log -LogPath $script:LogPath -LogName "BPC.DBRefresh" -ScriptVersion $script:ModuleVersion
     
     Write-BPlusLog -Message "Starting BusinessPlus Database Restore for environment: $BPEnvironment" -LogPath $script:LogPath
     
@@ -90,7 +90,7 @@ function Restore-BPlusDatabase {
     
     # Set default config path if not provided
     if (-not $ConfigPath) {
-      $ConfigPath = Join-Path $PSScriptRoot "..\..\..\..\config\hpsBPlusDBRestore.ini"
+      $ConfigPath = Join-Path $PSScriptRoot "..\..\..\..\config\hpsBPC.DBRefresh.ini"
     }
     
     # Validate config file exists
@@ -125,44 +125,44 @@ function Restore-BPlusDatabase {
       
       # Stop BusinessPlus services
       Write-BPlusLog -Message "Stopping BusinessPlus services..." -LogPath $script:LogPath
-      Stop-BPlusServices -Config $config
+      Stop-BPERPServices -Config $config
       
       # Get existing database settings
       Write-BPlusLog -Message "Backing up existing database connection settings..." -LogPath $script:LogPath
-      $existingSettings = Get-BPlusDatabaseSettings -Config $config
+      $existingSettings = Get-BPERPDatabaseSettings -Config $config
       
       # Restore databases
       Write-BPlusLog -Message "Starting database restore operations..." -LogPath $script:LogPath
-      Restore-BPlusDatabaseFiles -Config $config -BackupFiles $backupFiles
+      Invoke-BPERPDatabaseRestoreFiles -Config $config -BackupFiles $backupFiles
       
       # Restore saved settings
       if ($existingSettings) {
         Write-BPlusLog -Message "Restoring database connection settings..." -LogPath $script:LogPath
-        Set-BPlusDatabaseSettings -Config $config -Settings $existingSettings
+        Set-BPERPDatabaseSettings -Config $config -Settings $existingSettings
       }
       
       # Set database permissions
       Write-BPlusLog -Message "Configuring database permissions..." -LogPath $script:LogPath
-      Set-BPlusDatabasePermissions -Config $config
+      Set-BPERPDatabasePermissions -Config $config
       
       # Configure BusinessPlus settings
       Write-BPlusLog -Message "Applying post-restore configurations..." -LogPath $script:LogPath
-      Set-BPlusConfiguration -Config $config -TestingMode $TestingMode
+      Set-BPERPConfiguration -Config $config -TestingMode $TestingMode
       
       # Copy dashboard files if requested
       if ($RestoreDashboards) {
         Write-BPlusLog -Message "Copying dashboard files..." -LogPath $script:LogPath
-        Copy-BPlusDashboardFiles -Config $config
+        Copy-BPERPDashboardFiles -Config $config
       }
       
       # Restart servers
       Write-BPlusLog -Message "Restarting BusinessPlus servers..." -LogPath $script:LogPath
-      Restart-BPlusServers -Config $config
+      Restart-BPERPServers -Config $config
       
       # Send completion notification
       $endTime = Get-Date
       Write-BPlusLog -Message "Sending completion notification..." -LogPath $script:LogPath
-      Send-BPlusNotification -Config $config -BackupFiles $backupFiles -TestingMode $TestingMode -StartTime $startTime -EndTime $endTime
+      Send-BPERPNotification -Config $config -BackupFiles $backupFiles -TestingMode $TestingMode -StartTime $startTime -EndTime $endTime
       
       Write-BPlusLog -Message "BusinessPlus Database Restore completed successfully!" -LogPath $script:LogPath
       Write-Host "`nBusinessPlus Database Restore completed successfully!" -ForegroundColor Green

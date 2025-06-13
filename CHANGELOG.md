@@ -72,8 +72,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Post-restore cleanup tasks
 - Basic logging functionality
 
-[Unreleased]: https://github.com/businessplus-community/bp-test-env-refresh/compare/v1.3.0...HEAD
-[1.3.0]: https://github.com/businessplus-community/bp-test-env-refresh/compare/v1.2.0...v1.3.0
-[1.2.0]: https://github.com/businessplus-community/bp-test-env-refresh/compare/v1.1.0...v1.2.0
-[1.1.0]: https://github.com/businessplus-community/bp-test-env-refresh/compare/v1.0.0...v1.1.0
-[1.0.0]: https://github.com/businessplus-community/bp-test-env-refresh/releases/tag/v1.0.0
+[Unreleased]: https://github.com/businessplus-community/BPC.DBRefresh/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/businessplus-community/BPC.DBRefresh/compare/v1.2.0...v1.3.0
+[1.2.0]: https://github.com/businessplus-community/BPC.DBRefresh/compare/v1.1.0...v1.2.0
+[1.1.0]: https://github.com/businessplus-community/BPC.DBRefresh/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/businessplus-community/BPC.DBRefresh/releases/tag/v1.0.0
