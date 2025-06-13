@@ -15,7 +15,7 @@ We follow [Semantic Versioning](https://semver.org/):
 Before creating a new release:
 
 1. **Update Version Number**
-   - Update `$sScriptVersion` in `hpsBPC.DBRefresh.ps1`
+   - Update `$sScriptVersion` in `BPC.DBRefresh.ps1`
    - Update version in any documentation
 
 2. **Update Documentation**

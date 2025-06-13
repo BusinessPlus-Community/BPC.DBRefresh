@@ -16,7 +16,7 @@ Before creating bug reports, please check existing issues to avoid duplicates. W
 - Steps to reproduce the issue
 - Expected behavior vs actual behavior
 - Environment details (PowerShell version, OS, SQL Server version)
-- Relevant log entries from `hpsBPC.DBRefresh.log`
+- Relevant log entries from `BPC.DBRefresh.log`
 - Configuration file excerpts (sanitized of sensitive data)
 
 ### Suggesting Enhancements

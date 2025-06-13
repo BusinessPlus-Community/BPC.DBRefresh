@@ -44,8 +44,8 @@ This script automates the process of refreshing data in BusinessPlus test enviro
 
 3. Copy and configure the INI file:
    ```powershell
-   Copy-Item config\hpsBPC.DBRefresh-sample.ini config\hpsBPC.DBRefresh.ini
-   # Edit config\hpsBPC.DBRefresh.ini with your environment settings
+   Copy-Item config\BPC.DBRefresh-sample.ini config\BPC.DBRefresh.ini
+   # Edit config\BPC.DBRefresh.ini with your environment settings
    ```
 
 ## Project Structure
@@ -62,7 +62,7 @@ This project follows PowerShell module best practices:
 ├── examples/               # Usage examples
 ├── tests/                  # Pester tests
 ├── docs/                   # Documentation
-└── hpsBPC.DBRefresh.ps1   # Original script (for compatibility)
+└── BPC.DBRefresh.ps1       # Original script (for compatibility)
 ```
 
 ## Usage
@@ -71,7 +71,7 @@ This project follows PowerShell module best practices:
 
 ```powershell
 # Traditional method (backward compatible)
-.\hpsBPC.DBRefresh.ps1 -BPEnvironment <ENV_NAME> -ifasFilePath <PATH> -syscatFilePath <PATH>
+.\BPC.DBRefresh.ps1 -BPEnvironment <ENV_NAME> -ifasFilePath <PATH> -syscatFilePath <PATH>
 
 # New module method (recommended)
 Import-Module .\src\BPC.DBRefresh
@@ -81,7 +81,7 @@ Invoke-BPERPDatabaseRestore -BPEnvironment <ENV_NAME> -ifasFilePath <PATH> -sysc
 ### With All Options
 
 ```powershell
-.\hpsBPC.DBRefresh.ps1 `
+.\BPC.DBRefresh.ps1 `
     -BPEnvironment "TEST" `
     -ifasFilePath "\\backup\server\ifas_backup.bak" `
     -syscatFilePath "\\backup\server\syscat_backup.bak" `
@@ -101,7 +101,7 @@ Invoke-BPERPDatabaseRestore -BPEnvironment <ENV_NAME> -ifasFilePath <PATH> -sysc
 
 ## Configuration
 
-The script uses an INI configuration file to define environment-specific settings. See `config\hpsBPC.DBRefresh-sample.ini` for configuration options including:
+The script uses an INI configuration file to define environment-specific settings. See `config\BPC.DBRefresh-sample.ini` for configuration options including:
 
 - SQL Server instances and database names
 - Server lists for each environment
@@ -127,7 +127,7 @@ The script uses an INI configuration file to define environment-specific setting
 
 ## Logging
 
-All operations are logged to `hpsBPC.DBRefresh.log` in the script directory. The log includes:
+All operations are logged to `BPC.DBRefresh.log` in the script directory. The log includes:
 - Timestamp for each operation
 - Success/failure status
 - Error messages and stack traces
@@ -158,7 +158,7 @@ Ensure you:
 
 ### Debug Mode
 
-For detailed troubleshooting, check the log file at `hpsBPC.DBRefresh.log`.
+For detailed troubleshooting, check the log file at `BPC.DBRefresh.log`.
 
 ## Contributing
 

@@ -4,9 +4,9 @@
 *.temp
 
 # Configuration files with sensitive data
-hpsBPlusDBRestore.ini
+BPC.DBRefresh.ini
 *.ini
-!hpsBPlusDBRestore-sample.ini
+!BPC.DBRefresh-sample.ini
 
 # Backup files
 *.bak

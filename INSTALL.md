@@ -90,13 +90,13 @@ Install-Module -Name PsIni -MinimumVersion 3.1.2
 1. Copy the sample configuration:
 
    ```powershell
-   Copy-Item ".\config\hpsBPC.DBRefresh-sample.ini" ".\config\hpsBPC.DBRefresh.ini"
+   Copy-Item ".\config\BPC.DBRefresh-sample.ini" ".\config\BPC.DBRefresh.ini"
    ```
 
 2. Edit the configuration file with your environment details:
 
    ```powershell
-   notepad ".\config\hpsBPC.DBRefresh.ini"
+   notepad ".\config\BPC.DBRefresh.ini"
    ```
 
 ## Verification
@@ -185,5 +185,5 @@ Uninstall-Module -Name BPC.DBRefresh
 Uninstall-Module -Name PSLogging, dbatools, PsIni
 
 # Remove configuration files manually
-Remove-Item ".\config\hpsBPC.DBRefresh.ini"
+Remove-Item ".\config\BPC.DBRefresh.ini"
 ```

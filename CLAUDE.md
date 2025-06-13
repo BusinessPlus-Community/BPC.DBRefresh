@@ -32,7 +32,7 @@ examples/                   # Usage examples
 tests/                      # Pester tests
 docs/                       # Documentation
 .github/                    # GitHub Actions and templates
-hpsBPC.DBRefresh.ps1       # Original script (backward compatibility)
+BPC.DBRefresh.ps1          # Original script (backward compatibility)
 ```
 
 ## Commands
@@ -106,7 +106,7 @@ The project uses GitHub Actions for:
 
 ### Configuration Structure
 
-The module uses INI files for environment configuration (`config/hpsBPC.DBRefresh-sample.ini`):
+The module uses INI files for environment configuration (`config/BPC.DBRefresh-sample.ini`):
 
 - SQL Server instances and database mappings
 - Server lists per environment
@@ -132,7 +132,7 @@ The module uses INI files for environment configuration (`config/hpsBPC.DBRefres
 
 ### Key Technical Details
 
-- **Logging**: All operations logged to `hpsBPC.DBRefresh.log`
+- **Logging**: All operations logged to `BPC.DBRefresh.log`
 - **Security**: Contains operations that modify database permissions and user access
 - **Dependencies**: Requires SQL Server access and appropriate permissions
 - **Email**: Uses MailKit assemblies for SMTP notifications
@@ -151,7 +151,7 @@ Follow the standards in CONTRIBUTING.md:
 ### Completed Tasks
 - ✅ Module renamed from `BPlusDBRestore` to `BPC.DBRefresh`
 - ✅ All functions renamed to use `BPERP` prefix
-- ✅ Configuration files updated to `hpsBPC.DBRefresh.ini`
+- ✅ Configuration files updated to `BPC.DBRefresh.ini`
 - ✅ All documentation updated with new names
 - ✅ Backward compatibility maintained via wrapper scripts
 - ✅ GitHub Actions and CI/CD pipelines configured

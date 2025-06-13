@@ -65,7 +65,7 @@ function Invoke-Analyze {
             "$PSScriptRoot\src"
             "$PSScriptRoot\examples"
             "$PSScriptRoot\tests"
-            "$PSScriptRoot\hpsBPC.DBRefresh.ps1"
+            "$PSScriptRoot\BPC.DBRefresh.ps1"
         )
         Settings = "$PSScriptRoot\PSScriptAnalyzerSettings.psd1"
         Recurse = $true

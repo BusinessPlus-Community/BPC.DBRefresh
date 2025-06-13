@@ -1,10 +1,10 @@
 <#
 .SYNOPSIS
-    Wrapper script for backward compatibility with the original hpsBPC.DBRefresh.ps1
+    Wrapper script for backward compatibility with the original BPC.DBRefresh.ps1
 
 .DESCRIPTION
     This script provides backward compatibility for users who are used to calling
-    hpsBPC.DBRefresh.ps1 directly. It imports the new module and calls the
+    BPC.DBRefresh.ps1 directly. It imports the new module and calls the
     appropriate function with the provided parameters.
 
 .NOTES
@@ -60,7 +60,7 @@ if (Test-Path $modulePath) {
 }
 
 # Set the config path to use the new location
-$configPath = Join-Path $PSScriptRoot "config\hpsBPC.DBRefresh.ini"
+$configPath = Join-Path $PSScriptRoot "config\BPC.DBRefresh.ini"
 
 # Build parameters for the module function
 $moduleParams = @{

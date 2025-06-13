@@ -16,8 +16,8 @@ The monolithic PowerShell script has been refactored into a proper PowerShell mo
 ### Old Structure
 ```
 /BPC.DBRefresh/
-├── hpsBPC.DBRefresh.ps1
-└── hpsBPC.DBRefresh-sample.ini
+├── BPC.DBRefresh.ps1
+└── BPC.DBRefresh-sample.ini
 ```
 
 ### New Structure
@@ -29,17 +29,17 @@ The monolithic PowerShell script has been refactored into a proper PowerShell mo
 │   ├── Public/               # Public functions
 │   └── Private/              # Private functions
 ├── config/                   # Configuration files
-│   └── hpsBPC.DBRefresh-sample.ini
+│   └── BPC.DBRefresh-sample.ini
 ├── examples/                 # Usage examples
 ├── tests/                    # Pester tests
-└── hpsBPC.DBRefresh.ps1     # Original script (kept for compatibility)
+└── BPC.DBRefresh.ps1        # Original script (kept for compatibility)
 ```
 
 ## Usage Changes
 
 ### Old Method (Still Supported)
 ```powershell
-.\hpsBPC.DBRefresh.ps1 -BPEnvironment "TEST" -ifasFilePath "\\backup\ifas.bak" -syscatFilePath "\\backup\syscat.bak"
+.\BPC.DBRefresh.ps1 -BPEnvironment "TEST" -ifasFilePath "\\backup\ifas.bak" -syscatFilePath "\\backup\syscat.bak"
 ```
 
 ### New Method (Recommended)
@@ -60,8 +60,8 @@ For backward compatibility, use `Invoke-BPC.DBRefresh.ps1`:
 ## Configuration File Location
 
 The configuration file has moved:
-- **Old**: `hpsBPC.DBRefresh.ini` (root directory)
-- **New**: `config\hpsBPC.DBRefresh.ini`
+- **Old**: `BPC.DBRefresh.ini` (root directory)
+- **New**: `config\BPC.DBRefresh.ini`
 
 Update any scripts or documentation that reference the configuration file path.
 

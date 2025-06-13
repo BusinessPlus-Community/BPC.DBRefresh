@@ -37,7 +37,7 @@ Install-Module -Name PSLogging, dbatools, PsIni -Force -Scope CurrentUser
 
 ### Where do I get the configuration file?
 
-Copy the sample configuration from `config/hpsBPC.DBRefresh-sample.ini` and customize it for your environment.
+Copy the sample configuration from `config/BPC.DBRefresh-sample.ini` and customize it for your environment.
 
 ## Usage Questions
 

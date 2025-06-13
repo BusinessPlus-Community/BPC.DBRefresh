@@ -24,7 +24,7 @@
   </metadata>
   <files>
     <file src="src\BPC.DBRefresh\**\*" target="tools\BPC.DBRefresh" />
-    <file src="config\hpsBPC.DBRefresh-sample.ini" target="content\config\" />
+    <file src="config\BPC.DBRefresh-sample.ini" target="content\config\" />
     <file src="examples\**\*.ps1" target="content\examples\" />
     <file src="docs\**\*.md" target="content\docs\" />
     <file src="LICENSE" target="" />

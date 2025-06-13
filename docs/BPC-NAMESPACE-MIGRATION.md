@@ -58,12 +58,12 @@ Invoke-BPERPDatabaseRestore -BPEnvironment "TEST" -IfasFilePath $ifas -SyscatFil
 
 **Old:**
 ```ini
-# hpsBPlusDBRestore.ini
+# BPlusDBRestore.ini
 ```
 
 **New:**
 ```ini
-# hpsBPC.DBRefresh.ini
+# BPC.DBRefresh.ini
 ```
 
 ### 4. Update Scripts
@@ -122,7 +122,7 @@ Update any internal documentation, wikis, or runbooks to reflect:
 
 ## Backward Compatibility
 
-The original `hpsBPlusDBRestore.ps1` script remains available as a wrapper for backward compatibility, but we recommend updating to the new module structure.
+The `BPC.DBRefresh.ps1` script remains available as a wrapper for backward compatibility, but we recommend updating to the new module structure.
 
 ## Getting Help
 

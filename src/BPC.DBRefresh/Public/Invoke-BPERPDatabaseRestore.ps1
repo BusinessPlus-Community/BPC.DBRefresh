@@ -26,7 +26,7 @@ function Invoke-BPERPDatabaseRestore {
       Copy dashboard files to the environment
   
   .PARAMETER ConfigPath
-      Path to the INI configuration file. Defaults to config\hpsBPC.DBRefresh.ini
+      Path to the INI configuration file. Defaults to config\BPC.DBRefresh.ini
   
   .PARAMETER SkipConfirmation
       Skip the configuration review and confirmation prompt
@@ -72,7 +72,7 @@ function Invoke-BPERPDatabaseRestore {
     $startTime = Get-Date
     
     # Set up logging
-    $script:LogPath = Join-Path $PSScriptRoot "..\..\..\..\hpsBPC.DBRefresh.log"
+    $script:LogPath = Join-Path $PSScriptRoot "..\..\..\..\BPC.DBRefresh.log"
     Start-Log -LogPath $script:LogPath -LogName "BPC.DBRefresh" -ScriptVersion $script:ModuleVersion
     
     Write-BPlusLog -Message "Starting BusinessPlus Database Restore for environment: $BPEnvironment" -LogPath $script:LogPath
@@ -90,7 +90,7 @@ function Invoke-BPERPDatabaseRestore {
     
     # Set default config path if not provided
     if (-not $ConfigPath) {
-      $ConfigPath = Join-Path $PSScriptRoot "..\..\..\..\config\hpsBPC.DBRefresh.ini"
+      $ConfigPath = Join-Path $PSScriptRoot "..\..\..\..\config\BPC.DBRefresh.ini"
     }
     
     # Validate config file exists

@@ -29,7 +29,7 @@ $PSVersionTable.PSVersion
 }
 
 # Test SQL connectivity
-$config = Get-BPlusEnvironmentConfig -Environment "TEST" -ConfigPath ".\config\hpsBPC.DBRefresh.ini"
+$config = Get-BPlusEnvironmentConfig -Environment "TEST" -ConfigPath ".\config\BPC.DBRefresh.ini"
 Test-DbaConnection -SqlInstance $config.SQLInstance
 ```
 

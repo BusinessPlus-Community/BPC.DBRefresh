@@ -27,7 +27,7 @@ All functions now use the `BPERP` prefix:
 - ✅ All other documentation files updated
 
 ### 4. Configuration Updates
-- ✅ Renamed config sample to `hpsBPC.DBRefresh-sample.ini`
+- ✅ Renamed config sample to `BPC.DBRefresh-sample.ini`
 - ✅ Updated all references in code and docs
 - ✅ Backward compatibility maintained
 
