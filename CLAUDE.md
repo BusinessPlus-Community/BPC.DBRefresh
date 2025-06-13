@@ -22,7 +22,7 @@ The BusinessPlus Community uses a namespace approach for PowerShell modules:
 ## Project Structure
 
 ```
-src/BPC.DBRefresh/         # PowerShell module (to be renamed BPC.DBRefresh)
+src/BPC.DBRefresh/         # PowerShell module
 ├── Public/                 # Public functions
 ├── Private/                # Internal functions
 ├── BPC.DBRefresh.psd1     # Module manifest
@@ -40,17 +40,20 @@ hpsBPC.DBRefresh.ps1       # Original script (backward compatibility)
 ### Running the Module
 
 ```powershell
-# Import module (current structure)
+# Import module
 Import-Module .\src\BPC.DBRefresh
-
-# After namespace migration
-Import-Module BPC.DBRefresh
 
 # Primary command
 Invoke-BPERPDatabaseRestore -BPEnvironment <ENV_NAME> -ifasFilePath <PATH> -syscatFilePath <PATH>
 
 # Build and test
 .\build.ps1 -Task All
+
+# Run tests
+Invoke-Pester -Path .\tests
+
+# Lint code
+.\build.ps1 -Task Analyze
 ```
 
 ### Parameters
@@ -143,6 +146,47 @@ Follow the standards in CONTRIBUTING.md:
 4. Ensure all tests pass
 5. Submit pull request
 
+## Migration Status
+
+### Completed Tasks
+- ✅ Module renamed from `BPlusDBRestore` to `BPC.DBRefresh`
+- ✅ All functions renamed to use `BPERP` prefix
+- ✅ Configuration files updated to `hpsBPC.DBRefresh.ini`
+- ✅ All documentation updated with new names
+- ✅ Backward compatibility maintained via wrapper scripts
+- ✅ GitHub Actions and CI/CD pipelines configured
+- ✅ Pre-commit hooks and code quality tools added
+
+### Pending Tasks
+- ⏳ Create pull request to merge `feature/module-conversion` to `main`
+- ⏳ Rename GitHub repository from `bp-test-env-refresh` to `BPC.DBRefresh`
+- ⏳ Update PowerShell Gallery package name when published
+- ⏳ Rename local folder from `bp-test-env-refresh` to `BPC.DBRefresh`
+
+### Related Projects
+- `PSBusinessPlusERP` → `BPC.Admin` (migration scripts provided in this repo)
+- Future modules will follow the `BPC.*` namespace pattern
+
+## Migration Resources
+
+- **MIGRATION-SUMMARY.md** - Complete status of the namespace migration
+- **docs/BPC-NAMESPACE-MIGRATION.md** - User migration guide
+- **comprehensive-rename-to-bpc-admin.ps1** - Script to migrate PSBusinessPlusERP
+- **bpc-admin-migration-commands.txt** - Manual migration commands
+
+## Repository Renaming
+
+After closing all sessions using this folder:
+1. Rename folder: `mv bp-test-env-refresh BPC.DBRefresh`
+2. Update git remote: `git remote set-url origin https://github.com/businessplus-community/BPC.DBRefresh.git`
+3. Update GitHub repository name in Settings → General
+
 ## Future Development
 
 This module follows the BPC (BusinessPlus Community) namespace strategy. Additional modules in the BPC namespace will be developed to provide comprehensive PowerShell tooling for BusinessPlus ERP/HR/PY systems.
+
+### BPC Namespace Benefits
+- **Clear Community Attribution**: BPC = BusinessPlus Community
+- **Short and Memorable**: Only 3 characters
+- **No Trademark Concerns**: Clearly not official PowerSchool
+- **Consistent Pattern**: All modules follow BPC.* naming
