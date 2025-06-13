@@ -1,0 +1,111 @@
+name: Release Pipeline
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 1.4.0)'
+        required: true
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup PowerShell
+        uses: actions/setup-powershell@v1
+
+      - name: Install Dependencies
+        shell: pwsh
+        run: |
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Install-Module -Name PSLogging, dbatools, PsIni, Pester -Force -Scope CurrentUser
+
+      - name: Set Version
+        id: version
+        shell: pwsh
+        run: |
+          if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
+            $version = '${{ github.event.inputs.version }}'
+          } else {
+            $version = '${{ github.ref_name }}'.TrimStart('v')
+          }
+          
+          # Update module manifest version
+          $manifestPath = './src/BPlusDBRestore/BPlusDBRestore.psd1'
+          $manifest = Import-PowerShellDataFile $manifestPath
+          $content = Get-Content $manifestPath -Raw
+          $content = $content -replace "ModuleVersion = '[^']*'", "ModuleVersion = '$version'"
+          Set-Content -Path $manifestPath -Value $content
+          
+          echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+          echo "Module version set to: $version"
+
+      - name: Run Tests
+        shell: pwsh
+        run: |
+          $config = New-PesterConfiguration
+          $config.Run.Path = './tests'
+          $config.Run.Exit = $true
+          Invoke-Pester -Configuration $config
+
+      - name: Build Module
+        shell: pwsh
+        run: |
+          ./build.ps1 -Task Package
+
+      - name: Generate Release Notes
+        id: release_notes
+        shell: pwsh
+        run: |
+          $version = '${{ steps.version.outputs.VERSION }}'
+          $changelog = Get-Content ./CHANGELOG.md -Raw
+          
+          # Extract release notes for this version
+          $pattern = "## \[$version\].*?(?=## \[|$)"
+          if ($changelog -match $pattern) {
+            $notes = $matches[0]
+          } else {
+            $notes = "Release version $version"
+          }
+          
+          # Save to file for release
+          $notes | Out-File -FilePath ./release-notes.md
+          echo "Generated release notes for version $version"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ steps.version.outputs.VERSION }}
+          name: Release v${{ steps.version.outputs.VERSION }}
+          body_path: ./release-notes.md
+          draft: false
+          prerelease: false
+          files: |
+            ./releases/*.zip
+
+      - name: Publish to PowerShell Gallery
+        if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+        shell: pwsh
+        env:
+          PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
+        run: |
+          if ($env:PSGALLERY_API_KEY) {
+            Write-Host "Publishing to PowerShell Gallery..."
+            Publish-Module -Path ./src/BPlusDBRestore -NuGetApiKey $env:PSGALLERY_API_KEY -Force
+          } else {
+            Write-Warning "PowerShell Gallery API key not found, skipping publish"
+          }

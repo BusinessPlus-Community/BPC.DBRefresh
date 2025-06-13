@@ -1,0 +1,47 @@
+title: "[Announcement] "
+labels: ["announcement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template for project announcements, updates, and news.
+  
+  - type: input
+    id: title
+    attributes:
+      label: Announcement Title
+      description: Brief title for your announcement
+      placeholder: "New Release v1.4.0 Available"
+    validations:
+      required: true
+  
+  - type: textarea
+    id: announcement
+    attributes:
+      label: Announcement Details
+      description: Full details of your announcement
+      placeholder: |
+        We're excited to announce...
+        
+        ## What's New
+        - Feature 1
+        - Feature 2
+        
+        ## How to Update
+        ...
+    validations:
+      required: true
+  
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: Type of announcement
+      options:
+        - Release
+        - Security Update
+        - Community News
+        - Project Update
+        - Other
+    validations:
+      required: true

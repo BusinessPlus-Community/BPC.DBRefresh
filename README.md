@@ -2,8 +2,12 @@
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![PowerShell](https://img.shields.io/badge/PowerShell-5.1%2B-blue.svg)](https://github.com/PowerShell/PowerShell)
+[![CI Pipeline](https://github.com/businessplus-community/bp-test-env-refresh/actions/workflows/ci.yml/badge.svg)](https://github.com/businessplus-community/bp-test-env-refresh/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/businessplus-community/bp-test-env-refresh/branch/main/graph/badge.svg)](https://codecov.io/gh/businessplus-community/bp-test-env-refresh)
+[![PowerShell Gallery](https://img.shields.io/powershellgallery/v/BPlusDBRestore.svg)](https://www.powershellgallery.com/packages/BPlusDBRestore)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/businessplus-community/bp-test-env-refresh/graphs/commit-activity)
 [![Community](https://img.shields.io/badge/Community-BusinessPlus-orange.svg)](https://github.com/businessplus-community)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/businessplus-community/bp-test-env-refresh/blob/main/CONTRIBUTING.md)
 
 A PowerShell automation script for refreshing BusinessPlus test environments with production database backups.
 

@@ -65,9 +65,16 @@
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport = @(
+        'Copy-BPlusDashboardFiles'
+        'Get-BPlusDatabaseSettings'
+        'Restart-BPlusServers'
         'Restore-BPlusDatabase'
-        'Test-BPlusEnvironment'
-        'Get-BPlusConfiguration'
+        'Restore-BPlusDatabaseFiles'
+        'Send-BPlusNotification'
+        'Set-BPlusConfiguration'
+        'Set-BPlusDatabasePermissions'
+        'Set-BPlusDatabaseSettings'
+        'Stop-BPlusServices'
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
