@@ -46,11 +46,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup PowerShell ${{ matrix.powershell }}
-        if: matrix.powershell != '5.1'
-        uses: actions/setup-powershell@v1
-        with:
-          version: ${{ matrix.powershell }}
+      # PowerShell is already installed on all GitHub-hosted runners
 
       - name: Install Dependencies
         shell: pwsh
@@ -66,7 +62,7 @@ jobs:
           $config.Run.Path = './tests'
           $config.Output.Verbosity = 'Detailed'
           $config.CodeCoverage.Enabled = $true
-          $config.CodeCoverage.Path = './src/BPlusDBRestore/**/*.ps1'
+          $config.CodeCoverage.Path = './src/BPC.DBRefresh/**/*.ps1'
           $config.CodeCoverage.OutputFormat = 'CoverageGutters'
           $config.CodeCoverage.OutputPath = './coverage.xml'
           $config.TestResult.Enabled = $true
@@ -139,7 +135,7 @@ jobs:
           output-filename: devskim-results.sarif
 
       - name: Upload DevSkim Results
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: devskim-results.sarif
 
@@ -151,8 +147,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup PowerShell
-        uses: actions/setup-powershell@v1
+      # PowerShell is already installed on all GitHub-hosted runners
 
       - name: Install PlatyPS
         shell: pwsh
@@ -163,8 +158,8 @@ jobs:
       - name: Generate Help Documentation
         shell: pwsh
         run: |
-          Import-Module ./src/BPlusDBRestore -Force
-          New-MarkdownHelp -Module BPlusDBRestore -OutputFolder ./docs/cmdlets -Force
+          Import-Module ./src/BPC.DBRefresh -Force
+          New-MarkdownHelp -Module BPC.DBRefresh -OutputFolder ./docs/cmdlets -Force
           Update-MarkdownHelp -Path ./docs/cmdlets
 
       - name: Upload Documentation

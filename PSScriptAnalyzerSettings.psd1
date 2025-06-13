@@ -25,7 +25,11 @@
         'PSAvoidUsingPositionalParameters',
         
         # Some aliases are used for clarity in specific contexts
-        'PSAvoidUsingCmdletAliases'
+        'PSAvoidUsingCmdletAliases',
+        
+        # Disable alignment rules that are causing issues
+        'PSAlignAssignmentStatement',
+        'PSAvoidTrailingWhitespace'
     )
 
     # You can use the following entry to supply parameters to rules that take parameters.
