@@ -149,11 +149,11 @@ jobs:
 
       # PowerShell is already installed on all GitHub-hosted runners
 
-      - name: Install PlatyPS
+      - name: Install Dependencies
         shell: pwsh
         run: |
           Set-PSRepository PSGallery -InstallationPolicy Trusted
-          Install-Module -Name PlatyPS -Force -Scope CurrentUser
+          Install-Module -Name PlatyPS, PSLogging, dbatools, PsIni -Force -Scope CurrentUser
 
       - name: Generate Help Documentation
         shell: pwsh
