@@ -1,4 +1,9 @@
 BeforeAll {
+  # Import required modules first
+  Import-Module PSLogging -ErrorAction SilentlyContinue
+  Import-Module dbatools -ErrorAction SilentlyContinue
+  Import-Module PsIni -ErrorAction SilentlyContinue
+  
   # Import the module
   $ModulePath = Join-Path $PSScriptRoot "..\..\src\BPC.DBRefresh"
   Import-Module $ModulePath -Force

@@ -14,6 +14,10 @@
     Available tasks: Analyze, Test, Build, Package, Clean, All
 
 .EXAMPLE
+    .\build.ps1 -Bootstrap
+    Installs all required dependencies for building and testing
+
+.EXAMPLE
     .\build.ps1 -Task All
     Runs all build tasks
 
@@ -26,8 +30,87 @@
 param(
     [Parameter()]
     [ValidateSet('Analyze', 'Test', 'Build', 'Package', 'Clean', 'All')]
-    [string]$Task = 'Build'
+    [string]$Task = 'Build',
+
+    [Parameter()]
+    [switch]$Bootstrap,
+
+    [Parameter()]
+    [switch]$Help
 )
+
+# Handle Bootstrap
+if ($Bootstrap) {
+    Write-Host "Bootstrapping build dependencies..." -ForegroundColor Cyan
+    
+    # Method 1: Try PSDepend if available or install it
+    if (Test-Path -Path "$PSScriptRoot\requirements.psd1") {
+        try {
+            # Check if PSDepend is available
+            if (-not (Get-Module -Name PSDepend -ListAvailable)) {
+                Write-Host "Installing PSDepend..." -ForegroundColor Yellow
+                Install-Module -Name PSDepend -Repository PSGallery -Scope CurrentUser -Force
+            }
+            Import-Module -Name PSDepend -Verbose:$false
+            Write-Host "Installing dependencies via PSDepend..." -ForegroundColor Yellow
+            Invoke-PSDepend -Path "$PSScriptRoot\requirements.psd1" -Install -Import -Force -WarningAction SilentlyContinue
+            Write-Host "Dependencies installed successfully via PSDepend" -ForegroundColor Green
+            exit 0
+        }
+        catch {
+            Write-Warning "PSDepend failed, falling back to Requirements.ps1: $_"
+        }
+    }
+    
+    # Method 2: Use Requirements.ps1 as fallback
+    if (Test-Path -Path "$PSScriptRoot\Requirements.ps1") {
+        Write-Host "Running Requirements.ps1..." -ForegroundColor Yellow
+        & "$PSScriptRoot\Requirements.ps1" -NuGetBootstrap
+        exit $LASTEXITCODE
+    }
+    else {
+        Write-Error "No requirements.psd1 or Requirements.ps1 found!"
+        exit 1
+    }
+}
+
+# Handle Help
+if ($Help) {
+    Write-Host @"
+BPC.DBRefresh Build Script
+
+USAGE:
+    .\build.ps1 [-Task <String>] [-Bootstrap] [-Help]
+
+PARAMETERS:
+    -Task <String>
+        The build task to run. Default is 'Build'.
+        Available tasks:
+        - Analyze : Run PSScriptAnalyzer on the module
+        - Test    : Run Pester tests
+        - Build   : Build the module
+        - Package : Create a release package
+        - Clean   : Clean build artifacts
+        - All     : Run all tasks in order
+
+    -Bootstrap
+        Install all required dependencies for building and testing
+
+    -Help
+        Show this help message
+
+EXAMPLES:
+    .\build.ps1 -Bootstrap
+        Install all required dependencies
+
+    .\build.ps1 -Task All
+        Run all build tasks
+
+    .\build.ps1 -Task Test
+        Run only the Pester tests
+"@
+    exit 0
+}
 
 #region Helper Functions
 function Write-BuildHeader {

@@ -15,11 +15,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install PSScriptAnalyzer
+      - name: Install Dependencies
         shell: pwsh
         run: |
-          Set-PSRepository PSGallery -InstallationPolicy Trusted
-          Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser
+          ./Requirements.ps1 -NuGetBootstrap
 
       - name: Run PSScriptAnalyzer
         shell: pwsh
@@ -51,9 +50,7 @@ jobs:
       - name: Install Dependencies
         shell: pwsh
         run: |
-          Set-PSRepository PSGallery -InstallationPolicy Trusted
-          Install-Module -Name Pester -MinimumVersion 5.0.0 -Force -Scope CurrentUser
-          Install-Module -Name PSLogging, dbatools, PsIni -Force -Scope CurrentUser
+          ./Requirements.ps1 -NuGetBootstrap
 
       - name: Run Pester Tests
         shell: pwsh
@@ -100,6 +97,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        shell: pwsh
+        run: |
+          ./Requirements.ps1 -NuGetBootstrap
 
       - name: Build Module
         shell: pwsh
@@ -152,12 +154,16 @@ jobs:
       - name: Install Dependencies
         shell: pwsh
         run: |
-          Set-PSRepository PSGallery -InstallationPolicy Trusted
-          Install-Module -Name PlatyPS, PSLogging, dbatools, PsIni -Force -Scope CurrentUser
+          ./Requirements.ps1 -NuGetBootstrap
+          # Install PlatyPS separately as it's not in standard requirements
+          Install-Module -Name PlatyPS -Force -Scope CurrentUser
 
       - name: Generate Help Documentation
         shell: pwsh
         run: |
+          # Import required modules first
+          Import-Module PSLogging, dbatools, PsIni -Force
+          # Now import our module
           Import-Module ./src/BPC.DBRefresh -Force
           New-MarkdownHelp -Module BPC.DBRefresh -OutputFolder ./docs/cmdlets -Force
           Update-MarkdownHelp -Path ./docs/cmdlets
