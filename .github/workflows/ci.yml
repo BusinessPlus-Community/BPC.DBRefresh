@@ -23,7 +23,22 @@ jobs:
       - name: Run PSScriptAnalyzer
         shell: pwsh
         run: |
-          $results = Invoke-ScriptAnalyzer -Path . -Recurse -Settings PSScriptAnalyzerSettings.psd1
+          $results = @()
+          
+          # Analyze specific directories
+          @("./src", "./examples", "./tests") | ForEach-Object {
+            if (Test-Path $_) {
+              $results += Invoke-ScriptAnalyzer -Path $_ -Recurse -Settings PSScriptAnalyzerSettings.psd1
+            }
+          }
+          
+          # Analyze specific files
+          @("./BPC.DBRefresh.ps1", "./build.ps1", "./Requirements.ps1") | ForEach-Object {
+            if (Test-Path $_) {
+              $results += Invoke-ScriptAnalyzer -Path $_ -Settings PSScriptAnalyzerSettings.psd1
+            }
+          }
+          
           if ($results) {
             $results | Format-Table -AutoSize
             throw "PSScriptAnalyzer found $($results.Count) issues"

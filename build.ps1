@@ -123,19 +123,32 @@ function Invoke-Analyze {
     Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser
   }
 
-  $analyzerParams = @{
-    Path          = @(
-      "$PSScriptRoot\src"
-      "$PSScriptRoot\examples"
-      "$PSScriptRoot\tests"
-      "$PSScriptRoot\BPC.DBRefresh.ps1"
-    )
-    Settings      = "$PSScriptRoot\PSScriptAnalyzerSettings.psd1"
-    Recurse       = $true
-    ReportSummary = $true
+  $results = @()
+  
+  # Analyze directories
+  @("$PSScriptRoot\src", "$PSScriptRoot\examples", "$PSScriptRoot\tests") | ForEach-Object {
+    if (Test-Path $_) {
+      $analyzerParams = @{
+        Path          = $_
+        Settings      = "$PSScriptRoot\PSScriptAnalyzerSettings.psd1"
+        Recurse       = $true
+        ReportSummary = $true
+      }
+      $results += Invoke-ScriptAnalyzer @analyzerParams
+    }
   }
-
-  $results = Invoke-ScriptAnalyzer @analyzerParams
+  
+  # Analyze individual files
+  @("$PSScriptRoot\BPC.DBRefresh.ps1", "$PSScriptRoot\build.ps1", "$PSScriptRoot\Requirements.ps1") | ForEach-Object {
+    if (Test-Path $_) {
+      $analyzerParams = @{
+        Path          = $_
+        Settings      = "$PSScriptRoot\PSScriptAnalyzerSettings.psd1"
+        ReportSummary = $true
+      }
+      $results += Invoke-ScriptAnalyzer @analyzerParams
+    }
+  }
 
   if ($results) {
     Write-BuildError "PSScriptAnalyzer found $($results.Count) issues:"
