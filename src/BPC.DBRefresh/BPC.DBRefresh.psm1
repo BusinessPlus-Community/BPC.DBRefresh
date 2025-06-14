@@ -3,11 +3,12 @@
 
 # Module variables
 $script:ModuleRoot = $PSScriptRoot
-$script:ModuleVersion = (Import-PowerShellDataFile "$ModuleRoot\BPC.DBRefresh.psd1").ModuleVersion
+$script:ModuleVersion = (Import-PowerShellDataFile (Join-Path $ModuleRoot "BPC.DBRefresh.psd1")).ModuleVersion
 $script:LogPath = $null
 
 # Import private functions
-$Private = @(Get-ChildItem -Path "$ModuleRoot\Private\*.ps1" -ErrorAction SilentlyContinue)
+$privatePath = Join-Path $ModuleRoot "Private"
+$Private = @(Get-ChildItem -Path $privatePath -Filter "*.ps1" -ErrorAction SilentlyContinue)
 foreach ($import in $Private) {
   try {
     . $import.FullName
@@ -20,7 +21,8 @@ foreach ($import in $Private) {
 }
 
 # Import public functions
-$Public = @(Get-ChildItem -Path "$ModuleRoot\Public\*.ps1" -ErrorAction SilentlyContinue)
+$publicPath = Join-Path $ModuleRoot "Public"
+$Public = @(Get-ChildItem -Path $publicPath -Filter "*.ps1" -ErrorAction SilentlyContinue)
 foreach ($import in $Public) {
   try {
     . $import.FullName
