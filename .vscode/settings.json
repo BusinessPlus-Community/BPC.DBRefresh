@@ -60,11 +60,10 @@
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
     "**/*.log": true,
-    "**/context": true,
     "**/.claude": true
   },
   
-  // Search exclusions
+  // Search exclusions (context is excluded from search but visible in explorer)
   "search.exclude": {
     "**/node_modules": true,
     "**/bower_components": true,
