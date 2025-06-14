@@ -86,6 +86,26 @@ Development also requires:
 - Pester 5.0.0+ (for testing)
 - PSScriptAnalyzer 1.19.1+ (for linting)
 
+### VSCode Configuration
+
+The repository includes standardized VSCode configuration:
+- **Theme**: GitHub Dark Dimmed (organization standard)
+- **Icon Theme**: Material Icon Theme (organization standard)
+- **Formatting**: PowerShell Best Practices (OTBS style)
+- **Indentation**: 2 spaces (project-specific)
+- **Extensions**: Minimal set for performance (PowerShell, Markdown, EditorConfig)
+
+### CI/CD Pipeline
+
+The project uses GitHub Actions with separated jobs:
+1. **Lint (Style)**: Runs on Ubuntu for fast style checking
+2. **Compatibility Check**: Runs on Windows for PowerShell compatibility analysis (non-blocking)
+3. **Test**: Full matrix testing across Windows, Ubuntu, macOS with PowerShell 5.1, 7.2, 7.3, 7.4
+4. **Build**: Creates the module package
+5. **Documentation**: Generates help documentation
+
+**Note**: PSScriptAnalyzer compatibility rules are isolated to Windows to prevent CI failures on other platforms.
+
 ## Development Standards
 
 ### Function Naming Convention
@@ -173,6 +193,9 @@ Follow the standards in CONTRIBUTING.md:
 - ✅ Dependency management system implemented (Requirements.ps1)
 - ✅ Cross-platform compatible tests created
 - ✅ CI/CD pipeline fixed for all platforms
+- ✅ VSCode configuration standardized for organization
+- ✅ Removed temporary migration scripts
+- ✅ Fixed PSScriptAnalyzer CI issues with separated jobs
 
 ### Pending Tasks
 - ⏳ Create pull request to merge `feature/module-conversion` to `main`
