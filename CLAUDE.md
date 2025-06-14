@@ -46,6 +46,11 @@ Import-Module .\src\BPC.DBRefresh
 # Primary command
 Invoke-BPERPDatabaseRestore -BPEnvironment <ENV_NAME> -ifasFilePath <PATH> -syscatFilePath <PATH>
 
+# Install dependencies
+.\build.ps1 -Bootstrap
+# or
+.\Requirements.ps1 -NuGetBootstrap
+
 # Build and test
 .\build.ps1 -Task All
 
@@ -72,6 +77,14 @@ The module requires these PowerShell modules:
 - PSLogging 2.2.0+
 - dbatools 1.0.0+
 - PsIni 3.1.2+
+
+These are automatically installed by running:
+- `.\build.ps1 -Bootstrap` (recommended)
+- `.\Requirements.ps1 -NuGetBootstrap`
+
+Development also requires:
+- Pester 5.0.0+ (for testing)
+- PSScriptAnalyzer 1.19.1+ (for linting)
 
 ## Development Standards
 
@@ -156,10 +169,13 @@ Follow the standards in CONTRIBUTING.md:
 - ✅ Backward compatibility maintained via wrapper scripts
 - ✅ GitHub Actions and CI/CD pipelines configured
 - ✅ Pre-commit hooks and code quality tools added
+- ✅ GitHub repository renamed from `bp-test-env-refresh` to `BPC.DBRefresh`
+- ✅ Dependency management system implemented (Requirements.ps1)
+- ✅ Cross-platform compatible tests created
+- ✅ CI/CD pipeline fixed for all platforms
 
 ### Pending Tasks
 - ⏳ Create pull request to merge `feature/module-conversion` to `main`
-- ⏳ Rename GitHub repository from `bp-test-env-refresh` to `BPC.DBRefresh`
 - ⏳ Update PowerShell Gallery package name when published
 - ⏳ Rename local folder from `bp-test-env-refresh` to `BPC.DBRefresh`
 
@@ -174,12 +190,15 @@ Follow the standards in CONTRIBUTING.md:
 - **comprehensive-rename-to-bpc-admin.ps1** - Script to migrate PSBusinessPlusERP
 - **bpc-admin-migration-commands.txt** - Manual migration commands
 
-## Repository Renaming
+## Repository Information
 
-After closing all sessions using this folder:
-1. Rename folder: `mv bp-test-env-refresh BPC.DBRefresh`
-2. Update git remote: `git remote set-url origin https://github.com/businessplus-community/BPC.DBRefresh.git`
-3. Update GitHub repository name in Settings → General
+The GitHub repository has been renamed to `BPC.DBRefresh` and is available at:
+https://github.com/BusinessPlus-Community/BPC.DBRefresh
+
+To update your local folder name:
+1. Close all sessions using this folder
+2. Rename folder: `mv bp-test-env-refresh BPC.DBRefresh`
+3. The git remote URL has been automatically updated by GitHub
 
 ## Future Development
 
