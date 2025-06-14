@@ -17,7 +17,6 @@ BPC.DBRefresh.ini
 Modules/
 
 # IDE and editor files
-.vscode/
 .idea/
 *.swp
 *.swo
