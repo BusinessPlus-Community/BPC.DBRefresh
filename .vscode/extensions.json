@@ -1,5 +1,26 @@
 {
-    "recommendations": [
-      "ms-vscode.powershell",
-    ]
-  }
+  // See http://go.microsoft.com/fwlink/?LinkId=827846
+  // for the documentation about the extensions.json format
+  "recommendations": [
+    // Essential PowerShell development (Required)
+    "ms-vscode.powershell",
+    
+    // Organization Standard Themes (Low Performance Impact)
+    "pkief.material-icon-theme",
+    "github.github-vscode-theme",
+    
+    // Code quality essentials (Low-Medium Performance Impact)
+    "davidanson.vscode-markdownlint",
+    "editorconfig.editorconfig"
+  ],
+  
+  // Optional extensions (install as needed to minimize performance impact)
+  "unwantedRecommendations": [
+    // These can be resource-intensive, install only if needed:
+    // "streetsidesoftware.code-spell-checker",  // Can slow down large files
+    // "eamodio.gitlens",                        // Can be resource intensive
+    // "mhutchie.git-graph",                     // Additional git visualization
+    // "gruntfuggly.todo-tree",                  // Scans entire workspace
+    // "mechatroner.rainbow-csv"                 // Only needed for CSV files
+  ]
+}

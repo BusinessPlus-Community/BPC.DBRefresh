@@ -1,0 +1,167 @@
+{
+  // Workspace Theme Settings (Organization Standard)
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.colorTheme": "GitHub Dark Dimmed",
+  
+  // PowerShell Settings (Following PowerShell Best Practices and Style Guide)
+  "powershell.codeFormatting.preset": "OTBS",
+  "powershell.codeFormatting.alignPropertyValuePairs": true,
+  "powershell.codeFormatting.ignoreOneLineBlock": true,
+  "powershell.codeFormatting.newLineAfterCloseBrace": false,
+  "powershell.codeFormatting.newLineAfterOpenBrace": true,
+  "powershell.codeFormatting.openBraceOnSameLine": true,
+  "powershell.codeFormatting.pipelineIndentationStyle": "IncreaseIndentationForFirstPipeline",
+  "powershell.codeFormatting.useConstantStrings": true,
+  "powershell.codeFormatting.useCorrectCasing": true,
+  "powershell.codeFormatting.whitespaceAfterSeparator": true,
+  "powershell.codeFormatting.whitespaceAroundOperator": true,
+  "powershell.codeFormatting.whitespaceBeforeOpenBrace": true,
+  "powershell.codeFormatting.whitespaceBeforeOpenParen": true,
+  "powershell.codeFormatting.whitespaceBetweenParameters": true,
+  "powershell.codeFormatting.whitespaceInsideBrace": true,
+  
+  // PowerShell Integrated Console
+  "powershell.integratedConsole.focusConsoleOnExecute": false,
+  "powershell.integratedConsole.showOnStartup": false,
+  "powershell.enableProfileLoading": true,
+  
+  // Script Analysis
+  "powershell.scriptAnalysis.enable": true,
+  "powershell.scriptAnalysis.settingsPath": "PSScriptAnalyzerSettings.psd1",
+  
+  // Editor Settings (Project uses 2 spaces per PSScriptAnalyzerSettings.psd1)
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": true,
+  "editor.trimAutoWhitespace": true,
+  "editor.mouseWheelZoom": true,
+  
+  // File Settings
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.defaultLanguage": "powershell",
+  
+  // File Associations
+  "files.associations": {
+    "*.ps1": "powershell",
+    "*.psm1": "powershell",
+    "*.psd1": "powershell",
+    "*.ps1xml": "xml",
+    "*.pssc": "powershell",
+    "*.psrc": "powershell"
+  },
+  
+  // Exclude files from explorer
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/*.log": true,
+    "**/context": true,
+    "**/.claude": true
+  },
+  
+  // Search exclusions
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/.git": true,
+    "**/*.log": true,
+    "**/releases": true,
+    "**/context": true,
+    "**/.claude": true
+  },
+  
+  // Terminal settings
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "terminal.integrated.defaultProfile.linux": "pwsh",
+  "terminal.integrated.defaultProfile.osx": "pwsh",
+  "terminal.integrated.fontFamily": "Consolas, 'Courier New', monospace",
+  "terminal.integrated.fontSize": 14,
+  "terminal.integrated.lineHeight": 1.2,
+  "terminal.integrated.profiles.windows": {
+    "PowerShell": {
+      "source": "PowerShell",
+      "icon": "terminal-powershell"
+    },
+    "PowerShell 7": {
+      "path": [
+        "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+        "C:\\Program Files\\PowerShell\\7-preview\\pwsh.exe"
+      ],
+      "icon": "terminal-powershell"
+    }
+  },
+  "terminal.integrated.profiles.linux": {
+    "pwsh": {
+      "path": "pwsh",
+      "icon": "terminal-powershell"
+    }
+  },
+  "terminal.integrated.profiles.osx": {
+    "pwsh": {
+      "path": "pwsh",
+      "icon": "terminal-powershell"
+    }
+  },
+  
+  // Git settings
+  "git.ignoreLimitWarning": true,
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  
+  // Language-specific settings
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
+    }
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[xml]": {
+    "editor.autoClosingBrackets": "never"
+  },
+  "[powershell]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  
+  // Spell checker words specific to this project
+  "cSpell.words": [
+    "aspnet",
+    "aspnetdb",
+    "BusinessPlus",
+    "BPERP",
+    "BPlus",
+    "dbatools",
+    "devcontainer",
+    "devcontainers",
+    "ifas",
+    "ifasdb",
+    "NUUPAUSY",
+    "Pester",
+    "Plaster",
+    "PlatyPS",
+    "psake",
+    "psd1",
+    "psm1",
+    "psrc",
+    "pssc",
+    "pwsh",
+    "syscat",
+    "syscatdb"
+  ],
+  
+  // Window settings
+  "window.zoomLevel": 0
+}
