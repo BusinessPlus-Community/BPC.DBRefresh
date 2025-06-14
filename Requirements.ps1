@@ -44,17 +44,17 @@ $RequiredModules = @(
     @{
         Name = 'PSLogging'
         MinimumVersion = '2.2.0'
-        SkipPublisherCheck = $true
+        Repository = 'PSGallery'
     },
     @{
         Name = 'dbatools'
         MinimumVersion = '1.0.0'
-        SkipPublisherCheck = $true
+        Repository = 'PSGallery'
     },
     @{
         Name = 'PsIni'
         MinimumVersion = '3.1.2'
-        SkipPublisherCheck = $true
+        Repository = 'PSGallery'
     }
 )
 
@@ -63,27 +63,12 @@ $DevelopmentModules = @(
     @{
         Name = 'Pester'
         MinimumVersion = '5.0.0'
-        SkipPublisherCheck = $true
+        Repository = 'PSGallery'
     },
     @{
         Name = 'PSScriptAnalyzer'
         MinimumVersion = '1.19.1'
-        SkipPublisherCheck = $false
-    },
-    @{
-        Name = 'psake'
-        MinimumVersion = '4.9.0'
-        SkipPublisherCheck = $false
-    },
-    @{
-        Name = 'BuildHelpers'
-        MinimumVersion = '2.0.16'
-        SkipPublisherCheck = $false
-    },
-    @{
-        Name = 'PowerShellBuild'
-        MinimumVersion = '0.6.1'
-        SkipPublisherCheck = $false
+        Repository = 'PSGallery'
     }
 )
 
@@ -135,16 +120,20 @@ if ($NuGetBootstrap) {
 }
 
 # Ensure PSGallery is trusted
-$psGallery = Get-PSRepository -Name PSGallery -ErrorAction SilentlyContinue
-if ($psGallery.InstallationPolicy -ne 'Trusted') {
-    Write-RequirementInfo "Setting PSGallery as trusted repository..."
-    try {
+Write-RequirementInfo "Checking PSGallery trust status..."
+try {
+    $psGallery = Get-PSRepository -Name PSGallery -ErrorAction Stop
+    if ($psGallery.InstallationPolicy -ne 'Trusted') {
+        Write-RequirementInfo "Setting PSGallery as trusted repository..."
         Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -ErrorAction Stop
         Write-RequirementSuccess "PSGallery is now trusted"
     }
-    catch {
-        Write-RequirementWarning "Could not set PSGallery as trusted: $_"
+    else {
+        Write-RequirementSuccess "PSGallery is already trusted"
     }
+}
+catch {
+    Write-RequirementWarning "Could not verify PSGallery status: $_"
 }
 
 # Install each module
@@ -153,7 +142,7 @@ foreach ($module in $AllModules) {
     Write-RequirementInfo "Checking module: $($module.Name) (>= $($module.MinimumVersion))"
     
     # Check if module is already installed
-    $installedModule = Get-Module -Name $module.Name -ListAvailable | 
+    $installedModule = Get-Module -Name $module.Name -ListAvailable -ErrorAction SilentlyContinue | 
         Where-Object { $_.Version -ge [version]$module.MinimumVersion } |
         Sort-Object Version -Descending |
         Select-Object -First 1
@@ -168,15 +157,14 @@ foreach ($module in $AllModules) {
         $installParams = @{
             Name = $module.Name
             MinimumVersion = $module.MinimumVersion
+            Repository = $module.Repository
             Scope = $Scope
-            Force = $Force
+            Force = $true
             AllowClobber = $true
             ErrorAction = 'Stop'
         }
         
-        if ($module.SkipPublisherCheck) {
-            $installParams['SkipPublisherCheck'] = $true
-        }
+        # Remove SkipPublisherCheck for now to avoid issues
         
         if ($Force -and $installedModule) {
             Write-RequirementInfo "Force updating $($module.Name)..."
@@ -185,10 +173,31 @@ foreach ($module in $AllModules) {
             Write-RequirementInfo "Installing $($module.Name)..."
         }
         
-        Install-Module @installParams
+        # Try installation with retries for network issues
+        $retries = 3
+        $installed = $false
+        
+        for ($i = 1; $i -le $retries; $i++) {
+            try {
+                Install-Module @installParams
+                $installed = $true
+                break
+            }
+            catch {
+                if ($i -eq $retries) {
+                    throw
+                }
+                Write-RequirementWarning "Attempt $i failed, retrying..."
+                Start-Sleep -Seconds 2
+            }
+        }
+        
+        if (-not $installed) {
+            throw "Failed after $retries attempts"
+        }
         
         # Verify installation
-        $verifyModule = Get-Module -Name $module.Name -ListAvailable | 
+        $verifyModule = Get-Module -Name $module.Name -ListAvailable -ErrorAction SilentlyContinue | 
             Where-Object { $_.Version -ge [version]$module.MinimumVersion } |
             Sort-Object Version -Descending |
             Select-Object -First 1
@@ -203,6 +212,20 @@ foreach ($module in $AllModules) {
     catch {
         Write-RequirementError "Failed to install $($module.Name): $_"
         $failedModules += $module.Name
+        
+        # Try alternative installation methods for problematic modules
+        if ($module.Name -eq 'PsIni') {
+            Write-RequirementInfo "Trying alternative installation for PsIni..."
+            try {
+                # Sometimes specifying exact version helps
+                Install-Module -Name PsIni -RequiredVersion 3.1.3 -Repository PSGallery -Scope $Scope -Force -AllowClobber -ErrorAction Stop
+                Write-RequirementSuccess "PsIni installed via alternative method"
+                $failedModules = $failedModules | Where-Object { $_ -ne 'PsIni' }
+            }
+            catch {
+                Write-RequirementError "Alternative installation also failed: $_"
+            }
+        }
     }
 }
 
