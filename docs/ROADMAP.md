@@ -4,16 +4,29 @@
 
 This document outlines the planned features and enhancements for future releases of the BPC.DBRefresh module.
 
+## Recent Achievements (v1.3.0)
+
+- ✅ Implemented PowerShellBuild module for standardized builds
+- ✅ Added comprehensive Docker container support
+- ✅ Created WSL2 documentation and full support
+- ✅ Reorganized module structure (root level, not src/)
+- ✅ Fixed all PSScriptAnalyzer warnings
+- ✅ Consolidated configuration files
+- ✅ Added local CI testing capabilities
+- ✅ Updated to PSLogging 2.5.2 (correct version)
+
 ## Release Planning
 
-### v1.1.0 (Next Release)
+### v1.4.0 (Next Release)
 
+- [ ] PowerShell Gallery publication under BPC namespace
 - [ ] Enhanced error handling and recovery mechanisms
 - [ ] Performance optimizations for large database restores
 - [ ] Additional configuration validation
-- [ ] Extended PowerShell 7.x compatibility testing
+- [ ] Improved container health checks
+- [ ] Automated container builds in CI/CD
 
-### v1.2.0 (Future Release)
+### v1.5.0 (Future Release)
 
 - [ ] System Center Data Protection Manager (DPM) Integration
   - Direct integration with DPM for automated backup retrieval
@@ -22,6 +35,14 @@ This document outlines the planned features and enhancements for future releases
   - DPM authentication and permission management
 - [ ] Enhanced notification system with multiple channels
 - [ ] Web-based dashboard for restore status monitoring
+
+### v1.6.0 
+
+- [ ] Container orchestration with Kubernetes support
+- [ ] Helm charts for enterprise deployment
+- [ ] Enhanced monitoring and telemetry
+- [ ] Support for Azure SQL Database restores
+- [ ] Integration with Azure DevOps pipelines
 
 ### v2.0.0 (Major Release)
 
@@ -33,12 +54,14 @@ This document outlines the planned features and enhancements for future releases
 - [ ] REST API for external integrations
 - [ ] Multi-environment parallel restore capabilities
 - [ ] Advanced scheduling and orchestration
+- [ ] Web UI for restore management
+- [ ] Role-based access control (RBAC)
 
 ## Feature Details
 
 ### System Center Data Protection Manager (DPM) Integration
 
-**Target Release**: v1.2.0 (initial support), v2.0.0 (full integration)
+**Target Release**: v1.5.0 (initial support), v2.0.0 (full integration)
 
 **Objectives**:
 

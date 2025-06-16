@@ -25,10 +25,22 @@ The BusinessPlus Community uses a namespace approach for PowerShell modules:
 BPC.DBRefresh/             # PowerShell module (root level, not in src/)
 ├── Public/                 # Public functions
 ├── Private/                # Internal functions
-├── Classes/                # PowerShell classes (if needed)
+├── Classes/                # PowerShell classes (currently empty, for future use)
 ├── BPC.DBRefresh.psd1     # Module manifest
 └── BPC.DBRefresh.psm1     # Module file
 config/                     # Configuration files
+container/                  # Docker container configuration
+├── Dockerfile             # Multi-stage build for the module
+├── docker-compose.yml     # Main compose configuration
+├── docker-compose.local-sql.yml  # For local SQL Server
+├── docker-compose.ci.yml  # CI testing configuration
+├── .dockerignore          # Docker ignore file
+└── README.md              # Container-specific documentation
+scripts/                    # Helper scripts
+├── Start-DevEnvironment.ps1    # Start containers
+├── Test-LocalCI.ps1           # Run CI tests locally
+├── Test-ContainerSetup.ps1    # Verify container setup
+└── Start-LocalCI.ps1          # Run GitHub Actions locally
 examples/                   # Usage examples
 tests/                      # Pester tests
 ├── Unit/                   # Unit tests
@@ -39,11 +51,44 @@ docs/                       # Documentation
 ├── ARCHITECTURE.md         # System architecture documentation
 ├── RELEASES.md            # Release history
 ├── ROADMAP.md             # Future development plans
-└── TROUBLESHOOTING.md     # Common issues and solutions
+├── TROUBLESHOOTING.md     # Common issues and solutions
+├── CONTAINER-USAGE.md     # Container usage guide
+├── WSL-SETUP.md           # WSL setup instructions
+└── QUICKSTART-CONTAINER.md # Quick start for containers
 .github/                    # GitHub Actions and templates
 BPC.DBRefresh.ps1          # Original script (backward compatibility)
 Invoke-BPC.DBRefresh.ps1   # Wrapper for backward compatibility
+.env.example               # Template for environment configuration
 ```
+
+## Important Development Notes
+
+### Before Committing
+- **Always** ensure there is a clean run of `pwsh -f ./build.ps1` before committing changes
+- This ensures all tests pass and PSScriptAnalyzer rules are satisfied
+
+### Module Dependencies
+- PSLogging module version must be 2.5.2 (not 2.2.0 - that version doesn't exist)
+- The Classes directory must exist even if empty (module loader expects it)
+- PSScriptAnalyzer settings are in `tests/PSScriptAnalyzerSettings.psd1`
+
+### Build System
+- Uses PowerShellBuild module with minimal psake configuration
+- PSScriptAnalyzer settings path must be configured in psakeFile.ps1:
+  ```powershell
+  $PSBPreference.Test.ScriptAnalysis.SettingsPath = './tests/PSScriptAnalyzerSettings.psd1'
+  ```
+
+### Container Development
+- Full Docker container support is available in the `container/` directory
+- Use `.env` file for SQL Server credentials (copy from `.env.example`)
+- WSL2 is fully supported and recommended for Windows developers
+- For local SQL Server from WSL, use `host.docker.internal` as the host
+
+### PSScriptAnalyzer Configuration
+- The rule `CheckOperator` in PSUseConsistentWhitespace is disabled to allow flexible operator spacing
+- Windows-specific commands are expected (PSUseCompatibleCommands is excluded)
+- Output types should be declared for functions that return values
 
 ## Commands
 
@@ -250,6 +295,11 @@ Follow the standards in CONTRIBUTING.md:
 - ✅ Consolidated PSScriptAnalyzer settings into single file
 - ✅ Configured WSL (Debian) as default terminal for Windows
 - ✅ Organized documentation files according to GitHub best practices
+- ✅ Added comprehensive Docker container support
+- ✅ Created WSL setup documentation
+- ✅ Fixed PSLogging module version (2.5.2)
+- ✅ Resolved all PSScriptAnalyzer warnings
+- ✅ Fixed CI/CD issues with module loading and settings paths
 
 ### Pending Tasks
 - ⏳ Create pull request to merge `feature/module-conversion` to `main`
