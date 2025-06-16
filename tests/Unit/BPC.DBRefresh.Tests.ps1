@@ -12,7 +12,6 @@ Describe "BPC.DBRefresh Module Tests" {
       # Get paths using cross-platform approach
       $script:ModuleRoot = Join-Path -Path $script:here -ChildPath ".." | 
                            Join-Path -ChildPath ".." | 
-                           Join-Path -ChildPath "src" | 
                            Join-Path -ChildPath "BPC.DBRefresh" |
                            Resolve-Path
     }
@@ -52,8 +51,7 @@ Describe "BPC.DBRefresh Module Tests" {
       
       $script:ModuleRoot = Join-Path -Path $script:here -ChildPath ".." | 
                            Join-Path -ChildPath ".." | 
-                           Join-Path -ChildPath "src" | 
-                           Join-Path -ChildPath "BPC.DBRefresh" |
+                                                      Join-Path -ChildPath "BPC.DBRefresh" |
                            Resolve-Path
                            
       $manifestPath = Join-Path $script:ModuleRoot "BPC.DBRefresh.psd1"
@@ -118,21 +116,20 @@ Describe "BPC.DBRefresh Module Tests" {
       
       $script:ModuleRoot = Join-Path -Path $script:here -ChildPath ".." | 
                            Join-Path -ChildPath ".." | 
-                           Join-Path -ChildPath "src" | 
-                           Join-Path -ChildPath "BPC.DBRefresh" |
+                                                      Join-Path -ChildPath "BPC.DBRefresh" |
                            Resolve-Path
                            
       $script:PublicPath = Join-Path $script:ModuleRoot "Public"
     }
     
     It "Should have Invoke-BPERPDatabaseRestore.ps1" {
-      $functionPath = Join-Path $script:PublicPath "Invoke-BPERPDatabaseRestore.ps1"
-      Test-Path $functionPath | Should -Be $true
+      $files = Get-ChildItem -Path $script:PublicPath -Filter "Invoke-BPERPDatabaseRestore.ps1" -Recurse
+      $files | Should -Not -BeNullOrEmpty
     }
     
     It "Should have Stop-BPERPServices.ps1" {
-      $functionPath = Join-Path $script:PublicPath "Stop-BPERPServices.ps1"
-      Test-Path $functionPath | Should -Be $true
+      $files = Get-ChildItem -Path $script:PublicPath -Filter "Stop-BPERPServices.ps1" -Recurse
+      $files | Should -Not -BeNullOrEmpty
     }
     
     It "Should have all expected public function files" {
@@ -149,7 +146,7 @@ Describe "BPC.DBRefresh Module Tests" {
         'Send-BPERPNotification.ps1'
       )
       
-      $actualFiles = Get-ChildItem -Path $script:PublicPath -Filter "*.ps1" | Select-Object -ExpandProperty Name
+      $actualFiles = Get-ChildItem -Path $script:PublicPath -Filter "*.ps1" -Recurse | Select-Object -ExpandProperty Name
       
       foreach ($file in $expectedFiles) {
         $actualFiles | Should -Contain $file
@@ -166,8 +163,7 @@ Describe "BPC.DBRefresh Module Tests" {
       
       $script:ModuleRoot = Join-Path -Path $script:here -ChildPath ".." | 
                            Join-Path -ChildPath ".." | 
-                           Join-Path -ChildPath "src" | 
-                           Join-Path -ChildPath "BPC.DBRefresh" |
+                                                      Join-Path -ChildPath "BPC.DBRefresh" |
                            Resolve-Path
                            
       $script:PrivatePath = Join-Path $script:ModuleRoot "Private"
@@ -182,9 +178,9 @@ Describe "BPC.DBRefresh Module Tests" {
       $expectedFiles = @(
         'Add-Module.ps1'
         'Build-EmailHTML.ps1'
-        'Get-BPlusEnvironmentConfig.ps1'
-        'Show-BPlusConfiguration.ps1'
-        'Write-BPlusLog.ps1'
+        'Get-BPERPEnvironmentConfig.ps1'
+        'Show-BPERPConfiguration.ps1'
+        'Write-BPERPLog.ps1'
       )
       
       $actualFiles = Get-ChildItem -Path $script:PrivatePath -Filter "*.ps1" | Select-Object -ExpandProperty Name

@@ -1,4 +1,7 @@
 @{
+    PSDepend = @{
+        Version = '0.3.8'
+    }
     PSDependOptions = @{
         Target = 'CurrentUser'
     }
@@ -11,7 +14,7 @@
         }
     }
     'dbatools' = @{
-        Version = '1.0.0'
+        Version = '2.1.31'
         Parameters = @{
             SkipPublisherCheck = $true
         }
@@ -25,13 +28,13 @@
     
     # Build and Development dependencies
     'Pester' = @{
-        Version = '5.0.0'
+        Version = '5.7.1'
         Parameters = @{
             SkipPublisherCheck = $true
         }
     }
     'PSScriptAnalyzer' = @{
-        Version = '1.19.1'
+        Version = '1.22.0'
     }
     'psake' = @{
         Version = '4.9.0'

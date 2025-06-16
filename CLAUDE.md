@@ -22,17 +22,27 @@ The BusinessPlus Community uses a namespace approach for PowerShell modules:
 ## Project Structure
 
 ```
-src/BPC.DBRefresh/         # PowerShell module
+BPC.DBRefresh/             # PowerShell module (root level, not in src/)
 ├── Public/                 # Public functions
 ├── Private/                # Internal functions
+├── Classes/                # PowerShell classes (if needed)
 ├── BPC.DBRefresh.psd1     # Module manifest
 └── BPC.DBRefresh.psm1     # Module file
 config/                     # Configuration files
 examples/                   # Usage examples
 tests/                      # Pester tests
+├── Unit/                   # Unit tests
+├── Public/                 # Public function tests
+└── PSScriptAnalyzerSettings.psd1  # Consolidated analyzer settings
 docs/                       # Documentation
+├── en-US/                  # PowerShell help files
+├── ARCHITECTURE.md         # System architecture documentation
+├── RELEASES.md            # Release history
+├── ROADMAP.md             # Future development plans
+└── TROUBLESHOOTING.md     # Common issues and solutions
 .github/                    # GitHub Actions and templates
 BPC.DBRefresh.ps1          # Original script (backward compatibility)
+Invoke-BPC.DBRefresh.ps1   # Wrapper for backward compatibility
 ```
 
 ## Commands
@@ -41,7 +51,7 @@ BPC.DBRefresh.ps1          # Original script (backward compatibility)
 
 ```powershell
 # Import module
-Import-Module .\src\BPC.DBRefresh
+Import-Module .\BPC.DBRefresh
 
 # Primary command
 Invoke-BPERPDatabaseRestore -BPEnvironment <ENV_NAME> -ifasFilePath <PATH> -syscatFilePath <PATH>
@@ -75,7 +85,7 @@ Invoke-Pester -Path .\tests
 The module requires these PowerShell modules:
 
 - PSLogging 2.2.0+
-- dbatools 1.0.0+
+- dbatools 2.1.31+
 - PsIni 3.1.2+
 
 These are automatically installed by running:
@@ -84,7 +94,7 @@ These are automatically installed by running:
 
 Development also requires:
 - Pester 5.0.0+ (for testing)
-- PSScriptAnalyzer 1.19.1+ (for linting)
+- PSScriptAnalyzer 1.24.0+ (for linting)
 
 ### VSCode Configuration
 
@@ -92,8 +102,11 @@ The repository includes standardized VSCode configuration:
 - **Theme**: GitHub Dark Dimmed (organization standard)
 - **Icon Theme**: Material Icon Theme (organization standard)
 - **Formatting**: PowerShell Best Practices (OTBS style)
-- **Indentation**: 2 spaces (project-specific)
+- **Indentation**: 4 spaces (PowerShell standard)
 - **Extensions**: Minimal set for performance (PowerShell, Markdown, EditorConfig)
+- **Explorer**: Shows `./context/` folder despite being gitignored
+- **Terminal**: WSL (Debian) as default terminal on Windows
+- **PSScriptAnalyzer**: Settings located in `tests/PSScriptAnalyzerSettings.psd1`
 
 ### CI/CD Pipeline
 
@@ -108,6 +121,14 @@ The project uses GitHub Actions with separated jobs:
 
 ## Development Standards
 
+### Build System
+
+The project uses PowerShellBuild module for standardized builds:
+- Minimal psake configuration leveraging PowerShellBuild defaults
+- Consistent with other BPC namespace modules (e.g., BPC.Admin)
+- Module structure at root level (not in src/ directory)
+- Supports both NuGet and PowerShell Gallery publishing
+
 ### Function Naming Convention
 
 Use consistent BPERP prefix for all functions:
@@ -116,6 +137,11 @@ Use consistent BPERP prefix for all functions:
 - `Set-BPERPDatabasePermissions`
 - `Stop-BPERPServices`
 - `Restart-BPERPServers`
+
+Private functions also follow BPERP naming:
+- `Get-BPERPEnvironmentConfig`
+- `Show-BPERPConfiguration`
+- `Write-BPERPLog`
 
 ### Testing
 
@@ -196,6 +222,12 @@ Follow the standards in CONTRIBUTING.md:
 - ✅ VSCode configuration standardized for organization
 - ✅ Removed temporary migration scripts
 - ✅ Fixed PSScriptAnalyzer CI issues with separated jobs
+- ✅ Implemented BPC.Admin build patterns using PowerShellBuild module
+- ✅ Reorganized module structure from src/ to root directory
+- ✅ Fixed all test failures and skipped integration tests requiring parameters
+- ✅ Consolidated PSScriptAnalyzer settings into single file
+- ✅ Configured WSL (Debian) as default terminal for Windows
+- ✅ Organized documentation files according to GitHub best practices
 
 ### Pending Tasks
 - ⏳ Create pull request to merge `feature/module-conversion` to `main`

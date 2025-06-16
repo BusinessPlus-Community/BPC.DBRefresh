@@ -50,7 +50,7 @@ Param (
 )
 
 # Import the module
-$modulePath = Join-Path $PSScriptRoot "src\BPC.DBRefresh"
+$modulePath = Join-Path $PSScriptRoot "BPC.DBRefresh"
 if (Test-Path $modulePath) {
     Import-Module $modulePath -Force
 } else {

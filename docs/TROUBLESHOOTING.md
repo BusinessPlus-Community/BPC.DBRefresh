@@ -29,11 +29,49 @@ $PSVersionTable.PSVersion
 }
 
 # Test SQL connectivity
-$config = Get-BPlusEnvironmentConfig -Environment "TEST" -ConfigPath ".\config\BPC.DBRefresh.ini"
+$config = Get-BPERPEnvironmentConfig -Environment "TEST" -ConfigPath ".\config\BPC.DBRefresh.ini"
 Test-DbaConnection -SqlInstance $config.SQLInstance
 ```
 
 ## Common Issues and Solutions
+
+### WSL/Linux Compatibility
+
+#### Symptom
+```
+Import-Module : The specified module '/path/to/dbatools/bin/smo/bogus.dll' was not loaded because no valid module file was found
+```
+
+#### Cause
+This error occurs on WSL/Linux systems due to case-sensitivity issues with dbatools 1.x. The module tries to load `bogus.dll` (lowercase) but the file is named `Bogus.dll` (uppercase).
+
+#### Solutions
+
+1. **Upgrade to dbatools 2.0+** (Recommended):
+```powershell
+# Ensure you're using PowerShell Core 7.2+
+$PSVersionTable.PSVersion
+
+# Update dbatools
+Update-Module dbatools -Force -MinimumVersion 2.0.0
+
+# Verify version
+Get-Module dbatools -ListAvailable
+```
+
+2. **Manual workaround for dbatools 1.x**:
+```bash
+# Navigate to dbatools module directory
+cd ~/.local/share/powershell/Modules/dbatools/1.0.0/bin/smo/
+
+# Rename file to lowercase
+mv Bogus.dll bogus.dll
+```
+
+3. **Platform Requirements**:
+   - **Windows**: PowerShell 5.1+ or PowerShell Core 7.2+
+   - **Linux/macOS/WSL**: PowerShell Core 7.2+ (required)
+   - **dbatools**: Version 2.0+ for cross-platform support
 
 ### Module Import Failures
 

@@ -48,7 +48,7 @@ $RequiredModules = @(
     },
     @{
         Name = 'dbatools'
-        MinimumVersion = '1.0.0'
+        MinimumVersion = '2.0.0'
         Repository = 'PSGallery'
     },
     @{
@@ -62,12 +62,12 @@ $DevelopmentModules = @(
     # Build and test dependencies
     @{
         Name = 'Pester'
-        MinimumVersion = '5.0.0'
+        MinimumVersion = '5.7.1'
         Repository = 'PSGallery'
     },
     @{
         Name = 'PSScriptAnalyzer'
-        MinimumVersion = '1.19.1'
+        MinimumVersion = '1.22.0'
         Repository = 'PSGallery'
     }
 )
@@ -218,7 +218,7 @@ foreach ($module in $AllModules) {
             Write-RequirementInfo "Trying alternative installation for PsIni..."
             try {
                 # Sometimes specifying exact version helps
-                Install-Module -Name PsIni -RequiredVersion 3.1.3 -Repository PSGallery -Scope $Scope -Force -AllowClobber -ErrorAction Stop
+                Install-Module -Name PsIni -RequiredVersion 3.1.2 -Repository PSGallery -Scope $Scope -Force -AllowClobber -ErrorAction Stop
                 Write-RequirementSuccess "PsIni installed via alternative method"
                 $failedModules = $failedModules | Where-Object { $_ -ne 'PsIni' }
             }
