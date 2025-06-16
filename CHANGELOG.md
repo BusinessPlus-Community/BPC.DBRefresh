@@ -9,10 +9,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- PowerShellBuild module integration for standardized builds
+- Comprehensive Docker container support with multi-stage builds
+- WSL2 documentation and full development support
+- Local CI testing capabilities with `Test-LocalCI.ps1`
+- Container helper scripts for development environment
+- `.env.example` template for SQL Server configuration
+- Container-specific documentation (CONTAINER-USAGE.md, WSL-SETUP.md, QUICKSTART-CONTAINER.md)
+- GitHub Actions local runner support with act
+
+### Changed
+
+- Module structure reorganized to root level (removed src/ directory)
+- Consolidated PSScriptAnalyzer settings into single file
+- Updated PSLogging dependency to version 2.5.2 (from non-existent 2.2.0)
+- VSCode configuration standardized for organization
+- Build system now uses psakeFile.ps1 with PowerShellBuild
+- CI/CD pipeline separated into style and compatibility jobs
+
+### Fixed
+
+- All PSScriptAnalyzer warnings resolved
+- CI/CD pipeline failures related to module dependencies
+- Module loading issues with Classes directory
+- PSScriptAnalyzer settings path in CI workflow
+
+### Documentation
+
 - Comprehensive documentation and GitHub repository structure
 - Issue and pull request templates
 - Community contribution guidelines
 - Security policy for vulnerability reporting
+- Updated CLAUDE.md with development notes and requirements
+- Enhanced ROADMAP.md with version planning
 
 ## [1.3.0] - Previous Release
 

@@ -33,13 +33,43 @@ Enhancement suggestions are welcome! Please provide:
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Make your changes
-4. Test thoroughly in a non-production environment
-5. Commit your changes (`git commit -m 'Add amazing feature'`)
-6. Push to your branch (`git push origin feature/amazing-feature`)
-7. Open a Pull Request
+3. Install dependencies (`./build.ps1 -Bootstrap`)
+4. Make your changes
+5. Run tests and linting (`./build.ps1 -Task All`)
+6. Test thoroughly in a non-production environment
+7. Commit your changes (`git commit -m 'Add amazing feature'`)
+8. Push to your branch (`git push origin feature/amazing-feature`)
+9. Open a Pull Request
 
 ## Development Guidelines
+
+### Development Environment Setup
+
+#### Traditional Setup
+```powershell
+# Clone the repository
+git clone https://github.com/businessplus-community/BPC.DBRefresh.git
+cd BPC.DBRefresh
+
+# Install dependencies
+./build.ps1 -Bootstrap
+
+# Run tests to verify setup
+./build.ps1 -Task Test
+```
+
+#### Container Development (Recommended)
+```powershell
+# Copy environment template
+cp .env.example .env
+# Edit .env with your SQL Server details
+
+# Start development environment
+./scripts/Start-DevEnvironment.ps1
+
+# Test container setup
+./scripts/Test-ContainerSetup.ps1
+```
 
 ### PowerShell Style Guide
 
@@ -48,31 +78,57 @@ Enhancement suggestions are welcome! Please provide:
 - Include comment-based help for all functions
 - Use verbose parameter names (avoid aliases in scripts)
 - Follow [PowerShell Best Practices](https://poshcode.gitbook.io/powershell-practice-and-style/)
+- All functions must use the `BPERP` prefix (e.g., `Invoke-BPERPDatabaseRestore`)
 
 ### Code Standards
 
-- Maintain the existing code structure
+- Maintain the existing module structure (root level, not src/)
 - Add inline comments for complex logic
-- Update the script version number for significant changes
+- Update the module version in BPC.DBRefresh.psd1 for releases
 - Ensure all database operations include error handling
 - Log all significant operations using the PSLogging module
+- Follow PSScriptAnalyzer rules (run `./build.ps1 -Task Analyze`)
+- **IMPORTANT**: Always run `./build.ps1` before committing to ensure all tests pass
 
 ### Testing
 
 Before submitting:
 
-1. Test the script with various parameter combinations
-2. Verify all database operations complete successfully
-3. Ensure email notifications work (if configured)
-4. Check that logging captures all operations
-5. Test error scenarios (missing files, access denied, etc.)
+1. Run the full build pipeline:
+   ```powershell
+   ./build.ps1 -Task All
+   ```
+
+2. Run tests locally:
+   ```powershell
+   # Unit tests
+   Invoke-Pester -Path ./tests/Unit
+   
+   # Integration tests (requires test environment)
+   Invoke-Pester -Path ./tests/Integration
+   ```
+
+3. Test CI locally:
+   ```powershell
+   ./scripts/Test-LocalCI.ps1
+   ```
+
+4. Verify functionality:
+   - Test with various parameter combinations
+   - Verify all database operations complete successfully
+   - Ensure email notifications work (if configured)
+   - Check that logging captures all operations
+   - Test error scenarios (missing files, access denied, etc.)
 
 ### Documentation
 
 - Update README.md if adding new features or parameters
 - Update CLAUDE.md if changing architecture or workflow
+- Update CHANGELOG.md with your changes under [Unreleased]
 - Include clear commit messages
 - Document any new configuration options in the sample INI file
+- Update relevant documentation in the docs/ folder
+- Add examples to the examples/ folder for new features
 
 ## Commit Message Guidelines
 

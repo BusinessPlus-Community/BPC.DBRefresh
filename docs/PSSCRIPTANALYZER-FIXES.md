@@ -26,7 +26,7 @@ $PSBPreference.Test.ScriptAnalysis.SettingsPath = './tests/PSScriptAnalyzerSetti
 @{ModuleName = 'PSLogging'; ModuleVersion = '2.5.2'}
 
 # After  
-@{ModuleName = 'PSLogging'; ModuleVersion = '2.2.0' }
+@{ModuleName = 'PSLogging'; ModuleVersion = '2.5.2' }
 ```
 
 ### 2. PSUseOutputTypeCorrectly

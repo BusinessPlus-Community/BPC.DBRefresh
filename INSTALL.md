@@ -35,7 +35,7 @@ Install-Module -Name BPC.DBRefresh -Scope AllUsers
 3. Import the module:
 
    ```powershell
-   Import-Module "C:\path\to\extracted\src\BPC.DBRefresh"
+   Import-Module "C:\path\to\extracted\BPC.DBRefresh"
    ```
 
 ### Method 3: From Source
@@ -47,16 +47,16 @@ Install-Module -Name BPC.DBRefresh -Scope AllUsers
    cd BPC.DBRefresh
    ```
 
-2. Install dependencies:
+2. Install dependencies using the build script:
 
    ```powershell
-   Install-Module -Name PSLogging, dbatools, PsIni -Force -Scope CurrentUser
+   ./build.ps1 -Bootstrap
    ```
 
 3. Import the module:
 
    ```powershell
-   Import-Module .\src\BPC.DBRefresh -Force
+   Import-Module .\BPC.DBRefresh -Force
    ```
 
 ### Method 4: Development Installation
@@ -64,11 +64,36 @@ Install-Module -Name BPC.DBRefresh -Scope AllUsers
 For contributors and developers:
 
 1. Fork and clone the repository
-2. Create a symbolic link to your PowerShell modules directory:
+2. Install all development dependencies:
+
+   ```powershell
+   ./build.ps1 -Bootstrap
+   ```
+
+3. Create a symbolic link to your PowerShell modules directory (optional):
 
    ```powershell
    $modulePath = "$env:USERPROFILE\Documents\PowerShell\Modules\BPC.DBRefresh"
-   New-Item -ItemType SymbolicLink -Path $modulePath -Target ".\src\BPC.DBRefresh"
+   New-Item -ItemType SymbolicLink -Path $modulePath -Target ".\BPC.DBRefresh"
+   ```
+
+### Method 5: Container Installation
+
+For containerized environments:
+
+1. Install Docker Desktop or Docker Engine
+2. Clone the repository
+3. Copy and configure environment:
+
+   ```powershell
+   cp .env.example .env
+   # Edit .env with SQL Server details
+   ```
+
+4. Start the container:
+
+   ```powershell
+   ./scripts/Start-DevEnvironment.ps1
    ```
 
 ## Dependency Installation
@@ -80,9 +105,12 @@ The module requires these PowerShell modules:
 Set-PSRepository PSGallery -InstallationPolicy Trusted
 
 # Install all dependencies
-Install-Module -Name PSLogging -MinimumVersion 2.5.2
-Install-Module -Name dbatools -MinimumVersion 1.0.0
-Install-Module -Name PsIni -MinimumVersion 3.1.2
+Install-Module -Name PSLogging -RequiredVersion 2.5.2
+Install-Module -Name dbatools -RequiredVersion 2.1.31
+Install-Module -Name PsIni -RequiredVersion 3.1.2
+
+# Or use the build script (recommended)
+./build.ps1 -Bootstrap
 ```
 
 ## Configuration Setup
@@ -125,7 +153,15 @@ For environments without internet access:
 1. On a connected machine, save the modules:
 
    ```powershell
-   Save-Module -Name BPC.DBRefresh, PSLogging, dbatools, PsIni -Path C:\OfflineModules
+   # Save the module and its dependencies
+   Save-Module -Name PSLogging -RequiredVersion 2.5.2 -Path C:\OfflineModules
+   Save-Module -Name dbatools -RequiredVersion 2.1.31 -Path C:\OfflineModules
+   Save-Module -Name PsIni -RequiredVersion 3.1.2 -Path C:\OfflineModules
+   
+   # Also save development dependencies if needed
+   Save-Module -Name Pester -RequiredVersion 5.7.1 -Path C:\OfflineModules
+   Save-Module -Name PSScriptAnalyzer -RequiredVersion 1.22.0 -Path C:\OfflineModules
+   Save-Module -Name PowerShellBuild -RequiredVersion 0.6.1 -Path C:\OfflineModules
    ```
 
 2. Copy the `C:\OfflineModules` folder to the offline machine

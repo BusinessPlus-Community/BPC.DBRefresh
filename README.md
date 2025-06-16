@@ -22,19 +22,26 @@ This script automates the process of refreshing data in BusinessPlus test enviro
 ## Prerequisites
 
 ### For Traditional Installation
-- PowerShell 3.0 or higher
+- PowerShell 5.1 or higher (PowerShell 7+ recommended)
 - Required PowerShell modules:
-  - [PSLogging](https://www.powershellgallery.com/packages/PSLogging)
-  - [dbatools](https://dbatools.io/)
-  - [PsIni](https://www.powershellgallery.com/packages/PsIni)
+  - [PSLogging](https://www.powershellgallery.com/packages/PSLogging) v2.5.2+
+  - [dbatools](https://dbatools.io/) v2.1.31+
+  - [PsIni](https://www.powershellgallery.com/packages/PsIni) v3.1.2+
 - SQL Server access with appropriate permissions
 - Access to BusinessPlus environment servers
 
-### For Container Installation
+### For Container Installation (Recommended)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) or Docker Engine
 - Docker Compose v2.0+
 - PowerShell 7+ (for running scripts)
 - WSL2 (recommended for Windows users) - see [WSL Setup Guide](docs/WSL-SETUP.md)
+
+### For Development
+- All of the above plus:
+  - [Pester](https://pester.dev/) v5.7.1+ (for testing)
+  - [PSScriptAnalyzer](https://github.com/PowerShell/PSScriptAnalyzer) v1.22.0+ (for linting)
+  - [PowerShellBuild](https://github.com/psake/PowerShellBuild) v0.6.1+ (for builds)
+  - Git for version control
 
 ## Installation
 
@@ -46,9 +53,15 @@ This script automates the process of refreshing data in BusinessPlus test enviro
    cd BPC.DBRefresh
    ```
 
-2. Install required PowerShell modules:
+2. Install dependencies:
    ```powershell
-   Install-Module -Name PSLogging, dbatools, PsIni -Scope CurrentUser
+   # Install required modules and development dependencies
+   ./build.ps1 -Bootstrap
+   
+   # Or manually install just runtime modules
+   Install-Module -Name PSLogging -RequiredVersion 2.5.2 -Scope CurrentUser
+   Install-Module -Name dbatools -RequiredVersion 2.1.31 -Scope CurrentUser
+   Install-Module -Name PsIni -RequiredVersion 3.1.2 -Scope CurrentUser
    ```
 
 3. Copy and configure the INI file:
@@ -83,15 +96,26 @@ See [Container Usage Guide](docs/CONTAINER-USAGE.md) for detailed container inst
 This project follows PowerShell module best practices:
 
 ```
-├── src/BPC.DBRefresh/     # Module source code
+├── BPC.DBRefresh/          # Module source code (root level)
 │   ├── BPC.DBRefresh.psd1 # Module manifest
 │   ├── BPC.DBRefresh.psm1 # Module file
 │   ├── Public/             # Public functions
-│   └── Private/            # Private functions
+│   ├── Private/            # Private functions
+│   └── Classes/            # PowerShell classes (future use)
+├── container/              # Docker container configuration
+│   ├── Dockerfile          # Multi-stage build
+│   ├── docker-compose.yml  # Main compose file
+│   └── README.md           # Container documentation
+├── scripts/                # Helper scripts
+│   ├── Start-DevEnvironment.ps1
+│   ├── Test-LocalCI.ps1
+│   └── Test-ContainerSetup.ps1
 ├── config/                 # Configuration files
 ├── examples/               # Usage examples
 ├── tests/                  # Pester tests
 ├── docs/                   # Documentation
+├── build.ps1               # Build script
+├── psakeFile.ps1           # Build configuration
 └── BPC.DBRefresh.ps1       # Original script (for compatibility)
 ```
 
@@ -104,8 +128,11 @@ This project follows PowerShell module best practices:
 .\BPC.DBRefresh.ps1 -BPEnvironment <ENV_NAME> -ifasFilePath <PATH> -syscatFilePath <PATH>
 
 # New module method (recommended)
-Import-Module .\src\BPC.DBRefresh
+Import-Module .\BPC.DBRefresh
 Invoke-BPERPDatabaseRestore -BPEnvironment <ENV_NAME> -ifasFilePath <PATH> -syscatFilePath <PATH>
+
+# Container method
+docker compose run --rm bpc-dbrefresh pwsh -Command "Invoke-BPERPDatabaseRestore -BPEnvironment <ENV_NAME> -ifasFilePath <PATH> -syscatFilePath <PATH>"
 ```
 
 ### With All Options
@@ -177,18 +204,45 @@ Ensure you:
 - Test in a non-production environment first
 - Keep backup files and configuration secure
 
+## Development
+
+### Building the Module
+
+```powershell
+# Install dependencies and run all build tasks
+./build.ps1 -Bootstrap
+
+# Run specific tasks
+./build.ps1 -Task Test      # Run tests
+./build.ps1 -Task Analyze   # Run PSScriptAnalyzer
+./build.ps1 -Task Build     # Build the module
+```
+
+### Testing Locally
+
+```powershell
+# Run CI tests locally
+./scripts/Test-LocalCI.ps1
+
+# Test container setup
+./scripts/Test-ContainerSetup.ps1
+```
+
 ## Troubleshooting
 
 ### Common Issues
 
-1. **Module not found errors**: Ensure all required PowerShell modules are installed
+1. **Module not found errors**: Run `./build.ps1 -Bootstrap` to install dependencies
 2. **Access denied errors**: Verify SQL Server and server permissions
 3. **Backup file not found**: Check file paths and network connectivity
 4. **Email notification failures**: Verify SMTP settings in configuration
+5. **Container issues**: See [Container Troubleshooting](docs/CONTAINER-USAGE.md#troubleshooting)
 
 ### Debug Mode
 
-For detailed troubleshooting, check the log file at `BPC.DBRefresh.log`.
+For detailed troubleshooting:
+- Check the log file at `BPC.DBRefresh.log`
+- See [Troubleshooting Guide](docs/TROUBLESHOOTING.md)
 
 ## Contributing
 
