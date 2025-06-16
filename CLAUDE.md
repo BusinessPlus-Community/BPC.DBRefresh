@@ -69,6 +69,12 @@ Invoke-Pester -Path .\tests
 
 # Lint code
 .\build.ps1 -Task Analyze
+
+# Run in container with local SQL Server
+.\scripts\Start-DevEnvironment.ps1
+
+# Run CI tests locally
+.\scripts\Test-LocalCI.ps1
 ```
 
 ### Parameters
@@ -160,6 +166,22 @@ The project uses GitHub Actions for:
 - Security scanning with CodeQL
 - Automated releases to PowerShell Gallery
 - Pre-commit hooks for code quality
+
+### Container Support
+
+The module can run in Docker containers for:
+- Local development with isolated environment
+- CI/CD testing without GitHub Actions minutes
+- Integration with existing SQL Server instances
+- **Full WSL2 support** for Windows developers
+
+Container files are organized in the `container/` directory:
+- `Dockerfile` - Multi-stage build for the module
+- `docker-compose.local-sql.yml` - Uses local SQL Server via .env
+- `docker-compose.ci.yml` - Automated testing configuration
+- See `container/README.md` for detailed usage
+
+WSL users should refer to `docs/WSL-SETUP.md` for specific configuration instructions.
 
 ## Architecture
 

@@ -26,6 +26,7 @@ function Build-EmailHTML {
       $html = Build-EmailHTML -Config $config -BackupFiles $files -StartTime $start -EndTime $end
   #>
     [CmdletBinding()]
+    [OutputType([string])]
     param(
         [Parameter(Mandatory = $true)]
         [hashtable]$Config,

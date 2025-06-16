@@ -30,7 +30,7 @@ function Invoke-BPERPDatabaseRestoreFiles {
         Write-BPERPLog -Message "Restoring ASPNET database from: $($BackupFiles.ASPNET)" -LogPath $script:LogPath
 
         $fileMapping = @{
-            'aspnetdb'     = Join-Path $Config.DataFilePath "$($Config.ASPNETdb).mdf"
+            'aspnetdb' = Join-Path $Config.DataFilePath "$($Config.ASPNETdb).mdf"
             'aspnetdb_log' = Join-Path $Config.LogFilePath "$($Config.ASPNETdb)_log.ldf"
         }
 
@@ -57,8 +57,8 @@ function Invoke-BPERPDatabaseRestoreFiles {
 
     $fileMapping = @{
         'NUCATSQL_Data' = Join-Path $Config.DataFilePath "$($Config.SYSCATdb)_DATA.mdf"
-        'NUCATSQL_Log'  = Join-Path $Config.LogFilePath "$($Config.SYSCATdb)_Log.ldf"
-        'NUCATSQL_MMO'  = Join-Path $Config.DataFilePath "$($Config.SYSCATdb)_MMO_DATA.ndf"
+        'NUCATSQL_Log' = Join-Path $Config.LogFilePath "$($Config.SYSCATdb)_Log.ldf"
+        'NUCATSQL_MMO' = Join-Path $Config.DataFilePath "$($Config.SYSCATdb)_MMO_DATA.ndf"
     }
 
     try {
@@ -82,12 +82,12 @@ function Invoke-BPERPDatabaseRestoreFiles {
     Write-BPERPLog -Message "Restoring IFAS database from: $($BackupFiles.IFAS)" -LogPath $script:LogPath
 
     $fileMapping = @{
-        'IFASSQL_Data'           = Join-Path $Config.DataFilePath "$($Config.IFASdb)_DATA.mdf"
-        'IFASSQL_Log'            = Join-Path $Config.LogFilePath "$($Config.IFASdb)_Log.ldf"
+        'IFASSQL_Data' = Join-Path $Config.DataFilePath "$($Config.IFASdb)_DATA.mdf"
+        'IFASSQL_Log' = Join-Path $Config.LogFilePath "$($Config.IFASdb)_Log.ldf"
         'FG01IFASSQL_ARC01_Data' = Join-Path $Config.DataFilePath "$($Config.IFASdb)_ARC01_DATA.ndf"
         'FG01IFASSQL_LRG01_Data' = Join-Path $Config.DataFilePath "$($Config.IFASdb)_LRG01_DATA.ndf"
         'FG01IFASSQL_REG01_Data' = Join-Path $Config.DataFilePath "$($Config.IFASdb)_REG01_DATA.ndf"
-        'IFASSQL_MMO'            = Join-Path $Config.DataFilePath "$($Config.IFASdb)_MMO_DATA.ndf"
+        'IFASSQL_MMO' = Join-Path $Config.DataFilePath "$($Config.IFASdb)_MMO_DATA.ndf"
     }
 
     try {

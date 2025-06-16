@@ -17,9 +17,9 @@
 Import-Module BPC.DBRefresh -ErrorAction Stop
 
 # Basic restore with required parameters only
-Invoke-BPERPDatabaseRestore -BPEnvironment "TEST" `
-                     -ifasFilePath "\\backup-server\backups\IFAS_PROD_20240115.bak" `
-                     -syscatFilePath "\\backup-server\backups\SYSCAT_PROD_20240115.bak"
+Invoke-BPERPDatabaseRestore -BPEnvironment 'TEST' `
+    -ifasFilePath '\\backup-server\backups\IFAS_PROD_20240115.bak' `
+    -syscatFilePath '\\backup-server\backups\SYSCAT_PROD_20240115.bak'
 
 # The script will:
 # 1. Stop BusinessPlus services on all TEST environment servers

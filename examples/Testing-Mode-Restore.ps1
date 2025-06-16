@@ -16,14 +16,14 @@ Import-Module BPC.DBRefresh -ErrorAction Stop
 
 # Restore with testing mode enabled
 $restoreParams = @{
-    BPEnvironment   = "QA"
-    ifasFilePath    = "\\backup-server\backups\IFAS_PROD_20240115.bak"
-    syscatFilePath  = "\\backup-server\backups\SYSCAT_PROD_20240115.bak"
-    aspnetFilePath  = "\\backup-server\backups\ASPNET_PROD_20240115.bak"
-    testingMode     = $true  # Enable testing mode to preserve test accounts
+    BPEnvironment  = 'QA'
+    ifasFilePath   = '\\backup-server\backups\IFAS_PROD_20240115.bak'
+    syscatFilePath = '\\backup-server\backups\SYSCAT_PROD_20240115.bak'
+    aspnetFilePath = '\\backup-server\backups\ASPNET_PROD_20240115.bak'
+    testingMode    = $true  # Enable testing mode to preserve test accounts
 }
 
 Invoke-BPERPDatabaseRestore @restoreParams
 
-Write-Host "Restore completed with testing mode enabled." -ForegroundColor Green
-Write-Host "Additional test accounts have been preserved for QA testing." -ForegroundColor Yellow
+Write-Host 'Restore completed with testing mode enabled.' -ForegroundColor Green
+Write-Host 'Additional test accounts have been preserved for QA testing.' -ForegroundColor Yellow

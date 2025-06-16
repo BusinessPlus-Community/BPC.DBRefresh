@@ -1,0 +1,91 @@
+# Docker Compose configuration for CI/CD testing
+# This configuration includes SQL Server for isolated testing
+# Usage: docker compose -f docker-compose.ci.yml up
+
+version: '3.8'
+
+services:
+  # BPC.DBRefresh module container
+  bpc-dbrefresh-ci:
+    build:
+      context: ..
+      dockerfile: container/Dockerfile
+      args:
+        RUN_TESTS: "true"  # Always run tests in CI
+    image: bpc-dbrefresh:ci
+    container_name: bpc-dbrefresh-ci
+    volumes:
+      - ../tests:/workspace/tests:ro
+      - test-results:/workspace/TestResults
+    environment:
+      # SQL Server connection
+      - SQLSERVER_HOST=sqlserver-ci
+      - SQLSERVER_PORT=1433
+      - SQLSERVER_USERNAME=sa
+      - SQLSERVER_PASSWORD=CI_Test_Password123!
+      - SQLSERVER_DATABASE=master
+      # Test databases
+      - TEST_IFAS_DATABASE=CI_TEST_IFAS
+      - TEST_SYSCAT_DATABASE=CI_TEST_SYSCAT
+      - TEST_ASPNET_DATABASE=CI_TEST_ASPNET
+      # CI mode
+      - CI=true
+      - TESTING_MODE=true
+    depends_on:
+      sqlserver-ci:
+        condition: service_healthy
+    networks:
+      - ci-network
+    command: |
+      pwsh -Command "
+        Write-Host 'Running CI Tests...' -ForegroundColor Green
+        Import-Module Pester
+        
+        # Wait for SQL Server to be fully ready
+        Start-Sleep -Seconds 10
+        
+        # Run tests with coverage
+        $$config = New-PesterConfiguration
+        $$config.Run.Path = './tests'
+        $$config.TestResult.Enabled = $$true
+        $$config.TestResult.OutputPath = '/workspace/TestResults/test-results.xml'
+        $$config.TestResult.OutputFormat = 'NUnitXml'
+        $$config.CodeCoverage.Enabled = $$true
+        $$config.CodeCoverage.Path = './BPC.DBRefresh/**/*.ps1'
+        $$config.CodeCoverage.OutputPath = '/workspace/TestResults/coverage.xml'
+        $$config.CodeCoverage.OutputFormat = 'JaCoCo'
+        
+        $$results = Invoke-Pester -Configuration $$config
+        
+        if ($$results.Failed -gt 0) {
+          Write-Error 'Tests failed!'
+          exit 1
+        } else {
+          Write-Host 'All tests passed!' -ForegroundColor Green
+          exit 0
+        }
+      "
+
+  # SQL Server for CI testing
+  sqlserver-ci:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: bpc-sqlserver-ci
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=CI_Test_Password123!
+      - MSSQL_PID=Developer
+    networks:
+      - ci-network
+    healthcheck:
+      test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "CI_Test_Password123!", "-Q", "SELECT 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+networks:
+  ci-network:
+    driver: bridge
+
+volumes:
+  test-results:

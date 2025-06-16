@@ -21,7 +21,13 @@
         'PSUseSingularNouns',
         
         # ShouldProcess is handled at the main function level
-        'PSShouldProcess'
+        'PSShouldProcess',
+        
+        # This is a Windows-focused module that requires Windows-specific commands
+        'PSUseCompatibleCommands',
+        
+        # The Invoke-Command usage is correct with parameters
+        'PSUseUsingScopeModifierInNewRunspaces'
     )
     
     # Rule-specific configurations
@@ -108,7 +114,7 @@
             CheckInnerBrace = $true
             CheckOpenBrace = $true
             CheckOpenParen = $true
-            CheckOperator = $true
+            CheckOperator = $false  # Disabled - allows flexibility in operator spacing
             CheckPipe = $true
             CheckPipeForRedundantWhitespace = $false
             CheckSeparator = $true

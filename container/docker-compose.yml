@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  # BPC.DBRefresh module container
+  bpc-dbrefresh:
+    build:
+      context: ..
+      dockerfile: container/Dockerfile
+      args:
+        RUN_TESTS: "${RUN_TESTS:-false}"
+    image: bpc-dbrefresh:latest
+    container_name: bpc-dbrefresh
+    volumes:
+      - ../config:/data/config:ro
+      - ../examples:/data/examples:ro
+      - ${BACKUP_PATH:-./backups}:/data/backups
+      - ${LOG_PATH:-./logs}:/data/logs
+    environment:
+      # SQL Server connection from .env or external SQL Server
+      - SQLSERVER_HOST=${SQLSERVER_HOST:-localhost}
+      - SQLSERVER_PORT=${SQLSERVER_PORT:-1433}
+      - SQLSERVER_USERNAME=${SQLSERVER_USERNAME:-sa}
+      - SQLSERVER_PASSWORD=${SQLSERVER_PASSWORD}
+      - SQLSERVER_DATABASE=${SQLSERVER_DATABASE:-master}
+      - SQLSERVER_AUTH=${SQLSERVER_AUTH:-SQL}
+      # Test databases
+      - TEST_IFAS_DATABASE=${TEST_IFAS_DATABASE:-TEST_IFAS}
+      - TEST_SYSCAT_DATABASE=${TEST_SYSCAT_DATABASE:-TEST_SYSCAT}
+      - TEST_ASPNET_DATABASE=${TEST_ASPNET_DATABASE:-TEST_ASPNET}
+      # Module settings
+      - TESTING_MODE=${TESTING_MODE:-false}
+    network_mode: "host"  # Use host network to access local SQL Server
+    stdin_open: true
+    tty: true
+    profiles:
+      - default
+      - local-sql
+
+  # Optional: SQL Server for testing (use when no local SQL Server)
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: bpc-sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${SQLSERVER_PASSWORD:-YourStrong@Passw0rd}
+      - MSSQL_PID=Developer
+    ports:
+      - "${SQLSERVER_PORT:-1433}:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+      - ${BACKUP_PATH:-./backups}:/var/opt/mssql/backup
+    networks:
+      - bpc-network
+    healthcheck:
+      test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "${SQLSERVER_PASSWORD:-YourStrong@Passw0rd}", "-Q", "SELECT 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    profiles:
+      - with-sql
+
+  # GitHub Actions runner (optional)
+  github-runner:
+    image: myoung34/github-runner:latest
+    container_name: bpc-github-runner
+    environment:
+      - REPO_URL=https://github.com/BusinessPlus-Community/BPC.DBRefresh
+      - RUNNER_NAME=docker-runner
+      - RUNNER_WORKDIR=/tmp/runner/work
+      - RUNNER_GROUP=default
+      - LABELS=linux,x64,docker
+      # Add your runner token here or use secrets
+      # - RUNNER_TOKEN=${RUNNER_TOKEN}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - runner-work:/tmp/runner/work
+    networks:
+      - bpc-network
+    profiles:
+      - runner
+
+networks:
+  bpc-network:
+    driver: bridge
+
+volumes:
+  sqlserver-data:
+  db-backups:
+  runner-work:

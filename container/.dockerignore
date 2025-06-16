@@ -1,0 +1,57 @@
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# GitHub
+.github/
+!.github/workflows/
+
+# Build output
+Output/
+out/
+bin/
+obj/
+releases/
+
+# Test results
+*.xml
+TestResults/
+coverage/
+coverage.xml
+
+# Logs
+*.log
+logs/
+
+# Local config
+config/*.ini
+!config/*-sample.ini
+
+# Development files
+.vscode/
+.idea/
+*.code-workspace
+
+# Documentation builds
+_site/
+.jekyll-cache/
+
+# Context and temp files
+context/
+temp/
+tmp/
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# PowerShell
+*.ps1xml
+
+# Docker files (don't copy into context)
+Dockerfile
+docker-compose*.yml
+.dockerignore

@@ -17,6 +17,7 @@ function Get-BPERPEnvironmentConfig {
       $config = Get-BPERPEnvironmentConfig -Environment 'TEST' -ConfigPath 'C:\config\BPC.DBRefresh.ini'
   #>
     [CmdletBinding()]
+    [OutputType([hashtable])]
     param(
         [Parameter(Mandatory = $true)]
         [string]$Environment,

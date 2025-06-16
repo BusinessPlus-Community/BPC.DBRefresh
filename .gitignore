@@ -8,6 +8,11 @@ BPC.DBRefresh.ini
 *.ini
 !BPC.DBRefresh-sample.ini
 
+# Environment files
+.env
+.env.local
+.env.*.local
+
 # Backup files
 *.bak
 *.backup

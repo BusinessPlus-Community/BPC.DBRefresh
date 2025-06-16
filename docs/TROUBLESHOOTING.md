@@ -2,6 +2,8 @@
 
 This guide helps diagnose and resolve common issues with the BusinessPlus Test Environment Refresh tool.
 
+> **WSL Users**: For WSL-specific issues, see the [WSL Setup Guide](WSL-SETUP.md).
+
 ## Diagnostic Steps
 
 ### 1. Enable Verbose Logging

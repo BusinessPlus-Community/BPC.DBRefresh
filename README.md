@@ -21,6 +21,7 @@ This script automates the process of refreshing data in BusinessPlus test enviro
 
 ## Prerequisites
 
+### For Traditional Installation
 - PowerShell 3.0 or higher
 - Required PowerShell modules:
   - [PSLogging](https://www.powershellgallery.com/packages/PSLogging)
@@ -29,7 +30,15 @@ This script automates the process of refreshing data in BusinessPlus test enviro
 - SQL Server access with appropriate permissions
 - Access to BusinessPlus environment servers
 
+### For Container Installation
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) or Docker Engine
+- Docker Compose v2.0+
+- PowerShell 7+ (for running scripts)
+- WSL2 (recommended for Windows users) - see [WSL Setup Guide](docs/WSL-SETUP.md)
+
 ## Installation
+
+### Traditional Installation
 
 1. Clone this repository:
    ```powershell
@@ -47,6 +56,27 @@ This script automates the process of refreshing data in BusinessPlus test enviro
    Copy-Item config\BPC.DBRefresh-sample.ini config\BPC.DBRefresh.ini
    # Edit config\BPC.DBRefresh.ini with your environment settings
    ```
+
+### Container Installation (Recommended)
+
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/businessplus-community/BPC.DBRefresh.git
+   cd BPC.DBRefresh
+   ```
+
+2. Copy and configure the environment file:
+   ```bash
+   cp .env.example .env
+   # Edit .env with your SQL Server connection details
+   ```
+
+3. Start the development environment:
+   ```powershell
+   ./scripts/Start-DevEnvironment.ps1
+   ```
+
+See [Container Usage Guide](docs/CONTAINER-USAGE.md) for detailed container instructions.
 
 ## Project Structure
 

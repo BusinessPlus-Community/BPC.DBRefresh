@@ -1,0 +1,46 @@
+# Docker Compose configuration for using local SQL Server
+# This configuration connects to your existing SQL Server instance
+# Usage: docker compose -f docker-compose.local-sql.yml up
+
+version: '3.8'
+
+services:
+  # BPC.DBRefresh module container only
+  bpc-dbrefresh:
+    build:
+      context: ..
+      dockerfile: container/Dockerfile
+      args:
+        RUN_TESTS: "${RUN_TESTS:-false}"
+    image: bpc-dbrefresh:latest
+    container_name: bpc-dbrefresh
+    volumes:
+      - ../config:/data/config:ro
+      - ../examples:/data/examples:ro
+      - ${BACKUP_PATH:-../backups}:/data/backups
+      - ${LOG_PATH:-../logs}:/data/logs
+    environment:
+      # SQL Server connection from .env
+      - SQLSERVER_HOST=${SQLSERVER_HOST}
+      - SQLSERVER_PORT=${SQLSERVER_PORT:-1433}
+      - SQLSERVER_USERNAME=${SQLSERVER_USERNAME}
+      - SQLSERVER_PASSWORD=${SQLSERVER_PASSWORD}
+      - SQLSERVER_DATABASE=${SQLSERVER_DATABASE:-master}
+      - SQLSERVER_AUTH=${SQLSERVER_AUTH:-SQL}
+      # Test databases
+      - TEST_IFAS_DATABASE=${TEST_IFAS_DATABASE:-TEST_IFAS}
+      - TEST_SYSCAT_DATABASE=${TEST_SYSCAT_DATABASE:-TEST_SYSCAT}
+      - TEST_ASPNET_DATABASE=${TEST_ASPNET_DATABASE:-TEST_ASPNET}
+      # Module settings
+      - TESTING_MODE=${TESTING_MODE:-false}
+    network_mode: "host"  # Required to access local SQL Server
+    stdin_open: true
+    tty: true
+    command: |
+      pwsh -NoExit -Command "
+        Write-Host 'BPC.DBRefresh Container Started' -ForegroundColor Green
+        Write-Host 'SQL Server: ${SQLSERVER_HOST}:${SQLSERVER_PORT}' -ForegroundColor Yellow
+        Import-Module BPC.DBRefresh
+        Write-Host 'Module loaded. Available commands:' -ForegroundColor Green
+        Get-Command -Module BPC.DBRefresh | Format-Table -AutoSize
+      "

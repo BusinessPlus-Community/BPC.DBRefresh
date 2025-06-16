@@ -43,9 +43,9 @@
 
     # Modules that must be imported into the global environment prior to importing this module
     RequiredModules = @(
-        @{ModuleName = 'PSLogging'; ModuleVersion = '2.2.0'}
-        @{ModuleName = 'dbatools'; ModuleVersion = '2.1.31'}
-        @{ModuleName = 'PsIni'; ModuleVersion = '3.1.2'}
+        @{ModuleName = 'PSLogging'; ModuleVersion = '2.2.0' }
+        @{ModuleName = 'dbatools'; ModuleVersion = '2.1.31' }
+        @{ModuleName = 'PsIni'; ModuleVersion = '3.1.2' }
     )
 
     # Assemblies that must be loaded prior to importing this module
@@ -65,15 +65,15 @@
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport = @(
-        'Copy-BPERPDashboardFiles'
-        'Get-BPERPDatabaseSettings'
-        'Restart-BPERPServers'
-        'Invoke-BPERPDatabaseRestore'
-        'Invoke-BPERPDatabaseRestoreFiles'
-        'Send-BPERPNotification'
-        'Set-BPERPConfiguration'
-        'Set-BPERPDatabasePermissions'
-        'Set-BPERPDatabaseSettings'
+        'Copy-BPERPDashboardFiles',
+        'Get-BPERPDatabaseSettings',
+        'Restart-BPERPServers',
+        'Invoke-BPERPDatabaseRestore',
+        'Invoke-BPERPDatabaseRestoreFiles',
+        'Send-BPERPNotification',
+        'Set-BPERPConfiguration',
+        'Set-BPERPDatabasePermissions',
+        'Set-BPERPDatabaseSettings',
         'Stop-BPERPServices'
     )
 
