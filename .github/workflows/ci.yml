@@ -28,7 +28,7 @@ jobs:
       - name: Run PSScriptAnalyzer
         shell: pwsh
         run: |
-          Invoke-ScriptAnalyzer -Path . -Recurse -ReportSummary -Settings PSScriptAnalyzerSettings.psd1 -ExcludeRule PSAvoidUsingWriteHost
+          Invoke-ScriptAnalyzer -Path . -Recurse -ReportSummary -Settings ./tests/PSScriptAnalyzerSettings.psd1
 
       - name: Run Tests with Coverage
         shell: pwsh
