@@ -23,7 +23,7 @@ RUN pwsh -Command "& { \
     Install-Module -Name BuildHelpers -RequiredVersion 2.0.16 -Force; \
     Install-Module -Name psake -RequiredVersion 4.9.0 -Force; \
     Install-Module -Name dbatools -RequiredVersion 2.1.31 -Force; \
-    Install-Module -Name PSLogging -RequiredVersion 2.2.0 -Force; \
+    Install-Module -Name PSLogging -RequiredVersion 2.5.2 -Force; \
     Install-Module -Name PsIni -RequiredVersion 3.1.2 -Force; \
     }"
 
@@ -43,7 +43,7 @@ FROM mcr.microsoft.com/powershell:lts-ubuntu-22.04
 RUN pwsh -Command "& { \
     Set-PSRepository -Name PSGallery -InstallationPolicy Trusted; \
     Install-Module -Name dbatools -RequiredVersion 2.1.31 -Force; \
-    Install-Module -Name PSLogging -RequiredVersion 2.2.0 -Force; \
+    Install-Module -Name PSLogging -RequiredVersion 2.5.2 -Force; \
     Install-Module -Name PsIni -RequiredVersion 3.1.2 -Force; \
     }"
 

@@ -80,7 +80,7 @@ The module requires these PowerShell modules:
 Set-PSRepository PSGallery -InstallationPolicy Trusted
 
 # Install all dependencies
-Install-Module -Name PSLogging -MinimumVersion 2.2.0
+Install-Module -Name PSLogging -MinimumVersion 2.5.2
 Install-Module -Name dbatools -MinimumVersion 1.0.0
 Install-Module -Name PsIni -MinimumVersion 3.1.2
 ```

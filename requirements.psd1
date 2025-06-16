@@ -8,7 +8,7 @@
     
     # Module dependencies (Required for the module to function)
     'PSLogging' = @{
-        Version = '2.2.0'
+        Version = '2.5.2'
         Parameters = @{
             SkipPublisherCheck = $true
         }

@@ -43,7 +43,7 @@ $RequiredModules = @(
     # Module dependencies (Required for runtime)
     @{
         Name = 'PSLogging'
-        MinimumVersion = '2.2.0'
+        MinimumVersion = '2.5.2'
         Repository = 'PSGallery'
     },
     @{

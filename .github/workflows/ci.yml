@@ -22,7 +22,7 @@ jobs:
       - name: Install and cache PowerShell modules
         uses: potatoqualitee/psmodulecache@v6.2.1
         with:
-          modules-to-cache: Pester:5.7.1, PSScriptAnalyzer:1.22.0, PowerShellBuild:0.6.1, BuildHelpers:2.0.16, psake:4.9.0, dbatools:2.1.31, PSLogging:2.2.0, PsIni:3.1.2
+          modules-to-cache: Pester:5.7.1, PSScriptAnalyzer:1.22.0, PowerShellBuild:0.6.1, BuildHelpers:2.0.16, psake:4.9.0, dbatools:2.1.31, PSLogging:2.5.2, PsIni:3.1.2
           shell: pwsh
 
       - name: Run PSScriptAnalyzer
@@ -74,7 +74,7 @@ jobs:
       - name: Install and cache PowerShell modules
         uses: potatoqualitee/psmodulecache@v6.2.1
         with:
-          modules-to-cache: Pester:5.7.1, PSScriptAnalyzer:1.22.0, PowerShellBuild:0.6.1, BuildHelpers:2.0.16, psake:4.9.0, dbatools:2.1.31, PSLogging:2.2.0, PsIni:3.1.2
+          modules-to-cache: Pester:5.7.1, PSScriptAnalyzer:1.22.0, PowerShellBuild:0.6.1, BuildHelpers:2.0.16, psake:4.9.0, dbatools:2.1.31, PSLogging:2.5.2, PsIni:3.1.2
           shell: pwsh
 
       - name: Build Module

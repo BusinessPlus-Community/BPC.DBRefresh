@@ -90,7 +90,7 @@ Invoke-Pester -Path .\tests
 
 The module requires these PowerShell modules:
 
-- PSLogging 2.2.0+
+- PSLogging 2.5.2+
 - dbatools 2.1.31+
 - PsIni 3.1.2+
 

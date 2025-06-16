@@ -43,7 +43,7 @@
 
     # Modules that must be imported into the global environment prior to importing this module
     RequiredModules = @(
-        @{ModuleName = 'PSLogging'; ModuleVersion = '2.2.0' }
+        @{ModuleName = 'PSLogging'; ModuleVersion = '2.5.2' }
         @{ModuleName = 'dbatools'; ModuleVersion = '2.1.31' }
         @{ModuleName = 'PsIni'; ModuleVersion = '3.1.2' }
     )
