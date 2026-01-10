@@ -1,0 +1,58 @@
+{
+  "$schema": "Configuration for BPlusDBRefresh - BusinessPlus Test Environment Database Refresh",
+  "_comment": "Copy this file to hpsBPlusDBRestore.json and configure for your environments",
+  "environments": {
+    "TEST1": {
+      "_comment": "Configuration for TEST1 environment - duplicate this block for additional environments",
+      "sqlServer": "TBPLUSSQL01.district.lcl",
+      "database": "businessplus",
+      "syscat": "syscat_db",
+      "aspnet": "aspnet_db",
+      "filepathData": "D:\\MSSQL14.MSSQLSERVER\\MSSQL\\Data",
+      "filepathLog": "L:\\MSSQL14.MSSQLSERVER\\MSSQL\\Log",
+      "filepathImages": "I:\\MSSQL14.MSSQLSERVER\\MSSQL\\Data",
+      "fileDriveData": [
+        "ifas:Data:ifastest1.MDF",
+        "ifas_2:Images:ifastest1_2.NDF",
+        "ifas_log:Log:ifastest1_log.LDF"
+      ],
+      "fileDriveSyscat": [
+        "syscat:Data:syscattest1.MDF",
+        "syscat_log:Log:syscattest1_log.LDF"
+      ],
+      "fileDriveAspnet": [
+        "aspnetprod:Data:aspnettest1.MDF",
+        "aspnetprod_log:Log:aspnettest1_log.LDF"
+      ],
+      "environmentServers": [
+        "businessplusweb1.domain.lcl",
+        "businessplusapp1.domain.lcl",
+        "businessplusweb2.domain.lcl"
+      ],
+      "ipcDaemon": "ipc_ifas",
+      "nuupausy": "TEST Environment",
+      "iusrSource": "PROD\\IUSR_BPLUS",
+      "iusrDestination": "TEST\\IUSR_BPLUS",
+      "adminSource": "PROD\\admin",
+      "adminDestination": "TEST\\admin",
+      "dboSource": "PROD\\dbo",
+      "dboDestination": "TEST\\dbo",
+      "dummyEmail": "noreply@district.org",
+      "managerCodes": ["DBA"],
+      "testingModeCodes": ["DBA", "QA"],
+      "dashboardUrl": "https://businessplusweb1.domain.lcl/",
+      "dashboardFiles": "\\\\sourceserver.district.lcl\\Share$\\Dashboard:\\\\destinationserver.district.lcl\\Share$\\Dashboard"
+    }
+  },
+  "smtp": {
+    "_comment": "SMTP settings apply to all environments",
+    "host": "smtp.district.org",
+    "port": 25,
+    "ssl": false,
+    "username": "",
+    "password": "",
+    "replyToEmail": "noreply@district.org",
+    "notificationEmail": "support@district.org",
+    "mailMessageAddress": "District Name, 123 Main St, City, ST 12345"
+  }
+}
