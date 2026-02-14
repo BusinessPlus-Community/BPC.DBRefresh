@@ -8,6 +8,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     name: Pester Tests
@@ -26,7 +30,7 @@ jobs:
       - name: Run Pester tests
         shell: pwsh
         run: |
-          Invoke-Pester -Path (Join-Path $PWD 'Tests') -PassThru
+          Invoke-Pester -Path (Join-Path $PWD 'Tests') -CI
 
   lint:
     name: PSScriptAnalyzer
@@ -40,9 +44,14 @@ jobs:
         timeout-minutes: 5
         shell: pwsh
         run: |
-          Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser -ErrorAction Stop -Verbose
+          Install-Module -Name PSScriptAnalyzer -RequiredVersion 1.22.0 -Force -Scope CurrentUser -ErrorAction Stop -Verbose
 
       - name: Run PSScriptAnalyzer
         shell: pwsh
         run: |
-          Invoke-ScriptAnalyzer -Path (Join-Path $PWD 'src') -Settings (Join-Path $PWD 'PSScriptAnalyzerSettings.psd1')
+          $results = Invoke-ScriptAnalyzer -Path (Join-Path $PWD 'src') -Settings (Join-Path $PWD 'PSScriptAnalyzerSettings.psd1')
+          $results | Format-Table -AutoSize
+          if ($results.Count -gt 0) {
+              Write-Error "PSScriptAnalyzer found $($results.Count) issue(s)"
+              exit 1
+          }
