@@ -91,31 +91,7 @@ Describe 'Invoke-BPlusDBRefresh' {
 
         BeforeAll {
             # Mock all external dependencies
-            Mock Get-IniContent {
-                return @{
-                    'sqlServer'          = @{ 'TEST1' = 'localhost' }
-                    'database'           = @{ 'TEST1' = 'testdb' }
-                    'syscat'             = @{ 'TEST1' = 'syscat' }
-                    'filepathData'       = @{ 'TEST1' = 'C:\Data' }
-                    'filepathLog'        = @{ 'TEST1' = 'C:\Log' }
-                    'fileDriveData'      = @{ 'TEST1' = 'db:Data:db.mdf' }
-                    'fileDriveSyscat'    = @{ 'TEST1' = 'sc:Data:sc.mdf' }
-                    'environmentServers' = @{ 'TEST1' = 'server1' }
-                    'ipc_daemon'         = @{ 'TEST1' = 'ipc' }
-                    'SMTP'               = @{
-                        'host'              = 'smtp'
-                        'replyToEmail'      = 'reply@test'
-                        'notificationEmail' = 'notify@test'
-                    }
-                    'NUUPAUSY'           = @{ 'TEST1' = 'TEST' }
-                    'IUSRSource'         = @{ 'TEST1' = 'src\user' }
-                    'IUSRDestination'    = @{ 'TEST1' = 'dst\user' }
-                    'AdminSource'        = @{ 'TEST1' = 'src\admin' }
-                    'AdminDestination'   = @{ 'TEST1' = 'dst\admin' }
-                    'DummyEmail'         = @{ 'TEST1' = 'dummy@test' }
-                    'ManagerCode'        = @{ 'TEST1' = 'MGR' }
-                }
-            }
+            # Note: Get-BPlusConfiguration now uses JSON parsing instead of PsIni
 
             Mock Test-Path { return $true }
             Mock Stop-BPlusServices { }

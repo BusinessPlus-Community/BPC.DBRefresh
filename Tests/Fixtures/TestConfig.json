@@ -1,5 +1,5 @@
 {
-  "$schema": "Test configuration for BPlusDBRefresh unit tests",
+  "$schema": "../../bpcBPlusDBRefresh.schema.json",
   "environments": {
     "TEST1": {
       "sqlServer": "TESTDBSRV01.test.lcl",

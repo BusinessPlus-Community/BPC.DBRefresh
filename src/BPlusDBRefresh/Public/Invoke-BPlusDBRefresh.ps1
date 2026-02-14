@@ -7,7 +7,7 @@ function Invoke-BPlusDBRefresh {
         This function automates the process of refreshing BusinessPlus test environment databases.
         It performs the following operations in sequence:
         1. Loads required PowerShell modules
-        2. Parses environment configuration from INI file
+        2. Parses environment configuration from JSON file
         3. Displays configuration for user review and confirmation
         4. Stops BusinessPlus services on target servers
         5. Backs up existing database connection configuration
@@ -22,7 +22,7 @@ function Invoke-BPlusDBRefresh {
 
     .PARAMETER BPEnvironment
         The name of the BusinessPlus environment to refresh (e.g., TEST1, TEST2).
-        This must match a section in the configuration INI file.
+        This must match an environment key in the JSON configuration file.
 
     .PARAMETER AspnetFilePath
         The path to the ASP.NET database backup file (.bak).
@@ -45,8 +45,9 @@ function Invoke-BPlusDBRefresh {
         to the destination specified in the configuration file.
 
     .PARAMETER ConfigurationPath
-        The path to the configuration INI file.
-        Defaults to 'hpsBPlusDBRestore.ini' in the script directory.
+        The path to the JSON configuration file.
+        Defaults to 'bpcBPlusDBRefresh.json' in the script directory,
+        falling back to 'bpcBPlusDBRefresh.ini' for legacy compatibility.
 
     .EXAMPLE
         Invoke-BPlusDBRefresh -BPEnvironment 'TEST1' -IfasFilePath '\\backup\ifas.bak' -SyscatFilePath '\\backup\syscat.bak'
@@ -77,7 +78,7 @@ function Invoke-BPlusDBRefresh {
     .NOTES
         Version: 2.0.0
         Author: Zachary V. Birge
-        Requires: PSLogging, dbatools, PsIni modules
+        Requires: PSLogging, dbatools modules
         Requires: MailKit/MimeKit for email notifications
 
     .LINK
@@ -130,24 +131,29 @@ function Invoke-BPlusDBRefresh {
         # Set error action for proper error handling
         $ErrorActionPreference = 'Stop'
 
-        # Determine configuration file path
+        # Determine configuration file path (try JSON first, fall back to INI)
         if (-not $ConfigurationPath) {
-            $ConfigurationPath = Join-Path -Path $script:ModuleRoot -ChildPath '..\..\..\hpsBPlusDBRestore.ini'
+            $ConfigurationPath = Join-Path -Path $script:ModuleRoot -ChildPath '..\..\..\bpcBPlusDBRefresh.json'
             if (-not (Test-Path -Path $ConfigurationPath)) {
-                $ConfigurationPath = Join-Path -Path $PSScriptRoot -ChildPath '..\..\..\hpsBPlusDBRestore.ini'
+                $ConfigurationPath = Join-Path -Path $PSScriptRoot -ChildPath '..\..\..\bpcBPlusDBRefresh.json'
+            }
+            if (-not (Test-Path -Path $ConfigurationPath)) {
+                $ConfigurationPath = Join-Path -Path $script:ModuleRoot -ChildPath '..\..\..\bpcBPlusDBRefresh.ini'
+                if (-not (Test-Path -Path $ConfigurationPath)) {
+                    $ConfigurationPath = Join-Path -Path $PSScriptRoot -ChildPath '..\..\..\bpcBPlusDBRefresh.ini'
+                }
             }
         }
 
         # Initialize logging
         $logPath = Split-Path -Path $ConfigurationPath -Parent
-        $logName = 'hpsBPlusDBRestore.log'
+        $logName = 'bpcBPlusDBRefresh.log'
         $logFile = Join-Path -Path $logPath -ChildPath $logName
 
         try {
             # Import required modules
             Import-RequiredModule -ModuleName 'PSLogging'
             Import-RequiredModule -ModuleName 'dbatools'
-            Import-RequiredModule -ModuleName 'PsIni'
         } catch {
             $result.Errors += "Failed to import required modules: $_"
             throw

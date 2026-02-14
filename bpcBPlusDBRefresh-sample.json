@@ -1,6 +1,6 @@
 {
-  "$schema": "Configuration for BPlusDBRefresh - BusinessPlus Test Environment Database Refresh",
-  "_comment": "Copy this file to hpsBPlusDBRestore.json and configure for your environments",
+  "$schema": "./bpcBPlusDBRefresh.schema.json",
+  "_comment": "Copy this file to bpcBPlusDBRefresh.json and configure for your environments",
   "environments": {
     "TEST1": {
       "_comment": "Configuration for TEST1 environment - duplicate this block for additional environments",

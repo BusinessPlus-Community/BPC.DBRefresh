@@ -19,11 +19,11 @@ function Convert-IniToJson {
         attempts to auto-detect environments from the sqlServer section.
 
     .EXAMPLE
-        Convert-IniToJson -IniPath 'C:\Scripts\hpsBPlusDBRestore.ini'
+        Convert-IniToJson -IniPath 'C:\Scripts\bpcBPlusDBRefresh.ini'
         Outputs the converted JSON to the console.
 
     .EXAMPLE
-        Convert-IniToJson -IniPath 'C:\Scripts\hpsBPlusDBRestore.ini' -OutputPath 'C:\Scripts\hpsBPlusDBRestore.json'
+        Convert-IniToJson -IniPath 'C:\Scripts\bpcBPlusDBRefresh.ini' -OutputPath 'C:\Scripts\bpcBPlusDBRefresh.json'
         Writes the converted JSON to a file.
 
     .EXAMPLE
@@ -118,7 +118,7 @@ function Convert-IniToJson {
 
             # Build JSON structure
             $jsonObject = @{
-                '$schema' = 'Configuration for BPlusDBRefresh - Converted from INI'
+                '$schema' = './bpcBPlusDBRefresh.schema.json'
                 environments = @{}
                 smtp = @{}
             }

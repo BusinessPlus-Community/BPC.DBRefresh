@@ -15,10 +15,10 @@
     Author            = 'Zachary V. Birge'
 
     # Company or vendor of this module
-    CompanyName       = 'Puyallup School District'
+    CompanyName       = 'BusinessPlus Community'
 
     # Copyright statement for this module
-    Copyright         = '(c) 2021-2026 Puyallup School District. All rights reserved.'
+    Copyright         = '(c) 2021-2026 BusinessPlus Community. All rights reserved.'
 
     # Description of the functionality provided by this module
     Description       = 'PowerShell module for automating BusinessPlus test environment database refresh operations. Uses JSON configuration for cross-platform compatibility.'

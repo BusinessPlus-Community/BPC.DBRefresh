@@ -22,7 +22,7 @@ function Get-BPlusConfiguration {
         and proceeds with automatic migration. Useful for automation and CI/CD scenarios.
 
     .EXAMPLE
-        $config = Get-BPlusConfiguration -Path 'C:\Scripts\hpsBPlusDBRestore.json' -Environment 'TEST1'
+        $config = Get-BPlusConfiguration -Path 'C:\Scripts\bpcBPlusDBRefresh.json' -Environment 'TEST1'
 
     .EXAMPLE
         $config = Get-BPlusConfiguration -Path $configPath -Environment 'TEST2'
@@ -167,7 +167,7 @@ function Get-BPlusConfiguration {
                 # SMTP settings
                 SmtpSettings      = [PSCustomObject]@{
                     Host              = & $getValue 'host' $true $smtpConfig
-                    Port              = [int](& $getValue 'port' $false $smtpConfig) -as [int]
+                    Port              = if ($smtpConfig.port) { [int]$smtpConfig.port } else { 25 }
                     ReplyToEmail      = & $getValue 'replyToEmail' $true $smtpConfig
                     NotificationEmail = & $getValue 'notificationEmail' $true $smtpConfig
                     MailMessageAddress = & $getValue 'mailMessageAddress' $false $smtpConfig
@@ -197,11 +197,6 @@ function Get-BPlusConfiguration {
 
                 # Connection strings (computed)
                 ConnectionStrings = $null
-            }
-
-            # Set default SMTP port if not specified
-            if (-not $config.SmtpSettings.Port -or $config.SmtpSettings.Port -eq 0) {
-                $config.SmtpSettings.Port = 25
             }
 
             # Use AdminSource/Destination for DBO if not explicitly set
