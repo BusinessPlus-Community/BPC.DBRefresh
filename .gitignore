@@ -72,8 +72,15 @@ htmlcov/
 .claude/installer/
 .claude/settings.json
 .claude/settings.*.json
+.claude/statusline.json
 .worktrees/
 # Keep: .claude/rules/, .claude/skills/, .claude/commands/, .claude/docs/
+
+# Playwright (local browser config)
+.playwright/
+
+# MCP servers (local tooling config)
+mcp_servers.json
 
 # Local/private documentation
 CLAUDE.local.md
