@@ -79,9 +79,6 @@ htmlcov/
 # Playwright (local browser config)
 .playwright/
 
-# MCP servers (local tooling config)
-mcp_servers.json
-
 # Local/private documentation
 CLAUDE.local.md
 context/
