@@ -30,7 +30,7 @@ jobs:
       - name: Run Pester tests
         shell: pwsh
         run: |
-          Invoke-Pester -Path (Join-Path $PWD 'Tests') -CI
+          Invoke-Pester -Path (Join-Path $PWD 'Tests') -ExcludeTag 'CI' -CI
 
   lint:
     name: PSScriptAnalyzer
@@ -55,3 +55,67 @@ jobs:
               Write-Error "PSScriptAnalyzer found $($results.Count) issue(s)"
               exit 1
           }
+
+  integration:
+    name: SQL Server Integration
+    runs-on: ubuntu-latest
+
+    env:
+      SA_PASSWORD: YourStrong!Passw0rd
+
+    services:
+      sqlserver:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        env:
+          ACCEPT_EULA: Y
+          MSSQL_SA_PASSWORD: ${{ env.SA_PASSWORD }}
+        ports:
+          - 1433:1433
+        options: >-
+          --health-cmd="/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -C -Q 'SELECT 1' || exit 1"
+          --health-interval=10s
+          --health-timeout=3s
+          --health-retries=10
+          --health-start-period=10s
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install PowerShell modules
+        timeout-minutes: 5
+        shell: pwsh
+        run: |
+          Install-Module -Name Pester -RequiredVersion 5.6.1 -Force -Scope CurrentUser -SkipPublisherCheck -ErrorAction Stop -Verbose
+          Install-Module -Name dbatools -RequiredVersion 2.1.23 -Force -Scope CurrentUser -SkipPublisherCheck -ErrorAction Stop -Verbose
+
+      - name: Wait for SQL Server
+        shell: pwsh
+        run: |
+          $maxRetries = 30
+          $retryCount = 0
+          $connected = $false
+          $securePassword = ConvertTo-SecureString -String $env:SA_PASSWORD -AsPlainText -Force
+          $credential = New-Object System.Management.Automation.PSCredential ('sa', $securePassword)
+
+          while (-not $connected -and $retryCount -lt $maxRetries) {
+              try {
+                  $retryCount++
+                  Write-Host "Attempt $retryCount of $maxRetries - Testing SQL Server connection..."
+                  $null = Connect-DbaInstance -SqlInstance 'localhost' -SqlCredential $credential -ErrorAction Stop
+                  $connected = $true
+                  Write-Host "SQL Server is ready!"
+              } catch {
+                  Write-Host "Connection failed: $($_.Exception.Message)"
+                  Start-Sleep -Seconds 2
+              }
+          }
+
+          if (-not $connected) {
+              throw "SQL Server failed to become ready after $maxRetries attempts"
+          }
+
+      - name: Run integration tests
+        shell: pwsh
+        run: |
+          Invoke-Pester -Path ./Tests/Integration/CI-SqlServer.Tests.ps1 -CI

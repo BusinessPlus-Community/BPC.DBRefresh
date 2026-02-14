@@ -1,0 +1,56 @@
+{
+  "_comment": "CI/CD Integration Test Configuration - FOR AUTOMATED TESTING ONLY",
+  "_notice": "This config is used by GitHub Actions integration tests on ubuntu-latest with SQL Server 2022 Linux container.",
+  "_reference": "For production usage, see bpcBPlusDBRefresh-sample.json",
+  "environments": {
+    "CI": {
+      "_comment": "CI environment configuration for GitHub Actions SQL Server integration tests",
+      "sqlServer": "localhost",
+      "database": "bplustest1",
+      "syscat": "syscattest1",
+      "aspnet": "aspnettest1",
+      "filepathData": "/var/opt/mssql/data",
+      "filepathLog": "/var/opt/mssql/data",
+      "filepathImages": "/var/opt/mssql/data",
+      "fileDriveData": [
+        "bplus:Data:bplustest1.mdf",
+        "bplus_log:Log:bplustest1_log.ldf"
+      ],
+      "fileDriveSyscat": [
+        "syscat:Data:syscattest1.mdf",
+        "syscat_log:Log:syscattest1_log.ldf"
+      ],
+      "fileDriveAspnet": [
+        "aspnet:Data:aspnettest1.mdf",
+        "aspnet_log:Log:aspnettest1_log.ldf"
+      ],
+      "environmentServers": [
+        "localhost"
+      ],
+      "ipcDaemon": "ipc_ci_test",
+      "nuupausy": "CI Test Environment",
+      "iusrSource": "CI\\IUSR_SOURCE",
+      "iusrDestination": "CI\\IUSR_DEST",
+      "adminSource": "CI\\admin_source",
+      "adminDestination": "CI\\admin_dest",
+      "dboSource": "CI\\dbo_source",
+      "dboDestination": "CI\\dbo_dest",
+      "dummyEmail": "citest@example.com",
+      "managerCodes": ["DBA", "QA"],
+      "testingModeCodes": ["DBA", "QA", "TEST"],
+      "dashboardUrl": "http://localhost/ci-test/",
+      "dashboardFiles": "/tmp/ci-dashboards-source:/tmp/ci-dashboards-dest"
+    }
+  },
+  "smtp": {
+    "_comment": "SMTP settings for CI tests - not actually used since we don't send emails in CI",
+    "host": "localhost",
+    "port": 25,
+    "ssl": false,
+    "username": "",
+    "password": "",
+    "replyToEmail": "citest@example.com",
+    "notificationEmail": "citest@example.com",
+    "mailMessageAddress": "CI Test Environment, GitHub Actions"
+  }
+}

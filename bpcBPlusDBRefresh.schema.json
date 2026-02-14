@@ -70,19 +70,19 @@
             "filepathData": {
               "type": "string",
               "description": "SQL Server data file directory path",
-              "pattern": "^[A-Za-z]:\\\\.*$",
+              "pattern": "^([A-Za-z]:\\\\.*|/.+)$",
               "minLength": 1
             },
             "filepathLog": {
               "type": "string",
               "description": "SQL Server log file directory path",
-              "pattern": "^[A-Za-z]:\\\\.*$",
+              "pattern": "^([A-Za-z]:\\\\.*|/.+)$",
               "minLength": 1
             },
             "filepathImages": {
               "type": "string",
               "description": "SQL Server images file directory path (optional)",
-              "pattern": "^[A-Za-z]:\\\\.*$"
+              "pattern": "^([A-Za-z]:\\\\.*|/.+)$"
             },
             "fileDriveData": {
               "type": "array",

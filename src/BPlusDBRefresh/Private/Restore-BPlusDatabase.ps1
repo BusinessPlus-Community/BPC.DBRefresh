@@ -1,4 +1,4 @@
-function Build-FileMapping {
+﻿function Build-FileMapping {
     <#
     .SYNOPSIS
         Builds a file mapping hashtable for database restore operations.
@@ -36,10 +36,10 @@ function Build-FileMapping {
             $fileName = $parts[2].Trim()
 
             $basePath = switch ($driveType) {
-                'Data'   { $FilePaths.Data }
-                'Log'    { $FilePaths.Log }
+                'Data' { $FilePaths.Data }
+                'Log' { $FilePaths.Log }
                 'Images' { $FilePaths.Images }
-                default  { $FilePaths.Data }
+                default { $FilePaths.Data }
             }
 
             # Use string concatenation instead of Join-Path for Windows path compatibility on Linux
@@ -62,7 +62,7 @@ function Restore-BPlusDatabase {
 
     .DESCRIPTION
         Restores the specified database (IFAS, Syscat, or ASP.NET) from a backup file
-        using the file mapping configuration from the INI file.
+        using the file mapping configuration from the configuration object.
 
     .PARAMETER Configuration
         The configuration object from Get-BPlusConfiguration.
@@ -75,6 +75,9 @@ function Restore-BPlusDatabase {
 
     .PARAMETER LogFile
         Path to the log file.
+
+    .PARAMETER SqlCredential
+        SQL Server authentication credential for non-Windows environments.
     #>
     [CmdletBinding(SupportsShouldProcess = $true)]
     param(
@@ -90,18 +93,21 @@ function Restore-BPlusDatabase {
         [string]$BackupPath,
 
         [Parameter()]
-        [string]$LogFile
+        [string]$LogFile,
+
+        [Parameter()]
+        [PSCredential]$SqlCredential
     )
 
     # Get database name and file drives based on type
     $databaseName = switch ($DatabaseType) {
-        'Ifas'   { $Configuration.IfasDatabase }
+        'Ifas' { $Configuration.IfasDatabase }
         'Syscat' { $Configuration.SyscatDatabase }
         'Aspnet' { $Configuration.AspnetDatabase }
     }
 
     $fileDrives = switch ($DatabaseType) {
-        'Ifas'   { $Configuration.FileDrives.Ifas }
+        'Ifas' { $Configuration.FileDrives.Ifas }
         'Syscat' { $Configuration.FileDrives.Syscat }
         'Aspnet' { $Configuration.FileDrives.Aspnet }
     }
@@ -121,12 +127,21 @@ function Restore-BPlusDatabase {
 
         if ($PSCmdlet.ShouldProcess($databaseName, 'Restore database')) {
             # Restore database using dbatools
-            $restoreResult = Restore-DbaDatabase -SqlInstance $Configuration.DatabaseServer `
-                -Path $BackupPath `
-                -DatabaseName $databaseName `
-                -FileMapping $fileMapping `
-                -WithReplace `
-                -ErrorAction Stop
+            $restoreParams = @{
+                SqlInstance  = $Configuration.DatabaseServer
+                Path         = $BackupPath
+                DatabaseName = $databaseName
+                FileMapping  = $fileMapping
+                WithReplace  = $true
+                ErrorAction  = 'Stop'
+            }
+
+            # Only add SqlCredential if provided (avoid passing $null)
+            if ($SqlCredential) {
+                $restoreParams['SqlCredential'] = $SqlCredential
+            }
+
+            $restoreResult = Restore-DbaDatabase @restoreParams
 
             if ($LogFile) {
                 $restoreResult | Out-File -FilePath $LogFile -Append -Encoding UTF8
