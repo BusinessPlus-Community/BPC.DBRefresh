@@ -1,0 +1,249 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./bpcBPlusDBRefresh.schema.json",
+  "title": "BPlusDBRefresh Configuration Schema",
+  "description": "Configuration schema for BusinessPlus Community test environment database refresh operations",
+  "type": "object",
+  "required": ["environments", "smtp"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "JSON Schema reference for IDE validation"
+    },
+    "_comment": {
+      "type": "string",
+      "description": "Optional comment field for documentation"
+    },
+    "environments": {
+      "type": "object",
+      "description": "Environment-specific configuration settings",
+      "minProperties": 1,
+      "patternProperties": {
+        "^[A-Z0-9_]+$": {
+          "type": "object",
+          "description": "Configuration for a single environment (e.g., TEST1, TEST2)",
+          "required": [
+            "sqlServer",
+            "database",
+            "syscat",
+            "filepathData",
+            "filepathLog",
+            "fileDriveData",
+            "fileDriveSyscat",
+            "environmentServers",
+            "ipcDaemon",
+            "nuupausy",
+            "iusrSource",
+            "iusrDestination",
+            "adminSource",
+            "adminDestination",
+            "dummyEmail",
+            "managerCodes"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "_comment": {
+              "type": "string",
+              "description": "Optional comment for this environment"
+            },
+            "sqlServer": {
+              "type": "string",
+              "description": "SQL Server instance name (e.g., SERVER01.domain.lcl or SERVER01\\INSTANCE)",
+              "minLength": 1
+            },
+            "database": {
+              "type": "string",
+              "description": "Main BusinessPlus database name",
+              "minLength": 1
+            },
+            "syscat": {
+              "type": "string",
+              "description": "Syscat database name",
+              "minLength": 1
+            },
+            "aspnet": {
+              "type": "string",
+              "description": "ASP.NET database name",
+              "minLength": 1
+            },
+            "filepathData": {
+              "type": "string",
+              "description": "SQL Server data file directory path",
+              "pattern": "^[A-Za-z]:\\\\.*$",
+              "minLength": 1
+            },
+            "filepathLog": {
+              "type": "string",
+              "description": "SQL Server log file directory path",
+              "pattern": "^[A-Za-z]:\\\\.*$",
+              "minLength": 1
+            },
+            "filepathImages": {
+              "type": "string",
+              "description": "SQL Server images file directory path (optional)",
+              "pattern": "^[A-Za-z]:\\\\.*$"
+            },
+            "fileDriveData": {
+              "type": "array",
+              "description": "Main database file drive mappings (LogicalName:FileType:PhysicalName)",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "pattern": "^[^:]+:(Data|Images|Log):[^:]+\\.(mdf|ndf|ldf|MDF|NDF|LDF)$"
+              }
+            },
+            "fileDriveSyscat": {
+              "type": "array",
+              "description": "Syscat database file drive mappings",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "pattern": "^[^:]+:(Data|Log):[^:]+\\.(mdf|ndf|ldf|MDF|NDF|LDF)$"
+              }
+            },
+            "fileDriveAspnet": {
+              "type": "array",
+              "description": "ASP.NET database file drive mappings (optional)",
+              "items": {
+                "type": "string",
+                "pattern": "^[^:]+:(Data|Log):[^:]+\\.(mdf|ndf|ldf|MDF|NDF|LDF)$"
+              }
+            },
+            "environmentServers": {
+              "type": "array",
+              "description": "List of server FQDNs for this environment",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9.-]+$",
+                "minLength": 1
+              }
+            },
+            "ipcDaemon": {
+              "type": "string",
+              "description": "IPC daemon service name",
+              "minLength": 1
+            },
+            "nuupausy": {
+              "type": "string",
+              "description": "Environment indicator text (e.g., 'TEST Environment')"
+            },
+            "iusrSource": {
+              "type": "string",
+              "description": "Source IUSR account (DOMAIN\\username format)",
+              "pattern": "^[^\\\\]+\\\\[^\\\\]+$"
+            },
+            "iusrDestination": {
+              "type": "string",
+              "description": "Destination IUSR account (DOMAIN\\username format)",
+              "pattern": "^[^\\\\]+\\\\[^\\\\]+$"
+            },
+            "adminSource": {
+              "type": "string",
+              "description": "Source admin account (DOMAIN\\username format)",
+              "pattern": "^[^\\\\]+\\\\[^\\\\]+$"
+            },
+            "adminDestination": {
+              "type": "string",
+              "description": "Destination admin account (DOMAIN\\username format)",
+              "pattern": "^[^\\\\]+\\\\[^\\\\]+$"
+            },
+            "dboSource": {
+              "type": "string",
+              "description": "Source DBO account (DOMAIN\\username format)",
+              "pattern": "^[^\\\\]+\\\\[^\\\\]+$"
+            },
+            "dboDestination": {
+              "type": "string",
+              "description": "Destination DBO account (DOMAIN\\username format)",
+              "pattern": "^[^\\\\]+\\\\[^\\\\]+$"
+            },
+            "dummyEmail": {
+              "type": "string",
+              "description": "Dummy email address for sanitizing notifications",
+              "format": "email"
+            },
+            "managerCodes": {
+              "type": "array",
+              "description": "Manager codes to keep active (e.g., ['DBA', 'ADMIN'])",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "testingModeCodes": {
+              "type": "array",
+              "description": "Additional codes to activate when testingMode switch is used",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "dashboardUrl": {
+              "type": "string",
+              "description": "Dashboard URL for this environment",
+              "format": "uri"
+            },
+            "dashboardFiles": {
+              "type": "string",
+              "description": "Dashboard file copy paths (source:destination format)"
+            }
+          }
+        }
+      }
+    },
+    "smtp": {
+      "type": "object",
+      "description": "SMTP server configuration (applies to all environments)",
+      "required": ["host", "replyToEmail", "notificationEmail"],
+      "additionalProperties": false,
+      "properties": {
+        "_comment": {
+          "type": "string",
+          "description": "Optional comment for SMTP settings"
+        },
+        "host": {
+          "type": "string",
+          "description": "SMTP server hostname or IP address",
+          "minLength": 1
+        },
+        "port": {
+          "type": "integer",
+          "description": "SMTP server port (typically 25, 587, or 465)",
+          "default": 25,
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "ssl": {
+          "type": "boolean",
+          "description": "Whether to use SSL/TLS for SMTP connection",
+          "default": false
+        },
+        "username": {
+          "type": "string",
+          "description": "SMTP authentication username (empty string if no auth)"
+        },
+        "password": {
+          "type": "string",
+          "description": "SMTP authentication password. WARNING: Consider using environment variables or a credential manager instead of storing passwords in config files."
+        },
+        "replyToEmail": {
+          "type": "string",
+          "description": "Reply-To email address for notifications",
+          "format": "email"
+        },
+        "notificationEmail": {
+          "type": "string",
+          "description": "Recipient email address for completion notifications",
+          "format": "email"
+        },
+        "mailMessageAddress": {
+          "type": "string",
+          "description": "Mailing address text for email footer"
+        }
+      }
+    }
+  }
+}
